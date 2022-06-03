@@ -59,7 +59,6 @@ const DocumentScreen = () => {
     onError: (error) => {
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
-      console.log("Error Here ", error);
     },
   });
 
@@ -78,7 +77,6 @@ const DocumentScreen = () => {
   };
 
   const onError = (error) => {
-    console.log(error);
     if (!isChecked) {
       setcheckError(true);
     } else {

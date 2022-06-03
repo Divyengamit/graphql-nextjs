@@ -28,7 +28,7 @@ const BreadCrumb = (props) => {
   }, [props.items]);
 
   const handleRoute = () => {
-    router.push(-1);
+    router.back();
   };
 
   return (

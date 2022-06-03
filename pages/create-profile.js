@@ -54,7 +54,6 @@ const CreateProfileScreen = () => {
         nextHandler();
       },
       onError: (error) => {
-        console.log("Error Here ", error);
         setErrorMessage(error?.response?.data?.message || error?.message);
         setError(true);
       },

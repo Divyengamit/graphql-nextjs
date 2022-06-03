@@ -20,7 +20,6 @@ const ProfileForm = (props) => {
   var yyyy = today.getFullYear() - 18;
 
   today = yyyy + "-" + mm + "-" + dd;
-  console.log("today", today);
 
   const genderChangeHandler = (event) => {
     setGender(event.target.value);

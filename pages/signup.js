@@ -34,18 +34,19 @@ const SignupScreen = () => {
   };
 
   const nextHandler = ({ requestId }) => {
-    console.log("nextHandler requestId ", requestId);
     // router.push("/password", { state: { requestId: requestId } });
 
     // router.push(
     //   { pathname: "/password", query: { requestId: requestId } },
     //   "/password"
     // );
+    router.push({ pathname: "/password", query: { requestId } });
 
-    router.push({
-      pathname: "/password",
-      query: { requestId },
-    });
+    // router.push({
+    //   pathname: "/password",
+    //   query: { requestId },
+    //   as: "/password",
+    // });
   };
 
   const methods = useForm({
@@ -59,14 +60,12 @@ const SignupScreen = () => {
       nextHandler(data?.data);
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setErrorMessage(error?.response?.data?.message || error?.message);
       setError(true);
     },
   });
 
   const onSubmitHandler = useCallback((data) => {
-    // console.log("onSubmitHandler data", data);
     registerUserMutation.mutate(data);
   });
 

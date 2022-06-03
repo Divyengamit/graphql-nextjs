@@ -56,7 +56,6 @@ const OTPScreen = () => {
       }, [3000]);
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },
@@ -70,7 +69,6 @@ const OTPScreen = () => {
     onError: (error) => {
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
-      console.log("Error Here ", error);
     },
   });
 
@@ -83,7 +81,6 @@ const OTPScreen = () => {
     onError: (error) => {
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
-      console.log("Error Here ", error);
     },
   });
 
@@ -93,7 +90,6 @@ const OTPScreen = () => {
       setErrorMessage(data?.data?.message);
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },

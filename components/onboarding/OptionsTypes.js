@@ -3,7 +3,6 @@ import React from "react";
 import { MenuItem, Typography } from "@mui/material";
 
 const OptionsTypes = (props) => {
-  console.log("options type props", props);
   const listOptions = props?.map((item) => {
     return (
       <MenuItem

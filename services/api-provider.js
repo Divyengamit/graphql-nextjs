@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 const baseUrl =
   process.env.REACT_APP_API_ENDPOINT || "https://ppi-test.canopi.in/";
-console.log("Base url", baseUrl);
 
 const APIContext = createContext();
 const { Provider } = APIContext;

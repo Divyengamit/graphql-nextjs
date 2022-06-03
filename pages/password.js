@@ -20,12 +20,13 @@ const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
   const router = useRouter();
+
+  console.log("router data", router);
   const { query } = router;
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
   const { createUserPassword, resetPassword } = useContext(APIContext);
-  console.log("router data", router);
   const cancelHandler = useCallback(() => {
     router.push(-2);
   });
@@ -35,6 +36,7 @@ const PasswordScreen = () => {
     router.push({
       pathname: "/create-profile",
       query: { requestId: query?.requestId },
+      as: "/create-profile",
     });
   };
 
@@ -52,7 +54,6 @@ const PasswordScreen = () => {
         nextHandler();
       },
       onError: (error) => {
-        console.log("Error Here ", error);
         setError(true);
         setErrorMessage(error?.response?.data?.message || error?.message);
       },
@@ -68,7 +69,6 @@ const PasswordScreen = () => {
       }, 2000);
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },

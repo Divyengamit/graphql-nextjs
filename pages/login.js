@@ -86,7 +86,6 @@ const LoginScreen = () => {
       );
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },
