@@ -2,9 +2,10 @@ import React, { createContext, useCallback, useMemo } from "react";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
+const baseUrl = "https://ppi-test.canopi.in/";
 
-const baseUrl =
-  process.env.REACT_APP_API_ENDPOINT || "https://ppi-test.canopi.in/";
+// const baseUrl =
+//   process.env.REACT_APP_API_ENDPOINT || "https://ppi-test.canopi.in/";
 
 const APIContext = createContext();
 const { Provider } = APIContext;
