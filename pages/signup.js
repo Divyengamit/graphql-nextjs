@@ -35,8 +35,13 @@ const SignupScreen = () => {
 
   const nextHandler = ({ requestId }) => {
     console.log("nextHandler requestId ", requestId);
-    // router.push("/password", { query: { requestId: requestId } });
-    // Router.push({ pathname: "/password", query: { requestId: requestId } });
+    // router.push("/password", { state: { requestId: requestId } });
+
+    // router.push(
+    //   { pathname: "/password", query: { requestId: requestId } },
+    //   "/password"
+    // );
+
     router.push({
       pathname: "/password",
       query: { requestId },
@@ -61,32 +66,32 @@ const SignupScreen = () => {
   });
 
   const onSubmitHandler = useCallback((data) => {
-    console.log("onSubmitHandler data", data);
+    // console.log("onSubmitHandler data", data);
     registerUserMutation.mutate(data);
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <HeroGrid img={img}>
-        <BreadCrumb items={["Account", "Customer Registration"]} />
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-            <SignupForm
-              sx={{ mt: 2, mb: 2 }}
-              onCancel={cancelHandler}
-              onNext={nextHandler}
-            />
-          </form>
-        </FormProvider>
-        {registerUserMutation.isLoading && <ProgressIndicator />}
-        <InfoAlert
-          show={showError}
-          title="Error"
-          body={errorMessage}
-          onClose={() => setError(false)}
-        />
-      </HeroGrid>
-    </ThemeProvider>
+    // <ThemeProvider theme={theme}>
+    <HeroGrid img={img}>
+      <BreadCrumb items={["Account", "Customer Registration"]} />
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
+          <SignupForm
+            sx={{ mt: 2, mb: 2 }}
+            onCancel={cancelHandler}
+            onNext={nextHandler}
+          />
+        </form>
+      </FormProvider>
+      {registerUserMutation.isLoading && <ProgressIndicator />}
+      <InfoAlert
+        show={showError}
+        title="Error"
+        body={errorMessage}
+        onClose={() => setError(false)}
+      />
+    </HeroGrid>
+    // </ThemeProvider>
   );
 };
 export default SignupScreen;

@@ -7,7 +7,11 @@ import Image from "next/image";
 /* A UI Template component, which will show a Hero Image on the left side and content on the right */
 const HeroGrid = (props) => {
   return (
-    <Grid container sx={{ display: "flex", flexDirection: "row" }}>
+    <Grid
+      container
+      sx={{ display: "flex", flexDirection: "row" }}
+      className={"signup-main-div"}
+    >
       <Hidden mdDown>
         {/* 
         The height of this Grid will be the same as that of the next Grid.
@@ -22,11 +26,9 @@ const HeroGrid = (props) => {
           //   backgroundSize: "cover",
           // }}
         >
-          <Image
-            src={props.img}
-            style={{ backgroundSize: "cover" }}
-            alt="image"
-          />
+          <div className={"image-containerss"}>
+            <Image src={props.img} alt="image" objectFit="contain" />
+          </div>
         </Grid>
       </Hidden>
 
@@ -40,6 +42,7 @@ const HeroGrid = (props) => {
         item
         md={6}
         xs={12}
+        className={"right-side-div"}
         sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
         <GuestAppBar />

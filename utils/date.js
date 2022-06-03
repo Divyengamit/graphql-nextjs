@@ -1,4 +1,5 @@
-const dayjs = require("dayjs");
+// const dayjs = require("dayjs");
+import dayjs from "dayjs";
 
 const isPastDate = () => {
   const year = dayjs();

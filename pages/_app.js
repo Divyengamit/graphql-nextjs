@@ -2,7 +2,10 @@ import "../styles/globals.css";
 import { store } from "../store/store";
 import { Provider } from "react-redux";
 import { APIProvider } from "../services/api-provider";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../styles/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { CssBaseline } from "@mui/material";
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
@@ -10,7 +13,10 @@ function MyApp({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <APIProvider>
-          <Component {...pageProps} />
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
         </APIProvider>
       </Provider>
     </QueryClientProvider>

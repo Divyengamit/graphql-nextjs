@@ -10,14 +10,14 @@ const GuestAppBar = () => (
     <Toolbar>
       {/* <img src={logo} style={{ height: 32 }} />
       <img src={docModeLogo} style={{ height: 32, marginLeft: "auto" }} /> */}
-      <Image src={logo} height={32} width={150} alt="logo" />
-      <Image
-        src={docModeLogo}
-        height={32}
-        width={150}
-        marginLeft="auto"
-        alt="modeLogo"
-      />
+      <div className={"form-header-div"}>
+        <div>
+          <Image src={logo} height={32} width={118} alt="logo" />
+        </div>
+        <div>
+          <Image src={docModeLogo} height={32} width={150} alt="modeLogo" />
+        </div>
+      </div>
     </Toolbar>
   </AppBar>
 );
