@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { useRouter, useLocation } from "next/router";
+import { useRouter } from "next/router";
 
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
@@ -25,13 +25,17 @@ const PasswordScreen = () => {
   const [errorMessage, setErrorMessage] = useState();
 
   const { createUserPassword, resetPassword } = useContext(APIContext);
-
+  console.log("router data", router);
   const cancelHandler = useCallback(() => {
     router.push(-2);
   });
 
   const nextHandler = () => {
-    router.push("/create-profile", { state: { requestId: state?.requestId } });
+    // router.push("/create-profile", { state: { requestId: state?.requestId } });
+    router.push({
+      pathname: "/create-profile",
+      query: { requestId: query?.requestId },
+    });
   };
 
   const methods = useForm({

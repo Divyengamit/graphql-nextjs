@@ -24,7 +24,10 @@
     "react-redux": "^8.0.1",
     "@reduxjs/toolkit": "^1.8.1",
     "redux-persist": "^6.0.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "dayjs": "^1.11.2",
+    "react-drag-drop-files": "^2.3.5",
+    "react-otp-input": "^2.4.0"
   },
   "devDependencies": {
     "eslint": "8.16.0",
