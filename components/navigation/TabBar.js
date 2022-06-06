@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, Typography, Box, Button } from "@mui/material";
 
 import CircleIcon from "@mui/icons-material/Circle";
+import Image from "next/image";
 
 const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
 const cardImage = require("../../assets/CardLogo.png");
@@ -83,10 +84,11 @@ const TabBar = (props) => {
             onClick={props?.onApplyClick}
           >
             Apply{" "}
-            <img
+            {/* <img
               src={arrowIcon}
               style={{ width: "24px", height: "24px", marginLeft: "6px" }}
-            />
+            /> */}
+            <Image src={arrowIcon} height={24} width={24} alt="image" />
           </Button>
 
           <Box

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
 import { useDispatch } from "react-redux";
-// import { setUser } from "../store/auth";
+import { setUser } from "../store/auth";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
@@ -53,11 +53,11 @@ const LoginScreen = () => {
         setOpen(true);
       } else {
         dispatch();
-        //   setUser({
-        //     user: userData?.entityId,
-        //     token: userData?.access_token,
-        //     refreshToken: userData?.expires_in,
-        //   })
+        setUser({
+          user: userData?.entityId,
+          token: userData?.access_token,
+          refreshToken: userData?.expires_in,
+        });
         setError(true);
         setErrorMessage("Login Success");
         router.push("/home");

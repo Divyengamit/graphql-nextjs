@@ -13,6 +13,7 @@ import {
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 import { stringAvatar } from "../../utils/Avatar";
+import Image from "next/image";
 const logoutIcon = require("../../assets/icons/logout.png");
 
 const ProfileMenu = (props) => {
@@ -166,7 +167,7 @@ const ProfileMenu = (props) => {
           onClick={props?.onLogout}
         >
           <ListItemIcon>
-            <img
+            {/* <img
               src={logoutIcon}
               style={{
                 height: "21.88px",
@@ -174,7 +175,8 @@ const ProfileMenu = (props) => {
                 marginRight: "16px",
                 marginLeft: "5px",
               }}
-            />
+            /> */}
+            <Image src={logoutIcon} height={21.88} width={25} alt="image" />
           </ListItemIcon>
 
           <Typography variant="subtitle1Regular" sx={{ color: "#2C3E50" }}>

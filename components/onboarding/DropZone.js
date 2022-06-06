@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { Box, Typography } from "@mui/material";
 import FlexBox from "../ui/FlexBox";
+import Image from "next/image";
 
 const DropZone = (props) => {
   const [error, setError] = useState();
@@ -20,9 +21,15 @@ const DropZone = (props) => {
       <Typography variant="h5SemiBold" sx={{ mt: 2, mb: 1.2 }}>
         {props?.title}
       </Typography>
-      <img
+      {/* <img
         src={require("../../assets/icons/upload.png")}
         style={{ width: 32 }}
+      /> */}
+      <Image
+        src={require("../../assets/icons/upload.png")}
+        // height={24}
+        width={32}
+        alt="image"
       />
       <Typography
         variant="small"

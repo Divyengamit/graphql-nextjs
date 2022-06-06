@@ -1,5 +1,7 @@
-import React, { useCallback, useContext, useState } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
@@ -12,20 +14,23 @@ import PasswordForm from "../components/onboarding/PasswordForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
 import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
-
 import { createPasswordSchema, resetPasswordSchema } from "../utils/validation";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
   const router = useRouter();
-
-  console.log("router data", router);
+  console.log(
+    "process.env.NEXT_PUBLIC_PUBLIC_KEY ",
+    process.env.NEXT_PUBLIC_PUBLIC_KEY
+  );
   const { query } = router;
+  // const data = localStorage.getItem(process.env.REACT_APP_ENC_KEY);
+  // const [urlParamsData, setUrlParamsData] = useState(
+  //   Decryption(localStorage.getItem(process.env.REACT_APP_ENC_KEY))
+  // );
+  // console.log("urlParamsData ", urlParamsData);
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-
   const { createUserPassword, resetPassword } = useContext(APIContext);
   const cancelHandler = useCallback(() => {
     router.push(-2);
@@ -35,8 +40,8 @@ const PasswordScreen = () => {
     // router.push("/create-profile", { state: { requestId: state?.requestId } });
     router.push({
       pathname: "/create-profile",
-      query: { requestId: query?.requestId },
-      as: "/create-profile",
+      // query: { requestId: query?.requestId },
+      // as: "/create-profile",
     });
   };
 
@@ -102,28 +107,26 @@ const PasswordScreen = () => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <HeroGrid img={img}>
-        <BreadCrumb items={["Account", "Create Password"]} />
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <PasswordForm
-              sx={{ mt: 2, mb: 2 }}
-              onCancel={cancelHandler}
-              requestType={query?.requestType}
-            />
-          </form>
-        </FormProvider>
-        {(createPasswordMutation.isLoading ||
-          resetPasswordMutation.isLoading) && <ProgressIndicator />}
-        <InfoAlert
-          show={showError}
-          title="Error"
-          body={errorMessage}
-          onClose={() => setError(false)}
-        />
-      </HeroGrid>
-    </ThemeProvider>
+    <HeroGrid img={img}>
+      <BreadCrumb items={["Account", "Create Password"]} />
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <PasswordForm
+            sx={{ mt: 2, mb: 2 }}
+            onCancel={cancelHandler}
+            requestType={query?.requestType}
+          />
+        </form>
+      </FormProvider>
+      {(createPasswordMutation.isLoading ||
+        resetPasswordMutation.isLoading) && <ProgressIndicator />}
+      <InfoAlert
+        show={showError}
+        title="Error"
+        body={errorMessage}
+        onClose={() => setError(false)}
+      />
+    </HeroGrid>
   );
 };
 

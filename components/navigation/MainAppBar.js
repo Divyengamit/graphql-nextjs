@@ -10,7 +10,8 @@ import {
   Avatar,
   Tooltip,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
+import { useRouter } from "next/router";
 
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/auth";
@@ -23,11 +24,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
+import Image from "next/image";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
 const MainAppBar = ({ userData }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [notification, setNotification] = React.useState(null);
@@ -50,16 +53,18 @@ const MainAppBar = ({ userData }) => {
 
   const onLogoutClickHandler = () => {
     dispatch(logout());
-    navigate("/");
+    router.push("/");
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl" sx={{ pt: 1.45, pb: 1.45 }}>
         <Toolbar style={{ padding: 0 }}>
-          <img src={logo} style={{ height: 36 }} />
+          {/* <img src={logo} style={{ height: 36 }} /> */}
+          <Image src={logo} height={36} alt="image" />
           <FlexBox row sx={{ ml: "auto" }}>
-            <img src={docModeLogo} style={{ height: 36, marginRight: 18 }} />
+            {/* <img src={docModeLogo} style={{ height: 36, marginRight: 18 }} /> */}
+            <Image src={docModeLogo} height={36} alt="image" />
             <Box
               sx={{
                 display: "flex",
