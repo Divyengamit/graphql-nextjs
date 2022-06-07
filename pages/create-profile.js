@@ -3,6 +3,8 @@ import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../styles/theme";
+import { getLocal } from "../utils/storage";
+import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,21 +22,19 @@ import { ProfileSchema } from "../utils/validation";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const CreateProfileScreen = () => {
-  // const navigate = useNavigate();
+  const routerParams = getLocal("tempData");
+  const [urlParamsData, setUrlParamsData] = useState(
+    JSON.parse(
+      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+    )
+  );
   const router = useRouter();
-  const { query } = router;
   const { registerUserInfo } = useContext(APIContext);
-  // const { state } = useLocation();
-
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
   const nextHandler = () => {
-    // router.push("/document", { state: { requestId: state?.requestId } });
-    router.push({
-      pathname: "/document",
-      query: { requestId: query?.requestId },
-    });
+    router.push({ pathname: "/document" });
   };
 
   const methods = useForm({
@@ -73,7 +73,7 @@ const CreateProfileScreen = () => {
 
   const onSubmit = (data) => {
     registerUserInfoMutation.mutate({
-      requestId: query?.requestId,
+      requestId: urlParamsData?.state?.requestId,
       nameOnCard: data?.cardName,
       address1: data?.addressLine,
       address2: data?.addressLine2,

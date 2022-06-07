@@ -4,6 +4,7 @@ import React, { useCallback, useContext, useState } from "react";
 
 import { useRouter } from "next/router";
 import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+import { setLocal } from "../utils/storage";
 
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
@@ -24,11 +25,6 @@ import { SignUpSchema } from "../utils/validation";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const SignupScreen = () => {
-  console.log(
-    "process.env.REACT_APP_ENC_KEY ",
-    process.env.NEXT_PUBLIC_PUBLIC_KEY
-  );
-  // const navigate = useNavigate();
   const router = useRouter();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -40,27 +36,18 @@ const SignupScreen = () => {
   };
 
   const nextHandler = ({ requestId }) => {
-    // router.push("/password", { state: { requestId: requestId } });
-
-    // router.push(
-    //   { pathname: "/password", query: { requestId: requestId } },
-    //   "/password"
-    // );
     router.push({ pathname: "/password" });
-    localStorage.setItem(
-      process.env.REACT_APP_ENC_KEY,
-      Encryption({
-        state: {
-          requestId,
-        },
-      })
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            requestId,
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
     );
-
-    // router.push({
-    //   pathname: "/password",
-    //   query: { requestId },
-    //   as: "/password",
-    // });
   };
 
   const methods = useForm({

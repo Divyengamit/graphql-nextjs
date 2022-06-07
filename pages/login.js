@@ -6,6 +6,8 @@ import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/auth";
+import { getLocal, setLocal } from "../utils/storage";
+import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
@@ -15,7 +17,7 @@ import LoginForm from "../components/onboarding/LoginForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
 import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
-// import OtpDialog from "../components/dashboard/OtpDialog";
+import OtpDialog from "../components/dashboard/OtpDialog";
 
 import { loginSchema } from "../utils/validation";
 const img = require("../assets/backgrounds/background_onbording.png");
@@ -74,15 +76,20 @@ const LoginScreen = () => {
       const email = methods.getValues("email");
       setError(true);
       setErrorMessage(data?.data?.message);
-      router.push(
-        "/otp",
-        {
-          query: {
-            email,
-            requestType: "RESET",
-          },
-        },
-        "/otp"
+      router.push({
+        pathname: "/otp",
+      });
+      setLocal(
+        "tempData",
+        Encryption(
+          JSON.stringify({
+            state: {
+              email: email,
+              requestType: "RESET",
+            },
+          }),
+          process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+        )
       );
     },
     onError: (error) => {
@@ -128,12 +135,12 @@ const LoginScreen = () => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {/* <OtpDialog
+      <OtpDialog
         state={open}
         onClose={handleClose}
         requestType="2FA"
         userMobileNo={mobileNo}
-      /> */}
+      />
       ;
     </HeroGrid>
   );

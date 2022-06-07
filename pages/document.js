@@ -6,6 +6,8 @@ import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../styles/theme";
+import { getLocal, setLocal } from "../utils/storage";
+import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,10 +22,13 @@ import { DocumentSchema } from "../utils/validation";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const DocumentScreen = () => {
-  // const navigate = useNavigate();
-  // const { state } = useLocation();
+  const routerParams = getLocal("tempData");
+  const [urlParamsData, setUrlParamsData] = useState(
+    JSON.parse(
+      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+    )
+  );
   const router = useRouter();
-  const { query } = router;
 
   const [file, setFile] = useState();
   const [showError, setError] = useState(false);
@@ -34,13 +39,22 @@ const DocumentScreen = () => {
   const { uploadDoc } = useContext(APIContext);
 
   const nextHandler = ({ mobile, sessionId }) => {
-    // navigate("/otp", {
-    //   state: { mobile, sessionId, requestId: state?.requestId },
-    // });
     router.push({
       pathname: "/otp",
-      query: { mobile, sessionId, requestId: query?.requestId },
     });
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            requestId: urlParamsData?.state?.requestId,
+            sessionId: sessionId,
+            mobile: mobile,
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
   };
 
   const methods = useForm({
@@ -68,7 +82,7 @@ const DocumentScreen = () => {
     } else {
       setcheckError(false);
       uploadMutation.mutate({
-        requestId: query?.requestId,
+        requestId: urlParamsData?.state?.requestId,
         docType: data?.docType,
         docNumber: data?.docNumber,
         docFile: data?.docImage,

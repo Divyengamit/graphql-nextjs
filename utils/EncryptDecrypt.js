@@ -1,10 +1,12 @@
 import CryptoJS from "crypto-js";
 
 export const Decryption = (data) => {
-  console.log("Decryption data", data);
   try {
-    if (process.env.REACT_APP_ENC_KEY) {
-      const bytes = CryptoJS.AES.decrypt(data, process.env.REACT_APP_ENC_KEY);
+    if (process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY) {
+      const bytes = CryptoJS.AES.decrypt(
+        data,
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      );
       return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     } else return data;
   } catch (e) {
@@ -12,11 +14,10 @@ export const Decryption = (data) => {
   }
 };
 export const Encryption = (data) => {
-  console.log("Encryption data", data);
-  if (process.env.REACT_APP_ENC_KEY)
+  if (process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
     return CryptoJS.AES.encrypt(
       JSON.stringify(data),
-      process.env.REACT_APP_ENC_KEY
+      process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
     ).toString();
   else return data;
 };

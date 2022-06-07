@@ -3,6 +3,8 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
+import { getLocal, setLocal } from "../utils/storage";
+
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
 
@@ -18,17 +20,13 @@ import { createPasswordSchema, resetPasswordSchema } from "../utils/validation";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
-  const router = useRouter();
-  console.log(
-    "process.env.NEXT_PUBLIC_PUBLIC_KEY ",
-    process.env.NEXT_PUBLIC_PUBLIC_KEY
+  const routerParams = getLocal("tempData");
+  const [urlParamsData, setUrlParamsData] = useState(
+    JSON.parse(
+      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+    )
   );
-  const { query } = router;
-  // const data = localStorage.getItem(process.env.REACT_APP_ENC_KEY);
-  // const [urlParamsData, setUrlParamsData] = useState(
-  //   Decryption(localStorage.getItem(process.env.REACT_APP_ENC_KEY))
-  // );
-  // console.log("urlParamsData ", urlParamsData);
+  const router = useRouter();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const { createUserPassword, resetPassword } = useContext(APIContext);
@@ -37,16 +35,13 @@ const PasswordScreen = () => {
   });
 
   const nextHandler = () => {
-    // router.push("/create-profile", { state: { requestId: state?.requestId } });
     router.push({
       pathname: "/create-profile",
-      // query: { requestId: query?.requestId },
-      // as: "/create-profile",
     });
   };
 
   const methods = useForm({
-    resolver: query?.requestType
+    resolver: urlParamsData?.state?.requestType
       ? yupResolver(resetPasswordSchema)
       : yupResolver(createPasswordSchema),
     mode: "onSubmit",
@@ -81,7 +76,7 @@ const PasswordScreen = () => {
 
   const onSubmit = useCallback(
     async (data) => {
-      if (query?.requestType === "RESET") {
+      if (urlParamsData?.state?.requestType === "RESET") {
         await methods.trigger("confirmPassword");
 
         const password = methods.getValues("password");
@@ -89,14 +84,14 @@ const PasswordScreen = () => {
         const fieldState = methods.getFieldState("confirmPassword");
         if (!fieldState.error) {
           resetPasswordMutation.mutate({
-            emailAddress: query?.email,
+            emailAddress: urlParamsData?.state?.email,
             password: password,
             passwordConfirm: passwordConfirm,
           });
         }
       } else {
         createPasswordMutation.mutate({
-          requestId: query?.requestId,
+          requestId: urlParamsData?.state?.requestId,
           emailAddress: data?.email,
           password: data?.password,
           passwordConfirm: data?.confirmPassword,
@@ -114,7 +109,7 @@ const PasswordScreen = () => {
           <PasswordForm
             sx={{ mt: 2, mb: 2 }}
             onCancel={cancelHandler}
-            requestType={query?.requestType}
+            requestType={urlParamsData?.state?.requestType}
           />
         </form>
       </FormProvider>

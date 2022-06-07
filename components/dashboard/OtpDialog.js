@@ -51,14 +51,12 @@ const OtpDialog = (props) => {
 
   const applyCardMutation = useMutation((data) => applyCardConfirm(data), {
     onSuccess: (data) => {
-      console.log("Success ", data);
       props?.onClose();
       props?.handleSuccessDialog();
     },
     onError: (error) => {
       props?.onClose();
       props?.handleSuccessDialog();
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },
@@ -80,7 +78,6 @@ const OtpDialog = (props) => {
       router.push("/home");
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },
@@ -93,7 +90,6 @@ const OtpDialog = (props) => {
       setErrorMessage("2FA AUTHENTATION ENABLED");
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },

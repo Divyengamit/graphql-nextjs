@@ -42,12 +42,10 @@ const ApplyDialog = (props) => {
 
   const applyCardMutation = useMutation((data) => applyCardConfirm(data), {
     onSuccess: (data) => {
-      console.log("Success ", data);
       props?.onClose();
       props?.handleSuccessDialog();
     },
     onError: (error) => {
-      console.log("Error Here ", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },

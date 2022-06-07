@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
 
+import { getLocal, setLocal, removeLocal } from "../utils/storage";
+import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../styles/theme";
 
@@ -17,10 +20,13 @@ import ProgressIndicator from "../components/ui/ProgressIndicator";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const OTPScreen = () => {
-  //   const navigate = useNavigate();
-  //   const { state } = useLocation();
+  const routerParams = getLocal("tempData");
+  const [urlParamsData, setUrlParamsData] = useState(
+    JSON.parse(
+      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+    )
+  );
   const router = useRouter();
-  const { query } = router;
   const { verifyOTP, resendOTP, verifyEmailOtp, forgetPassword } =
     useContext(APIContext);
 
@@ -33,16 +39,24 @@ const OTPScreen = () => {
   };
 
   const nextHandlerReset = () => {
-    // navigate("/password", {
-    //   state: {
-    //     email: state?.email,
-    //     requestType: "RESET",
-    //   },
-    // });
     router.push({
       pathname: "/password",
-      query: { email: query?.email, requestType: "RESET" },
     });
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            // requestId: urlParamsData?.state?.requestId,
+            // sessionId: sessionId,
+            // mobile: mobile,
+            email: urlParamsData?.state?.email,
+            requestType: "RESET",
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
   };
 
   const otpMutation = useMutation((data) => verifyOTP(data), {
@@ -50,9 +64,9 @@ const OTPScreen = () => {
       const userData = data?.data;
       setError(true);
       setErrorMessage(userData?.message);
-
       setTimeout(() => {
         nextHandler();
+        removeLocal("tempData");
       }, [3000]);
     },
     onError: (error) => {
@@ -100,28 +114,28 @@ const OTPScreen = () => {
   };
 
   const onSubmitHandler = () => {
-    if (query?.requestType === "RESET") {
+    if (urlParamsData?.state?.requestType === "RESET") {
       verifyEmailOtpMutation.mutate({
-        emailAddress: query?.email,
+        emailAddress: urlParamsData?.state.email,
         otp,
       });
     } else {
       otpMutation.mutate({
-        requestId: query?.requestId,
-        sessionId: query?.sessionId,
-        mobileNo: query?.mobile,
+        requestId: urlParamsData?.state?.requestId,
+        sessionId: urlParamsData?.state?.sessionId,
+        mobileNo: urlParamsData?.state?.mobile,
         otp,
       });
     }
   };
 
   const resendHandler = () => {
-    if (query?.requestType === "RESET") {
+    if (urlParamsData?.state?.requestType === "RESET") {
       resendEmailOtpMutation.mutate({
-        emailAddress: query?.email,
+        emailAddress: urlParamsData?.state?.email,
       });
     } else {
-      resendMutation.mutate(query?.mobile);
+      resendMutation.mutate(urlParamsData?.state?.mobile);
     }
   };
 
@@ -130,7 +144,7 @@ const OTPScreen = () => {
       <HeroGrid img={img}>
         <BreadCrumb items={["Account", "Phone Verification"]} />
         <OTPForm
-          userData={query}
+          userData={urlParamsData?.state}
           sx={{ mt: 2, mb: 2 }}
           onNext={nextHandler}
           onChangeOtp={onChangeOtpHandler}
