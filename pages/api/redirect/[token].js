@@ -1,8 +1,10 @@
 import Cors from "cors";
+import { useRouter } from "next/router";
 const cors = Cors({
   methods: ["GET", "HEAD", "POST"],
 });
 import axios from "axios";
+// const router = useRouter();
 // Helper method to wait for a middleware to execute before continuing
 // And to throw an error when an error happens in a middleware
 function runMiddleware(req, res, fn) {
@@ -45,6 +47,8 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
     });
+
+    return res.redirect("/home");
     res.status(200).json({ name: "John Doe", body: data });
   } catch (err) {
     res.status(200).json({ error: "Not valid" });
