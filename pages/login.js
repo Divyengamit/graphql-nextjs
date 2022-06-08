@@ -50,22 +50,25 @@ const LoginScreen = () => {
   const loginMutation = useMutation((data) => login(data), {
     onSuccess: (data) => {
       const userData = data?.data;
+      console.log("userData data", userData?.entityId);
       if (userData?.access_token === "2FA") {
         setMobileNo(userData?.mobileNo);
         setOpen(true);
       } else {
-        dispatch();
-        setUser({
-          user: userData?.entityId,
-          token: userData?.access_token,
-          refreshToken: userData?.expires_in,
-        });
+        dispatch(
+          setUser({
+            user: userData?.entityId,
+            token: userData?.access_token,
+            refreshToken: userData?.expires_in,
+          })
+        );
         setError(true);
         setErrorMessage("Login Success");
         router.push("/home");
       }
     },
     onError: (error) => {
+      console.log("error", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },

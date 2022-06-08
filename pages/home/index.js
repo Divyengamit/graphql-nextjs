@@ -24,6 +24,7 @@ const HomeScreen = () => {
   const router = useRouter();
   const { fetchDashboardDetails, enable_2FA } = useContext(APIContext);
   const { user } = useSelector((state) => state.auth);
+  console.log("user data", user);
   const { data, isLoading } = useQuery(["dashboard", user], () =>
     fetchDashboardDetails(user)
   );
