@@ -131,7 +131,7 @@ const ProfileMenu = (props) => {
                   lineHeight: "18.53px",
                 }}
               >
-                3 April 2022 4:30 PM IST
+                {props?.userData?.lastLogin}
               </Typography>
             </Typography>
           </MenuItem>

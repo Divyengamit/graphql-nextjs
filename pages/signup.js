@@ -26,6 +26,8 @@ const img = require("../assets/backgrounds/background_onbording.png");
 
 const SignupScreen = () => {
   const router = useRouter();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
@@ -85,9 +87,9 @@ const SignupScreen = () => {
       </FormProvider>
       {registerUserMutation.isLoading && <ProgressIndicator />}
       <InfoAlert
-        show={showError}
-        title="Error"
-        body={errorMessage}
+        show={showError || showSuccess}
+        title={!showSuccess ? "Error" : "Success"}
+        body={!showSuccess ? errorMessage : successMessage}
         onClose={() => setError(false)}
       />
     </HeroGrid>

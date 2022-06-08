@@ -33,7 +33,11 @@ const TabBar = (props) => {
   };
 
   return (
-    <Grid container spacing={2} sx={{ justifyContent: "center" }}>
+    <Grid
+      spacing={2}
+      sx={{ justifyContent: "center" }}
+      className={"dashboard-tabbar"}
+    >
       <Grid item xs={12} sm={12} md={7}>
         <Box display="flex" flexWrap="wrap" sx={{ mt: 2.75, mb: 3 }}>
           <Button
@@ -102,7 +106,7 @@ const TabBar = (props) => {
               ml: 2,
             }}
           >
-            <img
+            {/* <img
               src={cardImage}
               style={{
                 width: "90px",
@@ -110,7 +114,10 @@ const TabBar = (props) => {
                 marginRight: "8px",
                 objectFit: "contain",
               }}
-            />
+            /> */}
+            <div>
+              <Image src={cardImage} height={37} width={90} alt="image" />
+            </div>
 
             <div>
               <Typography

@@ -24,7 +24,6 @@ const HomeScreen = () => {
   const router = useRouter();
   const { fetchDashboardDetails, enable_2FA } = useContext(APIContext);
   const { user } = useSelector((state) => state.auth);
-  console.log("user data", user);
   const { data, isLoading } = useQuery(["dashboard", user], () =>
     fetchDashboardDetails(user)
   );
@@ -99,54 +98,56 @@ const HomeScreen = () => {
   });
 
   return (
-    <FlexBox sx={{ minHeight: "100vh" }}>
-      <MainAppBar userData={data?.data} />
+    <>
+      <FlexBox sx={{ minHeight: "100vh" }}>
+        <MainAppBar userData={data?.data} />
 
-      <Container>
-        <TabBar
-          userData={data?.data}
-          showDashboard={showDashboard}
-          onDashboardClick={handleDashboardClick}
-          onTransactionClick={handleTransactionsClick}
-          onApplyClick={handleApplyClick}
-        />
-
-        {showDashboard ? (
-          <Dashboard
+        <Container maxWidth="xl">
+          <TabBar
             userData={data?.data}
-            onExploreFinancingClick={handleExploreFinancing}
+            showDashboard={showDashboard}
+            onDashboardClick={handleDashboardClick}
+            onTransactionClick={handleTransactionsClick}
+            onApplyClick={handleApplyClick}
           />
-        ) : (
-          <Transactions userData={data?.data} />
-        )}
-        <InfoAlert
-          show={showError}
-          title="Error"
-          body={errorMessage}
-          onClose={() => setError(false)}
-        />
 
-        <OtpDialog
-          state={open}
-          onClose={handleClose}
-          userData={data?.data}
-          handleSuccessDialog={handleClickOpenSuccess}
-          requestType={is2FA && "Auth_2FA"}
-        />
-        <SuccessDialog state={openSuccess} onClose={handleCloseSuccess} />
-        <ApplyDialog
-          state={openApplyDialog}
-          onClose={handleApplyClose}
-          userData={data?.data}
-          handleOtpDialog={handleClickOpen}
-          handleSuccessDialog={handleClickOpenSuccess}
-        />
+          {showDashboard ? (
+            <Dashboard
+              userData={data?.data}
+              onExploreFinancingClick={handleExploreFinancing}
+            />
+          ) : (
+            <Transactions userData={data?.data} />
+          )}
+          <InfoAlert
+            show={showError}
+            title="Error"
+            body={errorMessage}
+            onClose={() => setError(false)}
+          />
 
-        {(isLoading || enable2FaMutation.isLoading) && <ProgressIndicator />}
-      </Container>
+          <OtpDialog
+            state={open}
+            onClose={handleClose}
+            userData={data?.data}
+            handleSuccessDialog={handleClickOpenSuccess}
+            requestType={is2FA && "Auth_2FA"}
+          />
+          <SuccessDialog state={openSuccess} onClose={handleCloseSuccess} />
+          <ApplyDialog
+            state={openApplyDialog}
+            onClose={handleApplyClose}
+            userData={data?.data}
+            handleOtpDialog={handleClickOpen}
+            handleSuccessDialog={handleClickOpenSuccess}
+          />
 
-      <FooterMain />
-    </FlexBox>
+          {(isLoading || enable2FaMutation.isLoading) && <ProgressIndicator />}
+        </Container>
+
+        <FooterMain />
+      </FlexBox>
+    </>
   );
 };
 

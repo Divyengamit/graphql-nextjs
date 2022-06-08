@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/auth";
 import axios from "axios";
+import style from "../../styles/Redirect.module.css";
 
 const Redirect = () => {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const Redirect = () => {
 
   return (
     <>
-      <div className={"loading"}></div>
+      <div className={style.loading}></div>
     </>
   );
 };

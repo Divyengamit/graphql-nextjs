@@ -33,6 +33,8 @@ const OTPScreen = () => {
   const [otp, setOtp] = useState();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState();
 
   const nextHandler = () => {
     router.push("/");
@@ -62,8 +64,8 @@ const OTPScreen = () => {
   const otpMutation = useMutation((data) => verifyOTP(data), {
     onSuccess: (data) => {
       const userData = data?.data;
-      setError(true);
-      setErrorMessage(userData?.message);
+      setShowSuccess(true);
+      setSuccessMessage(userData?.message);
       setTimeout(() => {
         nextHandler();
         removeLocal("tempData");
@@ -77,8 +79,8 @@ const OTPScreen = () => {
 
   const resendMutation = useMutation((mobile) => resendOTP(mobile), {
     onSuccess: (data) => {
-      setError(true);
-      setErrorMessage(data?.data?.message);
+      setShowSuccess(true);
+      setSuccessMessage(data?.data?.message);
     },
     onError: (error) => {
       setError(true);
@@ -88,8 +90,8 @@ const OTPScreen = () => {
 
   const verifyEmailOtpMutation = useMutation((data) => verifyEmailOtp(data), {
     onSuccess: (data) => {
-      setError(true);
-      setErrorMessage("Email verified successfully");
+      setShowSuccess(true);
+      setSuccessMessage("Email verified successfully");
       nextHandlerReset();
     },
     onError: (error) => {
@@ -100,8 +102,8 @@ const OTPScreen = () => {
 
   const resendEmailOtpMutation = useMutation((data) => forgetPassword(data), {
     onSuccess: (data) => {
-      setError(true);
-      setErrorMessage(data?.data?.message);
+      setShowSuccess(true);
+      setSuccessMessage(data?.data?.message);
     },
     onError: (error) => {
       setError(true);
@@ -156,9 +158,9 @@ const OTPScreen = () => {
           verifyEmailOtpMutation.isLoading ||
           resendEmailOtpMutation.isLoading) && <ProgressIndicator />}
         <InfoAlert
-          show={showError}
-          title="Error"
-          body={errorMessage}
+          show={showError || showSuccess}
+          title={!showSuccess ? "Error" : "Success"}
+          body={!showSuccess ? errorMessage : successMessage}
           onClose={() => setError(false)}
         />
       </HeroGrid>

@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 
 import { useMutation } from "react-query";
 import { APIContext } from "../services/api-provider";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
 import { getLocal, setLocal } from "../utils/storage";
 import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
@@ -108,7 +106,6 @@ const DocumentScreen = () => {
   }, [isChecked, checkedError]);
 
   return (
-    // <ThemeProvider theme={theme}>
     <HeroGrid img={img}>
       <BreadCrumb items={["Account", "Complete Setup"]} />
       <FormProvider {...methods}>
@@ -130,7 +127,6 @@ const DocumentScreen = () => {
         onClose={() => setError(false)}
       />
     </HeroGrid>
-    // </ThemeProvider>
   );
 };
 

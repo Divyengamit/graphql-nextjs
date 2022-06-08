@@ -29,6 +29,8 @@ const LoginScreen = () => {
 
   const [open, setOpen] = useState(false);
   const [showError, setError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
   const { login, forgetPassword } = useContext(APIContext);
@@ -50,7 +52,6 @@ const LoginScreen = () => {
   const loginMutation = useMutation((data) => login(data), {
     onSuccess: (data) => {
       const userData = data?.data;
-      console.log("userData data", userData?.entityId);
       if (userData?.access_token === "2FA") {
         setMobileNo(userData?.mobileNo);
         setOpen(true);
@@ -62,13 +63,12 @@ const LoginScreen = () => {
             refreshToken: userData?.expires_in,
           })
         );
-        setError(true);
-        setErrorMessage("Login Success");
+        setShowSuccess(true);
+        setSuccessMessage("Login Success");
         router.push("/home");
       }
     },
     onError: (error) => {
-      console.log("error", error);
       setError(true);
       setErrorMessage(error?.response?.data?.message || error?.message);
     },
@@ -77,8 +77,8 @@ const LoginScreen = () => {
   const forgetPasswordMutation = useMutation((data) => forgetPassword(data), {
     onSuccess: (data) => {
       const email = methods.getValues("email");
-      setError(true);
-      setErrorMessage(data?.data?.message);
+      setShowSuccess(true);
+      setSuccessMessage(data?.data?.message);
       router.push({
         pathname: "/otp",
       });
@@ -133,9 +133,9 @@ const LoginScreen = () => {
         <ProgressIndicator />
       )}
       <InfoAlert
-        show={showError}
-        title="Error"
-        body={errorMessage}
+        show={showError || showSuccess}
+        title={!showSuccess ? "Error" : "Success"}
+        body={!showSuccess ? errorMessage : successMessage}
         onClose={() => setError(false)}
       />
       <OtpDialog

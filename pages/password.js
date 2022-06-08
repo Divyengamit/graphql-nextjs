@@ -29,6 +29,8 @@ const PasswordScreen = () => {
   const router = useRouter();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState();
   const { createUserPassword, resetPassword } = useContext(APIContext);
   const cancelHandler = useCallback(() => {
     router.push(-2);
@@ -62,8 +64,8 @@ const PasswordScreen = () => {
 
   const resetPasswordMutation = useMutation((data) => resetPassword(data), {
     onSuccess: (data) => {
-      setError(true);
-      setErrorMessage("Password Reset Success , Please Login ");
+      setShowSuccess(true);
+      setSuccessMessage("Password Reset Success , Please Login ");
       setTimeout(() => {
         router.push("/");
       }, 2000);
@@ -116,9 +118,9 @@ const PasswordScreen = () => {
       {(createPasswordMutation.isLoading ||
         resetPasswordMutation.isLoading) && <ProgressIndicator />}
       <InfoAlert
-        show={showError}
-        title="Error"
-        body={errorMessage}
+        show={showError || showSuccess}
+        title={!showSuccess ? "Error" : "Success"}
+        body={!showSuccess ? errorMessage : successMessage}
         onClose={() => setError(false)}
       />
     </HeroGrid>

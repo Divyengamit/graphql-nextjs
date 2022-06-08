@@ -55,7 +55,9 @@ const Dashboard = (props) => {
               style={{ marginRight: "145px" }}
             /> */}
             {/* <Image src={}/> */}
-            <Image src={walletIcon} height={92} width={92} alt="logo" />
+            <div className={"dashboard-wallet-img"}>
+              <Image src={walletIcon} height={92} width={92} alt="logo" />
+            </div>
           </Box>
 
           <Typography
@@ -80,8 +82,8 @@ const Dashboard = (props) => {
         >
           <Item
             sx={{ p: 0 }}
+            className={"dashboard-equipment-finance-img"}
             style={{
-              backgroundImage: `url(${backgroundImage})`,
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",

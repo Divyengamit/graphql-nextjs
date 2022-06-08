@@ -61,10 +61,14 @@ const MainAppBar = ({ userData }) => {
       <Container maxWidth="xl" sx={{ pt: 1.45, pb: 1.45 }}>
         <Toolbar style={{ padding: 0 }}>
           {/* <img src={logo} style={{ height: 36 }} /> */}
-          <Image src={logo} height={36} alt="image" />
+          <div className={"dashboard-canopi-logo"}>
+            <Image src={logo} alt="image" />
+          </div>
           <FlexBox row sx={{ ml: "auto" }}>
             {/* <img src={docModeLogo} style={{ height: 36, marginRight: 18 }} /> */}
-            <Image src={docModeLogo} height={36} alt="image" />
+            <div className="dashboard-docmode-img">
+              <Image src={docModeLogo} alt="image" />
+            </div>
             <Box
               sx={{
                 display: "flex",
