@@ -34,7 +34,7 @@ const TabBar = (props) => {
 
   return (
     <Grid
-      spacing={2}
+      // spacing={2}
       sx={{ justifyContent: "center" }}
       className={"dashboard-tabbar"}
     >

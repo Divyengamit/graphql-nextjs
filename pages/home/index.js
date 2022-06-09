@@ -2,6 +2,8 @@ import React, { useState, useContext, useCallback } from "react";
 import { Container } from "@mui/material";
 // import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
+import { Decryption, Encryption } from "../../utils/EncryptDecrypt";
+import { setLocal } from "../../utils/storage";
 
 import { useQuery, useMutation } from "react-query";
 import { APIContext } from "../../services/api-provider";
@@ -18,7 +20,6 @@ import InfoAlert from "../../components/ui/InfoAlert";
 import FlexBox from "../../components/ui/FlexBox";
 import Dashboard from "../../components/dashboard/Dashboard";
 import TabBar from "../../components/navigation/TabBar";
-
 const HomeScreen = () => {
   //   const navigate = useNavigate();
   const router = useRouter();
@@ -29,6 +30,8 @@ const HomeScreen = () => {
   );
 
   const [open, setOpen] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState();
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openApplyDialog, setApplyDialog] = useState(false);
 
@@ -41,8 +44,8 @@ const HomeScreen = () => {
     onSuccess: (data) => {
       setOpen(true);
       setTimeout(() => {
-        setError(true);
-        setErrorMessage(data?.data?.message);
+        setShowSuccess(true);
+        setSuccessMessage(data?.data?.message);
       }, 1000);
     },
     onError: (error) => {
@@ -94,7 +97,19 @@ const HomeScreen = () => {
   );
 
   const handleExploreFinancing = useCallback(() => {
-    router.push("/finance", { state: { userData: data?.data } });
+    // router.push("home/finance", { state: { userData: data?.data } });
+    router.push({ pathname: "home/finance" });
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            userData: data?.data,
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
   });
 
   return (
@@ -120,9 +135,9 @@ const HomeScreen = () => {
             <Transactions userData={data?.data} />
           )}
           <InfoAlert
-            show={showError}
-            title="Error"
-            body={errorMessage}
+            show={showError || showSuccess}
+            title={!showSuccess ? "Error" : "Success"}
+            body={!showSuccess ? errorMessage : successMessage}
             onClose={() => setError(false)}
           />
 

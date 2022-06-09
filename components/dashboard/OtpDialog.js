@@ -75,7 +75,7 @@ const OtpDialog = (props) => {
       setError(true);
       setErrorMessage("Login Successfull");
 
-      router.push("/home");
+      router.push({ pathname: "/home" });
     },
     onError: (error) => {
       setError(true);

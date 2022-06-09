@@ -37,7 +37,7 @@ const LoginScreen = () => {
   const [mobileNo, setMobileNo] = useState();
 
   const signupHandler = () => {
-    router.push("/signup");
+    router.push({ pathname: "/signup" });
   };
 
   const methods = useForm({
@@ -65,7 +65,8 @@ const LoginScreen = () => {
         );
         setShowSuccess(true);
         setSuccessMessage("Login Success");
-        router.push("/home");
+
+        router.push({ pathname: "/home" });
       }
     },
     onError: (error) => {

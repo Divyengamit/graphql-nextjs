@@ -45,7 +45,8 @@ const Redirect = () => {
               refreshToken: data?.expires_in,
             })
           );
-          router.push("/home");
+
+          router.push({ pathname: "/home" });
         }
       };
       fetchData().catch((error) => {
@@ -56,7 +57,9 @@ const Redirect = () => {
 
   return (
     <>
-      <div className={style.loading}></div>
+      <container>
+        <div className={style.loading}></div>
+      </container>
     </>
   );
 };

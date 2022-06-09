@@ -53,6 +53,7 @@ const MainAppBar = ({ userData }) => {
 
   const onLogoutClickHandler = () => {
     dispatch(logout());
+
     router.push("/");
   };
 

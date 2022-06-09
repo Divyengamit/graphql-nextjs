@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { removeLocal } from "../utils/storage";
 
 const initialState = {
   user: null,
@@ -22,6 +23,7 @@ export const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.refreshToken = null;
+      removeLocal("tempData");
     },
   },
 });
