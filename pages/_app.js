@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "../styles/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CssBaseline } from "@mui/material";
+import Head from "next/head";
 const queryClient = new QueryClient();
 
 const MyApp = ({ Component, pageProps }) => {
@@ -24,6 +25,10 @@ const MyApp = ({ Component, pageProps }) => {
   } else {
     return (
       <React.Fragment>
+        <Head>
+          <title>CanopiPAY</title>
+          {/* <meta name="description" content="Next.js is a React Framework" /> */}
+        </Head>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
             <APIProvider>

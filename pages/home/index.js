@@ -28,6 +28,7 @@ const HomeScreen = () => {
   const { data, isLoading } = useQuery(["dashboard", user], () =>
     fetchDashboardDetails(user)
   );
+  // console.log("data11111111111111 ", data);
 
   const [open, setOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
