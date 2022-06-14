@@ -11,8 +11,9 @@ const APIContext = createContext();
 const { Provider } = APIContext;
 
 const APIProvider = ({ children }) => {
-  const auth = useSelector((state) => state.auth);
-  const token = auth.token;
+  const auth = useSelector((state) => state?.auth);
+  console.log("auth data", auth);
+  const token = auth?.token;
 
   const headers = {
     "Content-Type": "application/json",

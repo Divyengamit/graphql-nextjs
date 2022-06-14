@@ -82,18 +82,14 @@ const TabBar = (props) => {
               >
                 Enable 2FA
               </Button> */}
-          <Button
+          {/* <Button
             variant="contained"
             sx={{ fontSize: "1rem" }}
             onClick={props?.onApplyClick}
           >
             Apply{" "}
-            {/* <img
-              src={arrowIcon}
-              style={{ width: "24px", height: "24px", marginLeft: "6px" }}
-            /> */}
             <Image src={arrowIcon} height={24} width={24} alt="image" />
-          </Button>
+          </Button> */}
 
           <Box
             display="flex"

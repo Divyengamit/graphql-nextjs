@@ -24,6 +24,7 @@ import { styled } from "@mui/material/styles";
 const FinanceScreen = () => {
   const router = useRouter();
   const routerParams = getLocal("tempData");
+  console.log("router data", router);
   const [urlParamsData, setUrlParamsData] = useState(
     JSON.parse(
       Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
