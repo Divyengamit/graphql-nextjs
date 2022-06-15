@@ -42,6 +42,10 @@ const PasswordScreen = () => {
       pathname: "/create-profile",
     });
   };
+  const onCloseInfo = () => {
+    setError(false);
+    setShowSuccess(false);
+  };
 
   const methods = useForm({
     resolver: urlParamsData?.state?.requestType
@@ -139,7 +143,7 @@ const PasswordScreen = () => {
         show={showError || showSuccess}
         title={!showSuccess ? "Error" : "Success"}
         body={!showSuccess ? errorMessage : successMessage}
-        onClose={() => setError(false)}
+        onClose={() => onCloseInfo()}
       />
     </HeroGrid>
   );
