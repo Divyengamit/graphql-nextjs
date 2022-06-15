@@ -10,23 +10,17 @@ import {
   REGISTER,
 } from "redux-persist";
 
-import { combineReducers } from "redux";
+import reducer from "./reducers";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import storage from "redux-persist/lib/storage";
-
-import authReducer from "./auth";
-
-const combinedReducer = combineReducers({
-  auth: authReducer,
-});
 
 const persistConfig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, combinedReducer);
+const persistedReducer = persistReducer(persistConfig, reducer);
 
 export const store = configureStore({
   reducer: persistedReducer,

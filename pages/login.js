@@ -2,12 +2,12 @@ import React, { useContext, useState, useCallback } from "react";
 // import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
 
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
+// import { useMutation } from "react-query";
+// import { APIContext } from "../services/api-provider";
 import { useDispatch } from "react-redux";
-import { setUser } from "../store/auth";
-import { getLocal, setLocal } from "../utils/storage";
-import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+// import { setUser } from "../store/auth";
+// import { getLocal, setLocal } from "../utils/storage";
+// import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
@@ -20,10 +20,14 @@ import InfoAlert from "../components/ui/InfoAlert";
 import OtpDialog from "../components/dashboard/OtpDialog";
 
 import { loginSchema } from "../utils/validation";
+import { userLogin } from "../store/auth/loginSlice";
+import { useSelector } from "react-redux";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const LoginScreen = () => {
   //   const navigate = useNavigate();
+  // const state = useSelector((state) => state);
+  // console.log("state", state);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -33,7 +37,7 @@ const LoginScreen = () => {
   const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
-  const { login, forgetPassword } = useContext(APIContext);
+  // const { login, forgetPassword } = useContext(APIContext);
   const [mobileNo, setMobileNo] = useState();
 
   const signupHandler = () => {
@@ -49,61 +53,73 @@ const LoginScreen = () => {
     setOpen(false);
   };
 
-  const loginMutation = useMutation((data) => login(data), {
-    onSuccess: (data) => {
-      const userData = data?.data;
-      if (userData?.access_token === "2FA") {
-        setMobileNo(userData?.mobileNo);
-        setOpen(true);
-      } else {
-        dispatch(
-          setUser({
-            user: userData?.entityId,
-            token: userData?.access_token,
-            refreshToken: userData?.expires_in,
-          })
-        );
-        setShowSuccess(true);
-        setSuccessMessage("Login Success");
+  // const loginMutation = useMutation((data) => login(data), {
+  //   onSuccess: (data) => {
+  //     const userData = data?.data;
+  //     if (userData?.access_token === "2FA") {
+  //       setMobileNo(userData?.mobileNo);
+  //       setOpen(true);
+  //     } else {
+  //       dispatch(
+  //         setUser({
+  //           user: userData?.entityId,
+  //           token: userData?.access_token,
+  //           refreshToken: userData?.expires_in,
+  //         })
+  //       );
+  //       setShowSuccess(true);
+  //       setSuccessMessage("Login Success");
 
-        router.push({ pathname: "/home" });
-      }
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  //       router.push({ pathname: "/home" });
+  //     }
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
-  const forgetPasswordMutation = useMutation((data) => forgetPassword(data), {
-    onSuccess: (data) => {
-      const email = methods.getValues("email");
-      setShowSuccess(true);
-      setSuccessMessage(data?.data?.message);
-      router.push({
-        pathname: "/otp",
-      });
-      setLocal(
-        "tempData",
-        Encryption(
-          JSON.stringify({
-            state: {
-              email: email,
-              requestType: "RESET",
-            },
-          }),
-          process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
-        )
-      );
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  // const forgetPasswordMutation = useMutation((data) => forgetPassword(data), {
+  //   onSuccess: (data) => {
+  //     const email = methods.getValues("email");
+  //     setShowSuccess(true);
+  //     setSuccessMessage(data?.data?.message);
+  //     router.push({
+  //       pathname: "/otp",
+  //     });
+  //     setLocal(
+  //       "tempData",
+  //       Encryption(
+  //         JSON.stringify({
+  //           state: {
+  //             email: email,
+  //             requestType: "RESET",
+  //           },
+  //         }),
+  //         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+  //       )
+  //     );
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   const onSubmitHandler = (values) => {
-    loginMutation.mutate(values);
+    // console.log("values data", values);
+
+    dispatch(userLogin({ ...values })).then((res) => {
+      if (res?.payload?.access_token) {
+        setShowSuccess(true);
+        setSuccessMessage("Login Success");
+        setTimeout(() => {
+          router.push({ pathname: "/home" });
+        }, [1000]);
+      }
+    });
+
+    // loginMutation.mutate(values);
   };
 
   const forgetPasswordHandler = useCallback(async () => {
@@ -111,11 +127,11 @@ const LoginScreen = () => {
     const emailValue = methods.getValues("email");
     const fieldState = methods.getFieldState("email");
 
-    if (!fieldState.error) {
-      forgetPasswordMutation.mutate({
-        emailAddress: emailValue,
-      });
-    }
+    // if (!fieldState.error) {
+    //   forgetPasswordMutation.mutate({
+    //     emailAddress: emailValue,
+    //   });
+    // }
   }, [methods, methods?.formState]);
 
   return (
@@ -130,9 +146,11 @@ const LoginScreen = () => {
           />
         </form>
       </FormProvider>
-      {(loginMutation?.isLoading || forgetPasswordMutation?.isLoading) && (
-        <ProgressIndicator />
-      )}
+      {
+        //   (loginMutation?.isLoading || forgetPasswordMutation?.isLoading) && (
+        //   <ProgressIndicator />
+        // )
+      }
       <InfoAlert
         show={showError || showSuccess}
         title={!showSuccess ? "Error" : "Success"}
