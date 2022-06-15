@@ -7,7 +7,7 @@ import { setLocal } from "../../utils/storage";
 
 import { useQuery, useMutation } from "react-query";
 import { APIContext } from "../../services/api-provider";
-import { useSelector } from "react-redux";
+import { useSelector, useStore } from "react-redux";
 
 import MainAppBar from "../../components/navigation/MainAppBar";
 import OtpDialog from "../../components/dashboard/OtpDialog";
@@ -20,13 +20,32 @@ import InfoAlert from "../../components/ui/InfoAlert";
 import FlexBox from "../../components/ui/FlexBox";
 import Dashboard from "../../components/dashboard/Dashboard";
 import TabBar from "../../components/navigation/TabBar";
-const HomeScreen = () => {
+import { wrapper } from "../../store/store";
+
+// import { getLocal } from "../../utils/storage";
+
+// const user = getLocal("root");
+// let store = useStore();
+// export async function getServerSideProps({ store }) {
+//   const userId = store.getState().state.auth;
+//   console.log("user data11111", userId);
+//   // Fetch data from external API
+//   // const res = await fetch(`https://.../data`);
+//   // const data = await res.json();
+
+//   // Pass data to the page via props
+//   return { props: {} };
+// }
+
+const HomeScreen = ({ authData }) => {
+  console.log("HomeScreen data", authData);
   //   const navigate = useNavigate();
   const router = useRouter();
   const { fetchDashboardDetails, enable_2FA } = useContext(APIContext);
   const { user } = useSelector((state) => state.auth);
+  console.log("user data11111111   ---- ", user);
   const { data, isLoading } = useQuery(["dashboard", user], () =>
-    fetchDashboardDetails(user)
+    fetchDashboardDetails("user")
   );
   // console.log("data11111111111111 ", data);
 
@@ -166,5 +185,14 @@ const HomeScreen = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async () => {
+    const authData = await store.getState();
+    console.log("authData", authData);
+    console.log("user authData ------------------>\n", authData);
+    return { props: { authData } };
+  }
+);
 
 export default HomeScreen;

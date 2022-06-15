@@ -45,11 +45,16 @@ export const loginSlice = createSlice({
       state.loading = true;
     },
     [userLogin.fulfilled]: (state, action) => {
-      // console.log("action data", action);
-      state.user = action.payload.entityId;
-      state.token = action.payload.access_token;
-      state.refreshToken = action.payload.expires_in;
-      state.loading = false;
+      console.log("action data1111111", action);
+      let data = {
+        user: action.payload.entityId,
+        token: action.payload.access_token,
+        refreshToken: action.payload.expires_in,
+        loading: false,
+      };
+
+      return data;
+      // console.log("action data", data);
     },
     [userLogin.rejected]: (state) => {
       state.user = null;

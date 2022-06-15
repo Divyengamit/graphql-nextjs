@@ -7,3 +7,10 @@ export const login = async (data) => {
   );
   return response.data;
 };
+
+export const fetchDashboardDetails = async (entityId) => {
+  const response = await axiosInstance.post(
+    `canopi-payments/portal/dashboard/${entityId}`
+  );
+  return response.data;
+};
