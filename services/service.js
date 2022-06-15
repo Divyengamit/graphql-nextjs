@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { axiosInstance } from "./axiosConfig";
 
 export const login = async (data) => {
@@ -31,4 +32,22 @@ export const registerUserInfoService = (body) => {
     "canopi-payments/portal/register/address-info",
     body
   );
+};
+export const uploadDocService = (data) => {
+  return new Promise((resolve, reject) => {
+    const body = new FormData();
+    for (let key in data) {
+      body.append(key, data[key]);
+    }
+    axiosInstance
+      .post("canopi-payments/portal/register/document-info", body)
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };

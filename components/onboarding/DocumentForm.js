@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { Button, Paper, Typography, Box, Checkbox, Link } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 
 import FlexBox from "../ui/FlexBox";
 import InputField from "../ui/InputField";
@@ -62,63 +62,13 @@ const DocumentForm = (props) => {
 
       <FileUpload name="docImage" title="Upload Document Copy" />
 
-      <Typography display="flex" alignItems="center">
-        <Checkbox name="notification" sx={{ pt: 0 }} />
-        <Typography
-          color="primary"
-          variant="body2Regular"
-          sx={{
-            alignSelf: "center",
-            lineHeight: "21.43px",
-            pt: 1.375,
-          }}
-        >
-          I agree to receive marketing communications from Canopi. I can change
-          my notification preferences at any time.
-        </Typography>
-      </Typography>
-
-      <Typography display="flex" alignItems="flex-start" sx={{ mt: 1 }}>
-        <Checkbox
-          name="agreement"
-          checked={props?.isChecked}
-          onChange={props?.onAgreeChecked}
-          sx={{ pt: 0, "& .MuiSvgIcon-root": { fontSize: 24 } }}
-        />
-
-        <Typography
-          color="primary"
-          name="Privacy"
-          variant="body2Regular"
-          sx={{
-            alignSelf: "center",
-            lineHeight: "21.43px",
-          }}
-        >
-          By clicking the button below, I agree to be bound by
-          <Link
-            href="#"
-            underline="none"
-            variant="body2Regular"
-            sx={{ color: "#4EA6FF" }}
-          >
-            {"Canopi's User Agreement and Privacy Statement."}
-          </Link>
-        </Typography>
-      </Typography>
-      {props?.isCheckedcheckedError && (
-        <Typography sx={{ color: "red", ml: 5, mt: 0.5 }}>
-          *please check the box{" "}
-        </Typography>
-      )}
-
       <Button
         variant="block"
         color="secondary"
         type="submit"
         sx={{ mt: 2, mb: 2 }}
       >
-        Agree and create account
+        Create account
       </Button>
     </Paper>
   );

@@ -3,6 +3,7 @@ import {
   createUserPasswordService,
   registerUserInfoService,
   registerUserService,
+  uploadDocService,
 } from "../../services/service";
 
 export const registerUser = createAsyncThunk(
@@ -44,11 +45,27 @@ export const registerUserInfo = createAsyncThunk(
   }
 );
 
+export const uploadDoc = createAsyncThunk(
+  "register/uploadDoc",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await uploadDocService(formData);
+      const data = await response.data;
+      console.log("data Slice", data);
+      return data;
+    } catch (error) {
+      console.log("data Slice", error);
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
 const initialState = {
   data: null,
   loading: false,
   createPassword: null,
   userInfo: null,
+  uploadDoc: null,
 };
 
 export const registerSlice = createSlice({
@@ -99,6 +116,19 @@ export const registerSlice = createSlice({
     },
     [registerUserInfo.rejected]: (state) => {
       state.userInfo = null;
+      state.loading = false;
+    },
+    // uploadDoc
+    [uploadDoc.pending]: (state) => {
+      state.uploadDoc = null;
+      state.loading = true;
+    },
+    [uploadDoc.fulfilled]: (state, action) => {
+      state.uploadDoc = action.payload;
+      state.loading = false;
+    },
+    [uploadDoc.rejected]: (state) => {
+      state.uploadDoc = null;
       state.loading = false;
     },
   },
