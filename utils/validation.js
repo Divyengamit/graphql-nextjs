@@ -13,6 +13,8 @@ const SignUpSchema = yup.object().shape({
   firstName: yup.string().trim().required("First name is required"),
   lastName: yup.string().trim().required("Last name is required"),
   middleName: yup.string().trim(),
+  dob: yup.string().required("Select Date of Birth"),
+  agreement: yup.bool(),
   mobileNo: yup
     .string()
     .trim()

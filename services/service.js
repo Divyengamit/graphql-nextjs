@@ -7,3 +7,14 @@ export const login = async (data) => {
   );
   return response.data;
 };
+
+export const registerUserService = async (body) => {
+  Object.keys(body).forEach((key) => {
+    if (body[key] === undefined) {
+      delete body[key];
+    }
+  });
+  body["countryCode"] = "91";
+
+  return axiosInstance.post("canopi-payments/portal/register/basic-info", body);
+};

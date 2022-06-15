@@ -1,44 +1,34 @@
-import React, { useCallback, useContext, useState } from "react";
-// import Router, { withRouter, useRouter } from "next/router";
-// import { Router } from "react-router";
-
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+import { Encryption } from "../utils/EncryptDecrypt";
 import { setLocal } from "../utils/storage";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
-import { NextPageContext, GetServerSideProps } from "next";
-
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import BreadCrumb from "../components/ui/BreadCrumb";
 import SignupForm from "../components/onboarding/SignupForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
 import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
-
 import { SignUpSchema } from "../utils/validation";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const SignupScreen = () => {
   const router = useRouter();
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState();
+  const dispatch = useDispatch();
+  const registerState = useSelector(({ register }) => register);
+
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-
-  const { registerUser } = useContext(APIContext);
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkedError, setCheckError] = useState(false);
 
   const cancelHandler = () => {
     router.push("/");
   };
 
   const nextHandler = ({ requestId }) => {
-    router.push({ pathname: "/password" });
     setLocal(
       "tempData",
       Encryption(
@@ -50,6 +40,18 @@ const SignupScreen = () => {
         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
       )
     );
+    router.push({ pathname: "/password" });
+  };
+
+  const onAgreeHandler = () => {
+    let tempIsChecked = !isChecked;
+    console.log("tempIsChecked", tempIsChecked);
+    setIsChecked(tempIsChecked);
+    if (tempIsChecked) {
+      setCheckError(false);
+    } else {
+      setCheckError(true);
+    }
   };
 
   const methods = useForm({
@@ -57,23 +59,27 @@ const SignupScreen = () => {
     mode: "onSubmit",
   });
 
-  const registerUserMutation = useMutation((data) => registerUser(data), {
-    onSuccess: (data) => {
-      // methods.reset(methods.getValues());
-      nextHandler(data?.data);
-    },
-    onError: (error) => {
-      setErrorMessage(error?.response?.data?.message || error?.message);
-      setError(true);
-    },
-  });
-
-  const onSubmitHandler = useCallback((data) => {
-    registerUserMutation.mutate(data);
-  });
+  const onSubmitHandler = (data) => {
+    if (!isChecked) {
+      setCheckError(true);
+      return;
+    }
+    dispatch(registerUser({ ...data, termConditionConsent: isChecked })).then(
+      (res) => {
+        if (!res.error) {
+          nextHandler(res?.payload?.data?.requestId);
+        }
+        if (res?.error) {
+          setErrorMessage(
+            res?.error?.response?.data?.message || res?.error?.message
+          );
+          setError(true);
+        }
+      }
+    );
+  };
 
   return (
-    // <ThemeProvider theme={theme}>
     <HeroGrid img={img}>
       <BreadCrumb items={["Account", "Customer Registration"]} />
       <FormProvider {...methods}>
@@ -82,19 +88,20 @@ const SignupScreen = () => {
             sx={{ mt: 2, mb: 2 }}
             onCancel={cancelHandler}
             onNext={nextHandler}
+            isChecked={isChecked}
+            onAgreeHandler={onAgreeHandler}
+            checkedError={checkedError}
           />
         </form>
       </FormProvider>
-      {registerUserMutation.isLoading && <ProgressIndicator />}
+      {registerState.loading && <ProgressIndicator />}
       <InfoAlert
-        show={showError || showSuccess}
-        title={!showSuccess ? "Error" : "Success"}
-        body={!showSuccess ? errorMessage : successMessage}
+        show={showError}
+        title={"Error"}
+        body={errorMessage}
         onClose={() => setError(false)}
       />
     </HeroGrid>
-    // </ThemeProvider>
   );
 };
 export default SignupScreen;
-// export default withRouter(SignupScreen);
