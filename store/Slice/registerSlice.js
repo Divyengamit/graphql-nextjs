@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response);
     }
   }
 );
@@ -31,7 +31,7 @@ export const createUserPassword = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response);
     }
   }
 );
@@ -44,7 +44,7 @@ export const registerUserInfo = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response);
     }
   }
 );

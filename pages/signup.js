@@ -70,9 +70,8 @@ const SignupScreen = () => {
           nextHandler(res?.payload?.data);
         }
         if (res?.error) {
-          setErrorMessage(
-            res?.error?.response?.data?.message || res?.error?.message
-          );
+          console.log("res", res);
+          setErrorMessage(res?.payload?.data?.message || res?.error?.message);
           setError(true);
         }
       }

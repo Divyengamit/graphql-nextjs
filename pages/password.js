@@ -62,9 +62,7 @@ const PasswordScreen = () => {
     dispatch(createUserPassword(tempForm)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(
-          res?.error?.response?.data?.message || res?.error?.message
-        );
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
       if (!res.error) {
         nextHandler();
