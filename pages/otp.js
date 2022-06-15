@@ -1,11 +1,6 @@
-import React, { useState, useContext } from "react";
-// import { useNavigate, useLocation } from "react-router";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
-
-import { getLocal, setLocal, removeLocal } from "../utils/storage";
+import { getLocal, removeLocal, setLocal } from "../utils/storage";
 import { Decryption, Encryption } from "../utils/EncryptDecrypt";
 
 import { ThemeProvider } from "@mui/material/styles";
@@ -16,19 +11,26 @@ import OTPForm from "../components/onboarding/OTPForm";
 import InfoAlert from "../components/ui/InfoAlert";
 import HeroGrid from "../components/onboarding/HeroGrid";
 import ProgressIndicator from "../components/ui/ProgressIndicator";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  forgetPassword,
+  resendOTP,
+  verifyEmailOtp,
+  verifyOTP,
+} from "../store/Slice/registerSlice";
 
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const OTPScreen = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const registerState = useSelector(({ register }) => register);
   const routerParams = getLocal("tempData");
   const [urlParamsData, setUrlParamsData] = useState(
     JSON.parse(
       Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
     )
   );
-  const router = useRouter();
-  const { verifyOTP, resendOTP, verifyEmailOtp, forgetPassword } =
-    useContext(APIContext);
 
   const [otp, setOtp] = useState();
   const [showError, setError] = useState(false);
@@ -61,83 +63,155 @@ const OTPScreen = () => {
     );
   };
 
-  const otpMutation = useMutation((data) => verifyOTP(data), {
-    onSuccess: (data) => {
-      const userData = data?.data;
-      setShowSuccess(true);
-      setSuccessMessage(userData?.message);
-      setTimeout(() => {
-        nextHandler();
-        removeLocal("tempData");
-      }, [3000]);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onVerifyOTP = () => {
+    let temp = {
+      requestId: urlParamsData?.state?.requestId,
+      sessionId: urlParamsData?.state?.sessionId,
+      mobileNo: urlParamsData?.state?.mobile,
+      otp,
+    };
+    dispatch(verifyOTP(temp)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        const userData = res.data?.data;
+        console.log("userData", userData);
+        setShowSuccess(true);
+        setSuccessMessage(userData?.message);
+        setTimeout(() => {
+          removeLocal("tempData");
+          nextHandler();
+        }, [3000]);
+      }
+    });
+  };
+  // const otpMutation = useMutation((data) => verifyOTP(data), {
+  //   onSuccess: (data) => {
+  //     const userData = data?.data;
+  //     setShowSuccess(true);
+  //     setSuccessMessage(userData?.message);
+  //     setTimeout(() => {
+  //       nextHandler();
+  //       removeLocal("tempData");
+  //     }, [3000]);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
-  const resendMutation = useMutation((mobile) => resendOTP(mobile), {
-    onSuccess: (data) => {
-      setShowSuccess(true);
-      setSuccessMessage(data?.data?.message);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onResend = () => {
+    dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage(res?.data?.data?.message);
+      }
+    });
+  };
+  // const resendMutation = useMutation((mobile) => resendOTP(mobile), {
+  //   onSuccess: (data) => {
+  //     setShowSuccess(true);
+  //     setSuccessMessage(data?.data?.message);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
-  const verifyEmailOtpMutation = useMutation((data) => verifyEmailOtp(data), {
-    onSuccess: (data) => {
-      setShowSuccess(true);
-      setSuccessMessage("Email verified successfully");
-      nextHandlerReset();
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  // email
+  const onVerifyEmailOtp = () => {
+    let temp = {
+      emailAddress: urlParamsData?.state.email,
+      otp,
+    };
+    dispatch(verifyEmailOtp(temp)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage("Email verified successfully");
+        nextHandlerReset();
+      }
+    });
+  };
+  // const verifyEmailOtpMutation = useMutation((data) => verifyEmailOtp(data), {
+  //   onSuccess: (data) => {
+  //     setShowSuccess(true);
+  //     setSuccessMessage("Email verified successfully");
+  //     nextHandlerReset();
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
-  const resendEmailOtpMutation = useMutation((data) => forgetPassword(data), {
-    onSuccess: (data) => {
-      setShowSuccess(true);
-      setSuccessMessage(data?.data?.message);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onResendEmailOtp = (data) => {
+    dispatch(forgetPassword(data)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage(res?.payload?.data?.message);
+      }
+    });
+  };
+  // const resendEmailOtpMutation = useMutation((data) => forgetPassword(data), {
+  //   onSuccess: (data) => {
+  //     setShowSuccess(true);
+  //     setSuccessMessage(data?.data?.message);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   const onChangeOtpHandler = (value) => {
     setOtp(value);
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     if (urlParamsData?.state?.requestType === "RESET") {
-      verifyEmailOtpMutation.mutate({
-        emailAddress: urlParamsData?.state.email,
-        otp,
-      });
+      // verifyEmailOtpMutation.mutate({
+      //   emailAddress: urlParamsData?.state.email,
+      //   otp,
+      // });
+      await onVerifyEmailOtp();
     } else {
-      otpMutation.mutate({
-        requestId: urlParamsData?.state?.requestId,
-        sessionId: urlParamsData?.state?.sessionId,
-        mobileNo: urlParamsData?.state?.mobile,
-        otp,
-      });
+      await onVerifyOTP();
+      // otpMutation.mutate({
+      //   requestId: urlParamsData?.state?.requestId,
+      //   sessionId: urlParamsData?.state?.sessionId,
+      //   mobileNo: urlParamsData?.state?.mobile,
+      //   otp,
+      // });
     }
   };
 
-  const resendHandler = () => {
+  const resendHandler = async () => {
     if (urlParamsData?.state?.requestType === "RESET") {
-      resendEmailOtpMutation.mutate({
+      // resendEmailOtpMutation.mutate({
+      //   emailAddress: urlParamsData?.state?.email,
+      // });
+      await onResendEmailOtp({
         emailAddress: urlParamsData?.state?.email,
       });
     } else {
-      resendMutation.mutate(urlParamsData?.state?.mobile);
+      // resendMutation.mutate(urlParamsData?.state?.mobile);
+      await onResend();
     }
   };
 
@@ -153,10 +227,7 @@ const OTPScreen = () => {
           onSubmit={onSubmitHandler}
           onResend={resendHandler}
         />
-        {(otpMutation.isLoading ||
-          resendMutation.isLoading ||
-          verifyEmailOtpMutation.isLoading ||
-          resendEmailOtpMutation.isLoading) && <ProgressIndicator />}
+        {registerState?.loading && <ProgressIndicator />}
         <InfoAlert
           show={showError || showSuccess}
           title={!showSuccess ? "Error" : "Success"}

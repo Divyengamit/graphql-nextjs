@@ -51,3 +51,30 @@ export const uploadDocService = (data) => {
       });
   });
 };
+
+export const verifyOTPService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/verify-mobileNo",
+    body
+  );
+};
+
+export const verifyEmailOtpService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/registration/v1/verify-email-otp",
+    body
+  );
+};
+
+export const resendOTPService = (mobile) => {
+  return axiosInstance.get(
+    `/canopi-payments/portal/register/resend-otp/${mobile}`
+  );
+};
+
+export const forgetPasswordService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/registration/v1/forgot-password",
+    body
+  );
+};

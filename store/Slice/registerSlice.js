@@ -1,9 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserPasswordService,
+  forgetPasswordService,
   registerUserInfoService,
   registerUserService,
+  resendOTPService,
   uploadDocService,
+  verifyEmailOtpService,
+  verifyOTPService,
 } from "../../services/service";
 
 export const registerUser = createAsyncThunk(
@@ -60,12 +64,76 @@ export const uploadDoc = createAsyncThunk(
   }
 );
 
+export const verifyOTP = createAsyncThunk(
+  "register/verifyOTP",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await verifyOTPService(formData);
+      const data = await response.data;
+      console.log("data Slice", data);
+      return data;
+    } catch (error) {
+      console.log("data Slice", error);
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
+export const verifyEmailOtp = createAsyncThunk(
+  "register/verifyEmailOtp",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await verifyEmailOtpService(formData);
+      const data = await response.data;
+      console.log("data Slice", data);
+      return data;
+    } catch (error) {
+      console.log("data Slice", error);
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
+export const resendOTP = createAsyncThunk(
+  "register/resendOTP",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await resendOTPService(formData);
+      const data = await response.data;
+      console.log("data Slice", data);
+      return data;
+    } catch (error) {
+      console.log("data Slice", error);
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
+export const forgetPassword = createAsyncThunk(
+  "register/forgetPassword",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await forgetPasswordService(formData);
+      const data = await response.data;
+      console.log("data Slice", data);
+      return data;
+    } catch (error) {
+      console.log("data Slice", error);
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
 const initialState = {
   data: null,
   loading: false,
   createPassword: null,
   userInfo: null,
   uploadDoc: null,
+  verifyOTP: null,
+  verifyEmailOtp: null,
+  resendOTP: null,
+  forgetPassword: null,
 };
 
 export const registerSlice = createSlice({
@@ -129,6 +197,58 @@ export const registerSlice = createSlice({
     },
     [uploadDoc.rejected]: (state) => {
       state.uploadDoc = null;
+      state.loading = false;
+    },
+    // verifyOTP
+    [verifyOTP.pending]: (state) => {
+      state.verifyOTP = null;
+      state.loading = true;
+    },
+    [verifyOTP.fulfilled]: (state, action) => {
+      state.verifyOTP = action.payload;
+      state.loading = false;
+    },
+    [verifyOTP.rejected]: (state) => {
+      state.verifyOTP = null;
+      state.loading = false;
+    },
+    // verifyEmailOtp
+    [verifyEmailOtp.pending]: (state) => {
+      state.verifyEmailOtp = null;
+      state.loading = true;
+    },
+    [verifyEmailOtp.fulfilled]: (state, action) => {
+      state.verifyEmailOtp = action.payload;
+      state.loading = false;
+    },
+    [verifyEmailOtp.rejected]: (state) => {
+      state.verifyEmailOtp = null;
+      state.loading = false;
+    },
+    // resendOTP
+    [resendOTP.pending]: (state) => {
+      state.resendOTP = null;
+      state.loading = true;
+    },
+    [resendOTP.fulfilled]: (state, action) => {
+      state.resendOTP = action.payload;
+      state.loading = false;
+    },
+    [resendOTP.rejected]: (state) => {
+      state.resendOTP = null;
+      state.loading = false;
+    },
+    //forgetPassword
+    [forgetPassword.pending]: (state) => {
+      state.forgetPassword = null;
+      state.loading = true;
+    },
+    [forgetPassword.fulfilled]: (state, action) => {
+      state.forgetPassword = action.payload;
+      state.loading = false;
+    },
+    [forgetPassword.rejected]: (state) => {
+      state.forgetPassword = null;
       state.loading = false;
     },
   },
