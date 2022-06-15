@@ -78,3 +78,10 @@ export const forgetPasswordService = (body) => {
     body
   );
 };
+
+export const resetPasswordService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/registration/v1/reset-password",
+    body
+  );
+};

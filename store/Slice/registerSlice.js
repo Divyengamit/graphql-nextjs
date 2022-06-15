@@ -5,6 +5,7 @@ import {
   registerUserInfoService,
   registerUserService,
   resendOTPService,
+  resetPasswordService,
   uploadDocService,
   verifyEmailOtpService,
   verifyOTPService,
@@ -124,6 +125,21 @@ export const forgetPassword = createAsyncThunk(
   }
 );
 
+export const resetPassword = createAsyncThunk(
+  "register/resetPassword",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await resetPasswordService(formData);
+      const data = await response.data;
+      console.log("data Slice", data);
+      return data;
+    } catch (error) {
+      console.log("data Slice", error);
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
 const initialState = {
   data: null,
   loading: false,
@@ -134,6 +150,7 @@ const initialState = {
   verifyEmailOtp: null,
   resendOTP: null,
   forgetPassword: null,
+  resetPassword: null,
 };
 
 export const registerSlice = createSlice({
@@ -249,6 +266,19 @@ export const registerSlice = createSlice({
     },
     [forgetPassword.rejected]: (state) => {
       state.forgetPassword = null;
+      state.loading = false;
+    },
+    // resetPassword
+    [resetPassword.pending]: (state) => {
+      state.resetPassword = null;
+      state.loading = true;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.resetPassword = action.payload;
+      state.loading = false;
+    },
+    [resetPassword.rejected]: (state) => {
+      state.resetPassword = null;
       state.loading = false;
     },
   },

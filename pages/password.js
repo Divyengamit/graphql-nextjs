@@ -1,9 +1,7 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Decryption } from "../utils/EncryptDecrypt";
 import { getLocal } from "../utils/storage";
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import BreadCrumb from "../components/ui/BreadCrumb";
@@ -13,16 +11,18 @@ import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 import { createPasswordSchema, resetPasswordSchema } from "../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
-import { createUserPassword } from "../store/Slice/registerSlice";
+import {
+  createUserPassword,
+  resetPassword,
+} from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
   const routerParams = getLocal("tempData");
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+
   console.log("urlParamsData", urlParamsData);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -32,7 +32,6 @@ const PasswordScreen = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
-  const { resetPassword } = useContext(APIContext);
 
   const cancelHandler = useCallback(() => {
     router.push(-2);
@@ -69,20 +68,35 @@ const PasswordScreen = () => {
       }
     });
   };
+  const onResetPassword = (data) => {
+    dispatch(resetPassword(data)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage("Password Reset Success , Please Login ");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      }
+    });
+  };
 
-  const resetPasswordMutation = useMutation((data) => resetPassword(data), {
-    onSuccess: (data) => {
-      setShowSuccess(true);
-      setSuccessMessage("Password Reset Success , Please Login ");
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  // const resetPasswordMutation = useMutation((data) => resetPassword(data), {
+  //   onSuccess: (data) => {
+  //     setShowSuccess(true);
+  //     setSuccessMessage("Password Reset Success , Please Login ");
+  //     setTimeout(() => {
+  //       router.push("/");
+  //     }, 2000);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   const onSubmit = async (data) => {
     if (urlParamsData?.state?.requestType === "RESET") {
@@ -92,11 +106,16 @@ const PasswordScreen = () => {
       const passwordConfirm = methods.getValues("confirmPassword");
       const fieldState = methods.getFieldState("confirmPassword");
       if (!fieldState.error) {
-        resetPasswordMutation.mutate({
+        await onResetPassword({
           emailAddress: urlParamsData?.state?.email,
           password: password,
           passwordConfirm: passwordConfirm,
         });
+        // resetPasswordMutation.mutate({
+        //   emailAddress: urlParamsData?.state?.email,
+        //   password: password,
+        //   passwordConfirm: passwordConfirm,
+        // });
       }
     } else {
       await handleCreatePassword(data);
