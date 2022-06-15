@@ -26,10 +26,8 @@ const OTPScreen = () => {
   const dispatch = useDispatch();
   const registerState = useSelector(({ register }) => register);
   const routerParams = getLocal("tempData");
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
 
   const [otp, setOtp] = useState();
@@ -102,16 +100,21 @@ const OTPScreen = () => {
   //     setErrorMessage(error?.response?.data?.message || error?.message);
   //   },
   // });
+  const onCloseInfo = () => {
+    setError(false);
+    setShowSuccess(false);
+  };
 
   const onResend = () => {
     dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
+      console.log("res", res);
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
       if (!res.error) {
         setShowSuccess(true);
-        setSuccessMessage(res?.data?.data?.message);
+        setSuccessMessage(res?.payload?.message);
       }
     });
   };
@@ -232,7 +235,7 @@ const OTPScreen = () => {
           show={showError || showSuccess}
           title={!showSuccess ? "Error" : "Success"}
           body={!showSuccess ? errorMessage : successMessage}
-          onClose={() => setError(false)}
+          onClose={() => onCloseInfo()}
         />
       </HeroGrid>
     </ThemeProvider>
