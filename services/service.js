@@ -18,3 +18,10 @@ export const registerUserService = async (body) => {
 
   return axiosInstance.post("canopi-payments/portal/register/basic-info", body);
 };
+
+export const createUserPasswordService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/credentials",
+    body
+  );
+};

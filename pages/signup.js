@@ -29,6 +29,7 @@ const SignupScreen = () => {
   };
 
   const nextHandler = ({ requestId }) => {
+    router.push({ pathname: "/password" });
     setLocal(
       "tempData",
       Encryption(
@@ -40,7 +41,6 @@ const SignupScreen = () => {
         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
       )
     );
-    router.push({ pathname: "/password" });
   };
 
   const onAgreeHandler = () => {
@@ -67,7 +67,7 @@ const SignupScreen = () => {
     dispatch(registerUser({ ...data, termConditionConsent: isChecked })).then(
       (res) => {
         if (!res.error) {
-          nextHandler(res?.payload?.data?.requestId);
+          nextHandler(res?.payload?.data);
         }
         if (res?.error) {
           setErrorMessage(
