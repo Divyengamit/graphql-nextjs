@@ -5,11 +5,12 @@ import { setUser } from "../../store/auth";
 import axios from "axios";
 import style from "../../styles/Redirect.module.css";
 
-const Redirect = () => {
+export default function Redirect() {
   const dispatch = useDispatch();
   const router = useRouter();
+
   useEffect(() => {
-    if (router.query.token) {
+    if (router.isReady) {
       const { token } = router.query;
       if (!token) return router.push("/");
       const fetchData = async () => {
@@ -53,7 +54,7 @@ const Redirect = () => {
         router.push("/");
       });
     }
-  }, [router.query.token]);
+  }, [router.isReady]);
 
   return (
     <>
@@ -62,5 +63,4 @@ const Redirect = () => {
       </container>
     </>
   );
-};
-export default Redirect;
+}
