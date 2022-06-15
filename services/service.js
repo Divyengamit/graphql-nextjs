@@ -25,3 +25,10 @@ export const createUserPasswordService = (body) => {
     body
   );
 };
+
+export const registerUserInfoService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/address-info",
+    body
+  );
+};

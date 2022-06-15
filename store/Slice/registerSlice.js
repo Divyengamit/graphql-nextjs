@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserPasswordService,
+  registerUserInfoService,
   registerUserService,
 } from "../../services/service";
 
@@ -30,10 +31,24 @@ export const createUserPassword = createAsyncThunk(
   }
 );
 
+export const registerUserInfo = createAsyncThunk(
+  "register/registerUserInfo",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await registerUserInfoService(formData);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   data: null,
   loading: false,
   createPassword: null,
+  userInfo: null,
 };
 
 export const registerSlice = createSlice({
@@ -71,6 +86,19 @@ export const registerSlice = createSlice({
     },
     [createUserPassword.rejected]: (state) => {
       state.createPassword = null;
+      state.loading = false;
+    },
+    // registerUserInfo
+    [registerUserInfo.pending]: (state) => {
+      state.userInfo = null;
+      state.loading = true;
+    },
+    [registerUserInfo.fulfilled]: (state, action) => {
+      state.userInfo = action.payload;
+      state.loading = false;
+    },
+    [registerUserInfo.rejected]: (state) => {
+      state.userInfo = null;
       state.loading = false;
     },
   },
