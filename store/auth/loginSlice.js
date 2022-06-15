@@ -45,7 +45,7 @@ export const loginSlice = createSlice({
       state.loading = true;
     },
     [userLogin.fulfilled]: (state, action) => {
-      console.log("action data", action);
+      // console.log("action data", action);
       state.user = action.payload.entityId;
       state.token = action.payload.access_token;
       state.refreshToken = action.payload.expires_in;

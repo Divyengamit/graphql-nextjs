@@ -15,7 +15,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import BreadCrumb from "../components/ui/BreadCrumb";
 import LoginForm from "../components/onboarding/LoginForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
-// import ProgressIndicator from "../components/ui/ProgressIndicator";
+import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 import OtpDialog from "../components/dashboard/OtpDialog";
 
@@ -26,8 +26,8 @@ const img = require("../assets/backgrounds/background_onbording.png");
 
 const LoginScreen = () => {
   //   const navigate = useNavigate();
-  const state = useSelector((state) => state);
-  console.log("state", state);
+  // const state = useSelector((state) => state);
+  // console.log("state", state);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -107,11 +107,15 @@ const LoginScreen = () => {
   // });
 
   const onSubmitHandler = (values) => {
-    console.log("values data", values);
+    // console.log("values data", values);
 
     dispatch(userLogin({ ...values })).then((res) => {
       if (res?.payload?.access_token) {
-        router.push({ pathname: "/home" });
+        setShowSuccess(true);
+        setSuccessMessage("Login Success");
+        setTimeout(() => {
+          router.push({ pathname: "/home" });
+        }, [1000]);
       }
     });
 
