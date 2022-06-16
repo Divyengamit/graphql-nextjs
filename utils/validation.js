@@ -13,6 +13,8 @@ const SignUpSchema = yup.object().shape({
   firstName: yup.string().trim().required("First name is required"),
   lastName: yup.string().trim().required("Last name is required"),
   middleName: yup.string().trim(),
+  dob: yup.string().required("Select Date of Birth"),
+  agreement: yup.bool(),
   mobileNo: yup
     .string()
     .trim()
@@ -73,7 +75,10 @@ const ProfileSchema = yup.object().shape({
 
 const DocumentSchema = yup.object().shape({
   docType: yup.string().trim().required("Document Type is required"),
-  docNumber: yup.string().required("Document Number is required"),
+  docNumber: yup
+    .string()
+    .test("len", "Must be exactly 10 characters", (val) => val.length === 10)
+    .required("Document Number is required"),
   docImage: yup.mixed().required("File is required"),
   agreement: yup.bool(),
 });
