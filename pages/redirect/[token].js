@@ -8,52 +8,6 @@ import style from "../../styles/Redirect.module.css";
 export default function Redirect() {
   const dispatch = useDispatch();
   const router = useRouter();
-  // useEffect(() => {
-  //   if (router.query.token) {
-  //     const { token } = router.query;
-  //     if (!token) return router.push("/");
-  //     const fetchData = async () => {
-  //       let { data: tokenVerification } = await axios({
-  //         method: "POST",
-  //         url: `https://ppi-test.canopi.in/canopi-payments/registration/v1/verify-redirect-token`,
-  //         data: {
-  //           access_token: token,
-  //         },
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       if (!tokenVerification) return router.push("/");
-  //       //   get access token
-  //       let { data } = await axios({
-  //         method: "POST",
-  //         url: `https://ppi-test.canopi.in/canopi-payments/registration/v1/authenticate-redirect`,
-  //         data: {
-  //           tenantId: tokenVerification.tenantId,
-  //           tenant_secret_key: tokenVerification.tenant_secret_key,
-  //           entityId: tokenVerification.entityId,
-  //         },
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       if (data.access_token) {
-  //         dispatch(
-  //           setUser({
-  //             user: tokenVerification?.entityId,
-  //             token: data?.access_token,
-  //             refreshToken: data?.expires_in,
-  //           })
-  //         );
-
-  //         router.push({ pathname: "/home" });
-  //       }
-  //     };
-  //     fetchData().catch((error) => {
-  //       router.push("/");
-  //     });
-  //   }
-  // }, [router.query.token]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -71,6 +25,11 @@ export default function Redirect() {
           },
         });
         if (!tokenVerification) return router.push("/");
+        if (tokenVerification.isVaild == false) {
+          // add the data to the signup page
+          tokenVerification.userData;
+          dispatch(setRegisterData({}));
+        }
         //   get access token
         let { data } = await axios({
           method: "POST",
@@ -95,7 +54,8 @@ export default function Redirect() {
           router.push({ pathname: "/home" });
         }
       };
-      fetchData().catch(() => {
+      fetchData().catch((err) => {
+        console.log(err);
         router.push("/");
       });
     }
