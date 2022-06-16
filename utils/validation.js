@@ -17,17 +17,28 @@ const loginSchema = yup.object().shape({
 });
 
 const SignUpSchema = yup.object().shape({
-  firstName: yup.string().trim().required("First name is required"),
-  lastName: yup.string().trim().required("Last name is required"),
-  middleName: yup.string().trim(),
+  firstName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid first name")
+    .trim()
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid last name")
+    .trim()
+    .required("Last name is required"),
+  middleName: yup
+    .string()
+    .trim()
+    .matches(/^(([a-zA-Z ])|(.{0}))+$/, "Invalid middle name"),
   dob: yup.string().required("Select Date of Birth"),
   agreement: yup.bool(),
   mobileNo: yup
     .string()
     .trim()
-    .max(10, "Enter Valid Number")
+    .max(10, "Enter valid phone number")
     .required("Phone number is required")
-    .test("len", "Enter Valid Phone number", (val) => val?.length === 10),
+    .test("len", "Enter valid phone number", (val) => val?.length === 10),
 });
 
 const createPasswordSchema = yup.object().shape({
@@ -68,24 +79,32 @@ const resetPasswordSchema = yup.object().shape({
 });
 
 const ProfileSchema = yup.object().shape({
-  cardName: yup.string().trim().required("Card name is required"),
-  dob: yup.string().required("Select Date of Birth"),
-  addressLine: yup.string().required("Address is Required"),
-  addressLine2: yup.string().required("Address 2 is Required"),
-  city: yup.string().required("Town / City is Required"),
+  cardName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid card name")
+    .trim()
+    .required("Card name is required"),
+  dob: yup.string().required("Select sate of birth"),
+  addressLine: yup.string().required("Address is required"),
+  addressLine2: yup.string().required("Address 2 is required"),
+  city: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid Town / City")
+    .required("Town / City is Required"),
   pincode: yup
     .string()
     .trim()
     .required("Pincode is required")
-    .test("len", "Enter Valid Pincode", (val) => val?.length === 6),
+    .test("len", "Enter Valid Pincode", (val) => val?.length === 6)
+    .matches(/^[0-9]+$/, "Enter Valid Pincode"),
 });
 
 const DocumentSchema = yup.object().shape({
-  docType: yup.string().trim().required("Document Type is required"),
+  docType: yup.string().trim().required("Document type is required"),
   docNumber: yup
     .string()
-    .test("len", "Must be exactly 10 characters", (val) => val.length === 10)
-    .required("Document Number is required"),
+    .required("Document Number is required")
+    .matches(/^[A-Z0-9]{10}$/, "Invalid document number"),
   docImage: yup.mixed().required("File is required"),
   agreement: yup.bool(),
 });
