@@ -1,11 +1,17 @@
 import React from "react";
 
 import { Typography } from "@mui/material";
+import style from "../../styles/EquipmentForm.module.css";
+import Image from "next/image";
+const img = require("../../assets/backgrounds/background_onbording.png");
 
 const EquipmentContent = () => {
   return (
     <>
-      <Typography variant="h2" color="secondary" sx={{ mt: 4 }}>
+      <div className={"Equipmen-form-img"}>
+        <Image src={img} alt="image" objectFit="contain" />
+      </div>
+      {/* <Typography variant="h2" color="secondary" sx={{ mt: 4 }} className={style.abch2}>
         Equipment Finance Features:
       </Typography>
       <Typography display="flex" variant="h4SemiBold" sx={{ mt: 3 }}>
@@ -38,7 +44,7 @@ const EquipmentContent = () => {
       </Typography>
       <Typography variant="h4SemiBold" sx={{ mt: 3 }}>
         6) Quick Processing
-      </Typography>
+      </Typography> */}
     </>
   );
 };
