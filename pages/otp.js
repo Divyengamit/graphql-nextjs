@@ -74,8 +74,8 @@ const OTPScreen = () => {
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
       if (!res.error) {
-        const userData = res.data?.data;
-        console.log("userData", userData);
+        const userData = res.payload;
+        // console.log("userData", userData);
         setShowSuccess(true);
         setSuccessMessage(userData?.message);
         setTimeout(() => {
@@ -107,7 +107,6 @@ const OTPScreen = () => {
 
   const onResend = () => {
     dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
-      console.log("res", res);
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
@@ -167,7 +166,7 @@ const OTPScreen = () => {
       }
       if (!res.error) {
         setShowSuccess(true);
-        setSuccessMessage(res?.payload?.data?.message);
+        setSuccessMessage(res?.payload?.message);
       }
     });
   };
