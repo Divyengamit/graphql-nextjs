@@ -13,7 +13,7 @@ export const userLogin = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error?.response);
     }
   }
 );

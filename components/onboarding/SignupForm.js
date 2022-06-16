@@ -117,7 +117,12 @@ const SignupForm = (props) => {
       </Typography>
 
       <Typography display="flex" alignItems="center">
-        <Checkbox name="notification" sx={{ pt: 0 }} />
+        <Checkbox
+          name="privacy"
+          checked={props?.isChecked.privacy}
+          onChange={(e) => props?.onAgreeHandler("privacy", e.target.checked)}
+          sx={{ pt: 0 }}
+        />
         <Typography
           color="primary"
           variant="body2Regular"
@@ -135,8 +140,8 @@ const SignupForm = (props) => {
       <Typography display="flex" alignItems="flex-start" sx={{ mt: 1 }}>
         <Checkbox
           name="agreement"
-          checked={props?.isChecked}
-          onChange={props?.onAgreeHandler}
+          checked={props?.isChecked.agreement}
+          onChange={(e) => props?.onAgreeHandler("agreement", e.target.checked)}
           sx={{ pt: 0, "& .MuiSvgIcon-root": { fontSize: 24 } }}
         />
 
