@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Container } from "@mui/material";
 // import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
@@ -7,7 +7,8 @@ import { setLocal } from "../../utils/storage";
 
 import { useQuery, useMutation } from "react-query";
 import { APIContext } from "../../services/api-provider";
-import { useSelector, useStore } from "react-redux";
+import { connect, useDispatch, useSelector, useStore } from "react-redux";
+import { GetServerSideProps } from "next";
 
 import MainAppBar from "../../components/navigation/MainAppBar";
 import OtpDialog from "../../components/dashboard/OtpDialog";
@@ -21,6 +22,8 @@ import FlexBox from "../../components/ui/FlexBox";
 import Dashboard from "../../components/dashboard/Dashboard";
 import TabBar from "../../components/navigation/TabBar";
 import { wrapper } from "../../store/store";
+// import { fetchDashboardDetails } from "../../services/service";
+import { fetchDashboardDetail } from "../../store/dashboardSlice";
 
 // import { getLocal } from "../../utils/storage";
 
@@ -37,17 +40,28 @@ import { wrapper } from "../../store/store";
 //   return { props: {} };
 // }
 
-const HomeScreen = ({ authData }) => {
-  console.log("HomeScreen data", authData);
+const HomeScreen = ({ props }) => {
+  const dispatch = useDispatch();
+  console.log("HomeScreen data", props);
   //   const navigate = useNavigate();
   const router = useRouter();
-  const { fetchDashboardDetails, enable_2FA } = useContext(APIContext);
+  const { enable_2FA } = useContext(APIContext);
   const { user } = useSelector((state) => state.auth);
-  console.log("user data11111111   ---- ", user);
-  const { data, isLoading } = useQuery(["dashboard", user], () =>
-    fetchDashboardDetails("user")
-  );
-  // console.log("data11111111111111 ", data);
+  const dashboardState = useSelector((state) => state.dashboard);
+  console.log("data11111111111111 dashboardState", dashboardState);
+  // const { data, isLoading } = useQuery(["dashboard", user], () =>
+  //   fetchDashboardDetails(user)
+  // );
+  const [data, setData] = useState(null);
+  console.log("user", user);
+  useEffect(() => {
+    dispatch(fetchDashboardDetail(user)).then((res) => {
+      if (!res.error) {
+        console.log("response", res.payload);
+        setData(res.payload);
+      }
+    });
+  }, [user]);
 
   const [open, setOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -177,7 +191,7 @@ const HomeScreen = ({ authData }) => {
             handleSuccessDialog={handleClickOpenSuccess}
           />
 
-          {(isLoading || enable2FaMutation.isLoading) && <ProgressIndicator />}
+          {dashboardState?.loading && <ProgressIndicator />}
         </Container>
 
         <FooterMain />
@@ -186,13 +200,38 @@ const HomeScreen = ({ authData }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
+/* export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
     const authData = await store.getState();
     console.log("authData", authData);
     console.log("user authData ------------------>\n", authData);
     return { props: { authData } };
   }
-);
+); */
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) => async () => {
+//     console.log("store data", store);
+//     const authData = await store.getState()?.auth;
+//     console.log("authData data", authData);
+//     const response = await fetchDashboardDetail(authData.user);
+//     console.log("result data", response);
+//     // const result = await response.json();
+//     return { props: response };
+//   }
+// );
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   async ({ req, res, store }) => {
+//     console.log("request", req, res);
+//     const state = store.getState();
+//     // const response = await fetchDashboardDetail(authData.user);
+//     console.log("state", state);
+
+//     return {
+//       props: {},
+//     };
+//   }
+// );
 
 export default HomeScreen;

@@ -1,6 +1,7 @@
-import { axiosInstance } from "./axiosConfig";
+import axiosInstance from "./axiosConfig";
 
 export const login = async (data) => {
+  console.log("axiosInstance", axiosInstance);
   const response = await axiosInstance.post(
     "canopi-payments/registration/v1/authenticate",
     data
@@ -8,8 +9,8 @@ export const login = async (data) => {
   return response.data;
 };
 
-export const fetchDashboardDetails = async (entityId) => {
-  const response = await axiosInstance.post(
+export const fetchDashboardDetailService = async (entityId) => {
+  const response = await axiosInstance.get(
     `canopi-payments/portal/dashboard/${entityId}`
   );
   return response.data;

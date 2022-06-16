@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 // import { useMutation } from "react-query";
 // import { APIContext } from "../services/api-provider";
 import { useDispatch } from "react-redux";
+
 // import { setUser } from "../store/auth";
 // import { getLocal, setLocal } from "../utils/storage";
 // import { Decryption, Encryption } from "../utils/EncryptDecrypt";
@@ -23,8 +24,9 @@ import { loginSchema } from "../utils/validation";
 import { userLogin } from "../store/auth/loginSlice";
 import { useSelector } from "react-redux";
 const img = require("../assets/backgrounds/background_onbording.png");
-
 const LoginScreen = () => {
+  const { user } = useSelector((state) => state.auth);
+  console.log("user login data", user);
   //   const navigate = useNavigate();
   // const state = useSelector((state) => state);
   // console.log("state", state);
@@ -114,6 +116,7 @@ const LoginScreen = () => {
         setShowSuccess(true);
         setSuccessMessage("Login Success");
         setTimeout(() => {
+          // console.log("userLogin", res);
           router.push({ pathname: "/home" });
         }, [1000]);
       }

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { login } from "../../services/service";
+import { setLocal } from "../../utils/storage";
 
 export const userLogin = createAsyncThunk(
   "auth/userLogin",
@@ -11,6 +12,8 @@ export const userLogin = createAsyncThunk(
       };
       const response = await login(tempData);
       const data = await response;
+      console.log("data1111111111111", data.access_token);
+      setLocal("access_token", data.access_token);
       return data;
     } catch (error) {
       return rejectWithValue(error);
