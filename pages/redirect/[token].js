@@ -26,7 +26,6 @@ export default function Redirect() {
           },
         });
 
-        console.log("tokenVerification", tokenVerification);
         if (!tokenVerification) return router.push("/signup");
         if (tokenVerification.isValid == false) {
           // add the data to the signup page
@@ -60,12 +59,12 @@ export default function Redirect() {
               refreshToken: data?.expires_in,
             })
           );
-          router.push({ pathname: "/home" });
+          return router.push({ pathname: "/home" });
         }
       };
       fetchData().catch((err) => {
         console.log(err);
-        // router.push("/signup");
+        return router.push("/signup");
       });
     }
   }, [router.isReady]);
