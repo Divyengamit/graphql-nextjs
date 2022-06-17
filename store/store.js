@@ -142,15 +142,12 @@ import { createWrapper } from "next-redux-wrapper";
 import authReducer from "./auth/loginSlice";
 import dashboard from "./dashboardSlice";
 
-console.log("authReducer", authReducer);
 const combinedReducer = combineReducers({
   auth: authReducer,
   dashboard,
 });
-// console.log("combinedReducer data", combinedReducer);
 
 const masterReducer = (state, action) => {
-  // console.log("masterReducer state", state);
   // if (action.type === HYDRATE) {
   //   const nextState = {
   //     ...state, // use previous state

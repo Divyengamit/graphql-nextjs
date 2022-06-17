@@ -1,7 +1,6 @@
 import axiosInstance from "./axiosConfig";
 
 export const login = async (data) => {
-  console.log("axiosInstance", axiosInstance);
   const response = await axiosInstance.post(
     "canopi-payments/registration/v1/authenticate",
     data

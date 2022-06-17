@@ -16,20 +16,16 @@ import { useForm, FormProvider } from "react-hook-form";
 import BreadCrumb from "../components/ui/BreadCrumb";
 import LoginForm from "../components/onboarding/LoginForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
-import ProgressIndicator from "../components/ui/ProgressIndicator";
+// import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 import OtpDialog from "../components/dashboard/OtpDialog";
 
 import { loginSchema } from "../utils/validation";
 import { userLogin } from "../store/auth/loginSlice";
-import { useSelector } from "react-redux";
 const img = require("../assets/backgrounds/background_onbording.png");
 const LoginScreen = () => {
-  const { user } = useSelector((state) => state.auth);
-  console.log("user login data", user);
   //   const navigate = useNavigate();
   // const state = useSelector((state) => state);
-  // console.log("state", state);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -109,14 +105,11 @@ const LoginScreen = () => {
   // });
 
   const onSubmitHandler = (values) => {
-    // console.log("values data", values);
-
     dispatch(userLogin({ ...values })).then((res) => {
       if (res?.payload?.access_token) {
         setShowSuccess(true);
         setSuccessMessage("Login Success");
         setTimeout(() => {
-          // console.log("userLogin", res);
           router.push({ pathname: "/home" });
         }, [1000]);
       }

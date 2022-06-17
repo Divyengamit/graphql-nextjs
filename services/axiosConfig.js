@@ -3,12 +3,10 @@
 import axios from "axios";
 import { getLocal } from "../utils/storage";
 const API_BASE_URL = "https://ppi-test.canopi.in/";
-console.log("API_BASE_URL", API_BASE_URL);
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
 });
 axiosInstance.interceptors.request.use(function (config) {
-  console.log("config", config);
   const token = getLocal("access_token");
   config.headers = {
     "Content-Type": "application/json",
@@ -19,7 +17,6 @@ axiosInstance.interceptors.request.use(function (config) {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log("token get", config);
   return config;
 });
 

@@ -3,12 +3,12 @@ import { Container } from "@mui/material";
 // import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
 import { Decryption, Encryption } from "../../utils/EncryptDecrypt";
-import { setLocal } from "../../utils/storage";
+import { getLocal, setLocal } from "../../utils/storage";
 
 import { useQuery, useMutation } from "react-query";
 import { APIContext } from "../../services/api-provider";
 import { connect, useDispatch, useSelector, useStore } from "react-redux";
-import { GetServerSideProps } from "next";
+// import { GetServerSideProps } from "next";
 
 import MainAppBar from "../../components/navigation/MainAppBar";
 import OtpDialog from "../../components/dashboard/OtpDialog";
@@ -21,7 +21,7 @@ import InfoAlert from "../../components/ui/InfoAlert";
 import FlexBox from "../../components/ui/FlexBox";
 import Dashboard from "../../components/dashboard/Dashboard";
 import TabBar from "../../components/navigation/TabBar";
-import { wrapper } from "../../store/store";
+// import { wrapper } from "../../store/store";
 // import { fetchDashboardDetails } from "../../services/service";
 import { fetchDashboardDetail } from "../../store/dashboardSlice";
 
@@ -31,7 +31,6 @@ import { fetchDashboardDetail } from "../../store/dashboardSlice";
 // let store = useStore();
 // export async function getServerSideProps({ store }) {
 //   const userId = store.getState().state.auth;
-//   console.log("user data11111", userId);
 //   // Fetch data from external API
 //   // const res = await fetch(`https://.../data`);
 //   // const data = await res.json();
@@ -40,28 +39,31 @@ import { fetchDashboardDetail } from "../../store/dashboardSlice";
 //   return { props: {} };
 // }
 
-const HomeScreen = ({ props }) => {
+const HomeScreen = () => {
   const dispatch = useDispatch();
-  console.log("HomeScreen data", props);
   //   const navigate = useNavigate();
   const router = useRouter();
   const { enable_2FA } = useContext(APIContext);
-  const { user } = useSelector((state) => state.auth);
+  // const { user } = useSelector((state) => state.auth);
   const dashboardState = useSelector((state) => state.dashboard);
-  console.log("data11111111111111 dashboardState", dashboardState);
   // const { data, isLoading } = useQuery(["dashboard", user], () =>
   //   fetchDashboardDetails(user)
   // );
+  const userId = getLocal("userId");
+  const userID = JSON.parse(
+    Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
   const [data, setData] = useState(null);
-  console.log("user", user);
+
   useEffect(() => {
-    dispatch(fetchDashboardDetail(user)).then((res) => {
-      if (!res.error) {
-        console.log("response", res.payload);
-        setData(res.payload);
-      }
-    });
-  }, [user]);
+    if (userID?.state?.userId) {
+      dispatch(fetchDashboardDetail(userID?.state?.userId)).then((res) => {
+        if (!res.error) {
+          setData(res.payload);
+        }
+      });
+    }
+  }, [userID?.state?.userId]);
 
   const [open, setOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -138,7 +140,7 @@ const HomeScreen = ({ props }) => {
       Encryption(
         JSON.stringify({
           state: {
-            userData: data?.data,
+            userData: data,
           },
         }),
         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
@@ -149,11 +151,11 @@ const HomeScreen = ({ props }) => {
   return (
     <>
       <FlexBox sx={{ minHeight: "100vh" }}>
-        <MainAppBar userData={data?.data} />
+        <MainAppBar userData={data} />
 
         <Container maxWidth="xl">
           <TabBar
-            userData={data?.data}
+            userData={data}
             showDashboard={showDashboard}
             onDashboardClick={handleDashboardClick}
             onTransactionClick={handleTransactionsClick}
@@ -162,11 +164,11 @@ const HomeScreen = ({ props }) => {
 
           {showDashboard ? (
             <Dashboard
-              userData={data?.data}
+              userData={data}
               onExploreFinancingClick={handleExploreFinancing}
             />
           ) : (
-            <Transactions userData={data?.data} />
+            <Transactions userData={data} />
           )}
           <InfoAlert
             show={showError || showSuccess}
@@ -178,7 +180,7 @@ const HomeScreen = ({ props }) => {
           <OtpDialog
             state={open}
             onClose={handleClose}
-            userData={data?.data}
+            userData={data}
             handleSuccessDialog={handleClickOpenSuccess}
             requestType={is2FA && "Auth_2FA"}
           />
@@ -186,7 +188,7 @@ const HomeScreen = ({ props }) => {
           <ApplyDialog
             state={openApplyDialog}
             onClose={handleApplyClose}
-            userData={data?.data}
+            userData={data}
             handleOtpDialog={handleClickOpen}
             handleSuccessDialog={handleClickOpenSuccess}
           />
@@ -203,19 +205,15 @@ const HomeScreen = ({ props }) => {
 /* export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
     const authData = await store.getState();
-    console.log("authData", authData);
-    console.log("user authData ------------------>\n", authData);
+    
     return { props: { authData } };
   }
 ); */
 
 // export const getServerSideProps = wrapper.getServerSideProps(
 //   (store) => async () => {
-//     console.log("store data", store);
 //     const authData = await store.getState()?.auth;
-//     console.log("authData data", authData);
 //     const response = await fetchDashboardDetail(authData.user);
-//     console.log("result data", response);
 //     // const result = await response.json();
 //     return { props: response };
 //   }
@@ -223,10 +221,9 @@ const HomeScreen = ({ props }) => {
 
 // export const getServerSideProps = wrapper.getServerSideProps(
 //   async ({ req, res, store }) => {
-//     console.log("request", req, res);
+
 //     const state = store.getState();
 //     // const response = await fetchDashboardDetail(authData.user);
-//     console.log("state", state);
 
 //     return {
 //       props: {},

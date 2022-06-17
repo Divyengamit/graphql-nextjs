@@ -13,7 +13,6 @@ import { wrapper } from "../store/store";
 // import { createWrapper } from "next-redux-wrapper";
 
 const MyApp = ({ Component, pageProps }) => {
-  // console.log("storevwefedfsfds", store);
   const [showing, setShowing] = useState(false);
   useEffect(() => {
     setShowing(true);
