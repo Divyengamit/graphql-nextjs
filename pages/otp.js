@@ -75,7 +75,7 @@ const OTPScreen = () => {
       }
       if (!res.error) {
         const userData = res.payload;
-        // console.log("userData", userData);
+        // // console.log("userData", userData);
         setShowSuccess(true);
         setSuccessMessage(userData?.message);
         setTimeout(() => {

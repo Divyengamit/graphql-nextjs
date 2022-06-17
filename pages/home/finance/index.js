@@ -49,7 +49,7 @@ const EquipmentFinance = () => {
   });
 
   const onSubmitHandler = () => {
-    console.log("testasttsttsststtsts");
+    // console.log("testasttsttsststtsts");
   };
 
   const onClickNext = () => {
