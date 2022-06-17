@@ -20,10 +20,8 @@ const DocumentScreen = () => {
   const dispatch = useDispatch();
   const registerState = useSelector(({ register }) => register);
   const routerParams = getLocal("tempData");
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
 
   const [file, setFile] = useState();

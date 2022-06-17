@@ -22,7 +22,10 @@ const SignupScreen = () => {
 
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState({
+    agreement: false,
+    privacy: false,
+  });
   const [checkedError, setCheckError] = useState(false);
 
   const cancelHandler = () => {
@@ -44,14 +47,17 @@ const SignupScreen = () => {
     );
   };
 
-  const onAgreeHandler = () => {
-    let tempIsChecked = !isChecked;
-    console.log("tempIsChecked", tempIsChecked);
+  const onAgreeHandler = (name, value) => {
+    console.log("name, value", name, value);
+    let tempIsChecked = {
+      ...isChecked,
+      [name]: value,
+    };
     setIsChecked(tempIsChecked);
-    if (tempIsChecked) {
-      setCheckError(false);
-    } else {
+    if (!tempIsChecked.agreement || !tempIsChecked.privacy) {
       setCheckError(true);
+    } else {
+      setCheckError(false);
     }
   };
 
@@ -64,22 +70,22 @@ const SignupScreen = () => {
   });
 
   const onSubmitHandler = (data) => {
-    if (!isChecked) {
+    if (!isChecked.agreement || !isChecked.privacy) {
       setCheckError(true);
       return;
     }
-    dispatch(registerUser({ ...data, termConditionConsent: isChecked })).then(
-      (res) => {
-        if (!res.error) {
-          nextHandler(res?.payload?.data);
-        }
-        if (res?.error) {
-          console.log("res", res);
-          setErrorMessage(res?.payload?.data?.message || res?.error?.message);
-          setError(true);
-        }
+    dispatch(
+      registerUser({ ...data, termConditionConsent: isChecked.agreement })
+    ).then((res) => {
+      console.log("res", res);
+      if (!res.error) {
+        nextHandler(res?.payload?.data);
       }
-    );
+      if (res?.error) {
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setError(true);
+      }
+    });
   };
 
   return (
@@ -97,7 +103,7 @@ const SignupScreen = () => {
           />
         </form>
       </FormProvider>
-      {registerState.loading && <ProgressIndicator />}
+      {registerState?.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError}
         title={"Error"}

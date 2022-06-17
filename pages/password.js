@@ -54,6 +54,11 @@ const PasswordScreen = () => {
     mode: "onSubmit",
   });
 
+  console.log(
+    "urlParamsData?.state?.requestType",
+    urlParamsData?.state?.requestType
+  );
+
   const handleCreatePassword = (data) => {
     let tempForm = {
       requestId: urlParamsData?.state?.requestId,

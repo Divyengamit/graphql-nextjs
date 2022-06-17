@@ -20,7 +20,7 @@ const EquipmentForm = (props) => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h2Bold" color="secondary">
-          Equipment Finance Form
+          Check Eligibility Form
         </Typography>
       </FlexBox>
 
@@ -48,35 +48,6 @@ const EquipmentForm = (props) => {
         ])}
       </InputField>
 
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        University Name *
-      </Typography>
-
-      <InputField
-        type="text"
-        name="universityName"
-        placeholder="Enter University Name"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
-
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Qualification Year *
-      </Typography>
-
-      <InputField
-        type="number"
-        name="qualificationYear"
-        placeholder="Enter Qualification Year"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Highest Qualification *
       </Typography>
@@ -108,35 +79,6 @@ const EquipmentForm = (props) => {
       </InputField>
 
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Registration Number *
-      </Typography>
-
-      <InputField
-        type="number"
-        name="registrationNo"
-        placeholder="Enter Registration Number:"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
-
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        State Medical Council *
-      </Typography>
-
-      <InputField
-        type="text"
-        name="stateMedicalCouncil"
-        placeholder="Enter State Medical Council"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Experience *
       </Typography>
 
@@ -166,70 +108,13 @@ const EquipmentForm = (props) => {
         }}
       />
 
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Hospital/Diagnostic/Clinic Centre Name *
-      </Typography>
-
-      <InputField
-        type="text"
-        name="hospitalName"
-        placeholder="Enter  Hospital/Diagnostic/Clinic Centre Name"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
-
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Hospital/Diagnostic/Clinic Centre Vintage *
-      </Typography>
-
-      <InputField
-        name="hospitalVintage"
-        settings={{
-          fullWidth: true,
-          select: true,
-          sx: {
-            mt: 1.2,
-            ".MuiInputBase-input": {
-              paddingLeft: 4,
-              paddingTop: 3,
-              paddingBottom: 3,
-            },
-          },
-        }}
-      >
-        {OptionsTypes([
-          { key: "less", value: "Less than 3 years" },
-          { key: "more", value: "More than 3 years" },
-        ])}
-      </InputField>
-
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Business Ownership Status *
-      </Typography>
-
-      <InputField
-        type="text"
-        name="businessStatus"
-        placeholder=" Business Ownership Status"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
-
-      <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
-
       <Button
         type="submit"
         variant="block"
         color="primary"
         sx={{ mt: 2, mb: 3 }}
       >
-        Submit
+        Check Eligibility
       </Button>
     </Paper>
   );

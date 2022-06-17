@@ -35,9 +35,11 @@ const FooterMain = (props) => {
               justifyContent: "space-between",
               width: "100%",
             }}
+            className="footer-top-menu-div"
           >
             <Stack
               direction="row"
+              className="item-center-div"
               divider={
                 <Divider
                   orientation="vertical"
@@ -60,6 +62,7 @@ const FooterMain = (props) => {
 
             <Stack
               direction="row"
+              className="item-center-div mt-div"
               divider={
                 <Divider
                   orientation="vertical"
@@ -96,6 +99,7 @@ const FooterMain = (props) => {
             spacing={2}
             alignItems="center"
             sx={{ width: "100%" }}
+            className="item-center-div"
           >
             <FooterText variant="body2Regular">
               Canopi © Copyright. All Rights Reserved

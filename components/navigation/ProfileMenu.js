@@ -63,6 +63,7 @@ const ProfileMenu = (props) => {
       <Paper
         sx={{ padding: 0, pl: 1.125, pr: 1.875, borderRadius: 3 }}
         elevation={0}
+        className="mob-user-details-div"
       >
         <Box display="flex" sx={{ pt: 2, pb: 2.125 }}>
           <MenuItem
