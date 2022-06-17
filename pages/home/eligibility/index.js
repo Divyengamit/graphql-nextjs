@@ -21,8 +21,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { EquipmentFinanceSchema } from "../../../utils/validation";
 import { styled } from "@mui/material/styles";
 import style from "../../../styles/EquipmentForm.module.css";
-import Image from "next/image";
-import not_allow_image from "../../../assets/not-allow.png";
+import Alert from "../../../components/ui/Alert";
 
 const FinanceScreen = () => {
   const router = useRouter();
@@ -81,21 +80,16 @@ const FinanceScreen = () => {
     });
   });
 
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <MainAppBar userData={urlParamsData?.state?.userData} />
-      
+
       {/* Not Eligible Dialog */}
-      {isOpen && (
-        <div className="overlay-modal">
-          <div className="modal-contains">
-            <div className="not-allow-icon">
-              <Image src={not_allow_image} alt="icon" />
-            </div>
-            <p className="highlight-text">You Are Not Eligible</p>
-          </div>
-        </div>
-      )}
+      {isOpen && <Alert isError={true} onClose={onClose} />}
 
       <Container>
         <Grid
@@ -114,7 +108,7 @@ const FinanceScreen = () => {
           >
             <EquipmentContent />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} className="align-item-div">
             <Item>
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
