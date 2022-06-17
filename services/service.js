@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { axiosInstance } from "./axiosConfig";
+import axiosInstance from "./axiosConfig";
 
 export const login = async (data) => {
   const response = await axiosInstance.post(
