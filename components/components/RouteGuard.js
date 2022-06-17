@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getLocal } from "../../utils/storage";
 
-// import { userService } from "services";
-
 export { RouteGuard };
 
 function RouteGuard({ children }) {
@@ -33,7 +31,14 @@ function RouteGuard({ children }) {
 
   function authCheck(url) {
     // redirect to login page if accessing a private page and not logged in
-    const publicPaths = ["/login"];
+    const publicPaths = [
+      "/login",
+      "/signup",
+      "/password",
+      "/create-profile",
+      "/document",
+      "/otp",
+    ];
     const path = url.split("?")[0];
     console.log("getLocal(access_token)", getLocal("access_token"));
 
