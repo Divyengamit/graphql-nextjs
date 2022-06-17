@@ -25,6 +25,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
 import Image from "next/image";
+import { removeLocal } from "../../utils/storage";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
@@ -53,7 +54,7 @@ const MainAppBar = ({ userData }) => {
 
   const onLogoutClickHandler = () => {
     dispatch(logout());
-
+    localStorage.clear();
     router.push("/");
   };
 

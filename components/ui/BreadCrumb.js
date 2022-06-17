@@ -20,7 +20,6 @@ const BreadCrumb = (props) => {
   const router = useRouter();
   // const navigate = useNavigate();
 
-  console.log("props.items", props.items);
   useEffect(() => {
     const items = [...props?.items];
     const lastItem = items?.pop();
