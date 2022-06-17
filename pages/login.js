@@ -1,6 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+
+// import { setUser } from "../store/auth";
+// import { getLocal, setLocal } from "../utils/storage";
+// import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
 
@@ -15,11 +20,12 @@ import { loginSchema } from "../utils/validation";
 import { userLogin } from "../store/auth/loginSlice";
 import { useSelector } from "react-redux";
 import { forgetPassword } from "../store/Slice/registerSlice";
-import { setLocal } from "../utils/storage";
+import { getLocal, setLocal } from "../utils/storage";
 import { Encryption } from "../utils/EncryptDecrypt";
 const img = require("../assets/backgrounds/background_onbording.png");
-
 const LoginScreen = () => {
+  //   const navigate = useNavigate();
+  // const state = useSelector((state) => state);
   const registerState = useSelector(({ register }) => register);
   const loginState = useSelector(({ auth }) => auth);
 
@@ -50,6 +56,13 @@ const LoginScreen = () => {
     setError(false);
     setShowSuccess(false);
   };
+
+  useEffect(() => {
+    // redirect to home if already logged in
+    if (getLocal("access_token")) {
+      router.push("/home");
+    }
+  }, []);
 
   // const loginMutation = useMutation((data) => login(data), {
   //   onSuccess: (data) => {
@@ -141,6 +154,7 @@ const LoginScreen = () => {
           setMobileNo(userData?.mobileNo);
           setOpen(true);
         } else {
+          setLocal("access_token", userData?.access_token);
           setShowSuccess(true);
           setSuccessMessage("Login Success");
           router.push({ pathname: "/home" });

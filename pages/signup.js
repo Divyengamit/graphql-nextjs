@@ -18,6 +18,7 @@ const SignupScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const registerState = useSelector(({ register }) => register);
+  const userInfo = useSelector(({ register }) => register.userInfo);
 
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -63,6 +64,9 @@ const SignupScreen = () => {
   const methods = useForm({
     resolver: yupResolver(SignUpSchema),
     mode: "onSubmit",
+    defaultValues: {
+      ...userInfo,
+    },
   });
 
   const onSubmitHandler = (data) => {
@@ -99,7 +103,7 @@ const SignupScreen = () => {
           />
         </form>
       </FormProvider>
-      {registerState.loading && <ProgressIndicator />}
+      {registerState?.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError}
         title={"Error"}

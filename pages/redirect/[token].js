@@ -4,56 +4,11 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../store/auth";
 import axios from "axios";
 import style from "../../styles/Redirect.module.css";
+import { setRegisterData } from "../../store/Slice/registerSlice";
 
 export default function Redirect() {
   const dispatch = useDispatch();
   const router = useRouter();
-  // useEffect(() => {
-  //   if (router.query.token) {
-  //     const { token } = router.query;
-  //     if (!token) return router.push("/");
-  //     const fetchData = async () => {
-  //       let { data: tokenVerification } = await axios({
-  //         method: "POST",
-  //         url: `https://ppi-test.canopi.in/canopi-payments/registration/v1/verify-redirect-token`,
-  //         data: {
-  //           access_token: token,
-  //         },
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       if (!tokenVerification) return router.push("/");
-  //       //   get access token
-  //       let { data } = await axios({
-  //         method: "POST",
-  //         url: `https://ppi-test.canopi.in/canopi-payments/registration/v1/authenticate-redirect`,
-  //         data: {
-  //           tenantId: tokenVerification.tenantId,
-  //           tenant_secret_key: tokenVerification.tenant_secret_key,
-  //           entityId: tokenVerification.entityId,
-  //         },
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       if (data.access_token) {
-  //         dispatch(
-  //           setUser({
-  //             user: tokenVerification?.entityId,
-  //             token: data?.access_token,
-  //             refreshToken: data?.expires_in,
-  //           })
-  //         );
-
-  //         router.push({ pathname: "/home" });
-  //       }
-  //     };
-  //     fetchData().catch((error) => {
-  //       router.push("/");
-  //     });
-  //   }
-  // }, [router.query.token]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -70,7 +25,19 @@ export default function Redirect() {
             "Content-Type": "application/json",
           },
         });
-        if (!tokenVerification) return router.push("/");
+
+        if (!tokenVerification) return router.push("/signup");
+        if (tokenVerification.isValid == false) {
+          // add the data to the signup page
+          dispatch(
+            setRegisterData({
+              firstName: tokenVerification.userData.fullName,
+              mobileNo: tokenVerification.userData.mobileNo,
+              dob: tokenVerification.userData.dob,
+            })
+          );
+          return router.push("/signup");
+        }
         //   get access token
         let { data } = await axios({
           method: "POST",
@@ -92,11 +59,12 @@ export default function Redirect() {
               refreshToken: data?.expires_in,
             })
           );
-          router.push({ pathname: "/home" });
+          return router.push({ pathname: "/home" });
         }
       };
-      fetchData().catch(() => {
-        router.push("/");
+      fetchData().catch((err) => {
+        console.log(err);
+        return router.push("/signup");
       });
     }
   }, [router.isReady]);

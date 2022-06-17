@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { login } from "../../services/service";
+import { Encryption } from "../../utils/EncryptDecrypt";
+import { setLocal } from "../../utils/storage";
 
 export const userLogin = createAsyncThunk(
   "auth/userLogin",
@@ -11,6 +13,22 @@ export const userLogin = createAsyncThunk(
       };
       const response = await login(tempData);
       const data = await response;
+      setLocal("access_token", data?.access_token);
+      setLocal(
+        "userId",
+        Encryption(
+          JSON.stringify({
+            state: {
+              // requestId: urlParamsData?.state?.requestId,
+              // sessionId: sessionId,
+              // mobile: mobile,
+              userId: data?.entityId,
+            },
+          }),
+          process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+        )
+      );
+
       return data;
     } catch (error) {
       return rejectWithValue(error?.response);
@@ -45,11 +63,14 @@ export const loginSlice = createSlice({
       state.loading = true;
     },
     [userLogin.fulfilled]: (state, action) => {
-      // console.log("action data", action);
-      state.user = action.payload.entityId;
-      state.token = action.payload.access_token;
-      state.refreshToken = action.payload.expires_in;
-      state.loading = false;
+      let data = {
+        user: action.payload.entityId,
+        token: action.payload.access_token,
+        refreshToken: action.payload.expires_in,
+        loading: false,
+      };
+
+      return data;
     },
     [userLogin.rejected]: (state) => {
       state.user = null;

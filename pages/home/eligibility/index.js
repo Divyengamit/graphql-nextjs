@@ -42,7 +42,7 @@ const FinanceScreen = () => {
 
   const methods = useForm({
     resolver: yupResolver(EquipmentFinanceSchema),
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues: {
       profileType: "Salaried",
       highestQualification: "MBBS",
@@ -50,6 +50,7 @@ const FinanceScreen = () => {
       experience: 0,
     },
   });
+  console.log("methods", methods.formState.errors);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -73,12 +74,41 @@ const FinanceScreen = () => {
     }
   );
 
-  const onSubmitHandler = useCallback((data) => {
-    applyEquipmentFinanceMutation.mutate({
-      entityId: urlParamsData?.state?.userData?.entityId,
-      ...data,
-    });
-  });
+  // const onSubmitHandler = useCallback(
+  //   (data) => {
+  //     console.log("on submit call");
+  //     applyEquipmentFinanceMutation.mutate({
+  //       entityId: urlParamsData?.state?.userData?.entityId,
+  //       ...data,
+  //     });
+  //   },
+  //   [urlParamsData, applyEquipmentFinanceMutation]
+  // );
+
+  const onSubmitHandler = () => {
+    // console.log("onSubmitHandler data");
+    router.push({ pathname: "/home/finance" });
+    // if (!isChecked.agreement || !isChecked.privacy) {
+    //   setCheckError(true);
+    //   return;
+    // }
+    // dispatch(
+    //   registerUser({ ...data, termConditionConsent: isChecked.agreement })
+    // ).then((res) => {
+    //   console.log("res", res);
+    //   if (!res.error) {
+    //     nextHandler(res?.payload?.data);
+    //   }
+    //   if (res?.error) {
+    //     setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+    //     setError(true);
+    //   }
+    // });
+  };
+  // const nextHandler = ({ requestId }) => {
+  //   router.push({ pathname: "/finance" });
+  //   console.log("nextHandler", requestId);
+  // };
 
   const onClose = () => {
     setIsOpen(false);
@@ -111,17 +141,21 @@ const FinanceScreen = () => {
           <Grid item xs={12} md={6} className="align-item-div">
             <Item>
               <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
+                <form
+                  // onSubmit={onSubmitHandler}
+                  onSubmit={methods.handleSubmit(onSubmitHandler)}
+                >
                   <EquipmentForm
                     sx={{ mt: 2, mb: 2, mr: "auto", ml: "auto" }}
                     onBack={() => router.push("/home")}
+                    // onNext={() => router.push("/finance")}
                   />
                 </form>
               </FormProvider>
             </Item>
           </Grid>
         </Grid>
-        {applyEquipmentFinanceMutation.isLoading && <ProgressIndicator />}
+        {applyEquipmentFinanceMutation?.isLoading && <ProgressIndicator />}
         <InfoAlert
           show={showError || showSuccess}
           title={!showSuccess ? "Error" : "Success"}

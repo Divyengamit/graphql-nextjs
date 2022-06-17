@@ -144,7 +144,12 @@ const initialState = {
   data: null,
   loading: false,
   createPassword: null,
-  userInfo: null,
+  userInfo: {
+    firstName: "",
+    lastName: "",
+    mobileNo: "",
+    dob: "",
+  },
   uploadDoc: null,
   verifyOTP: null,
   verifyEmailOtp: null,
@@ -156,14 +161,13 @@ const initialState = {
 export const registerSlice = createSlice({
   name: "register",
   initialState: initialState,
-  // reducers: {
-  //   logout: (state) => {
-  //     state.user = null;
-  //     state.token = null;
-  //     state.refreshToken = null;
-  //     state.loading = false;
-  //   },
-  // },
+  reducers: {
+    setRegisterData: (state, action) => {
+      state.userInfo.firstName = action.payload.firstName;
+      state.userInfo.mobileNo = action.payload.mobileNo;
+      state.dob = action.payload.dob;
+    },
+  },
   extraReducers: {
     [registerUser.pending]: (state) => {
       state.data = null;
@@ -283,5 +287,5 @@ export const registerSlice = createSlice({
     },
   },
 });
-// export const { logout } = registerSlice.actions;
+export const { setRegisterData } = registerSlice.actions;
 export default registerSlice.reducer;
