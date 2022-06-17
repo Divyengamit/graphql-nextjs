@@ -153,7 +153,7 @@ const HomeScreen = () => {
       <FlexBox sx={{ minHeight: "100vh" }}>
         <MainAppBar userData={data} />
 
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" className="custom-container">
           <TabBar
             userData={data}
             showDashboard={showDashboard}
