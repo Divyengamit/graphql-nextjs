@@ -8,6 +8,7 @@ import theme from "../styles/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { CssBaseline } from "@mui/material";
 import Head from "next/head";
+import { RouteGuard } from "../components/components/RouteGuard";
 const queryClient = new QueryClient();
 
 const MyApp = ({ Component, pageProps }) => {
@@ -34,7 +35,9 @@ const MyApp = ({ Component, pageProps }) => {
             <APIProvider>
               <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Component {...pageProps} />
+                <RouteGuard>
+                  <Component {...pageProps} />
+                </RouteGuard>
               </ThemeProvider>
             </APIProvider>
           </Provider>
