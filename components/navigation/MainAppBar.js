@@ -10,7 +10,6 @@ import {
   Avatar,
   Tooltip,
 } from "@mui/material";
-// import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
 
 import { useDispatch } from "react-redux";
@@ -25,12 +24,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
 import Image from "next/image";
-import { removeLocal } from "../../utils/storage";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
 const MainAppBar = ({ userData }) => {
-  // const navigate = useNavigate();
   const router = useRouter();
   const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -55,12 +52,16 @@ const MainAppBar = ({ userData }) => {
   const onLogoutClickHandler = () => {
     dispatch(logout());
     localStorage.clear();
-    router.push("/");
+    router.push("/login");
   };
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl" sx={{ pt: 1.45, pb: 1.45 }} className="custom-container">
+      <Container
+        maxWidth="xl"
+        sx={{ pt: 1.45, pb: 1.45 }}
+        className="custom-container"
+      >
         <Toolbar style={{ padding: 0 }}>
           {/* <img src={logo} style={{ height: 36 }} /> */}
           <div className={"dashboard-canopi-logo"}>
@@ -77,7 +78,6 @@ const MainAppBar = ({ userData }) => {
                 flex: 1,
                 justifyContent: "flex-end",
                 alignItems: "center",
-                
               }}
             >
               <IconButton
