@@ -3,9 +3,6 @@
 # vs code setings
 .vscode
 
-# lock files
-package-lock.json
-
 # dependencies
 /node_modules
 /.pnp
