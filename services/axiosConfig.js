@@ -16,9 +16,10 @@ axiosInstance.interceptors.request.use(function (config) {
   // }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
-  } else {
-    localStorage.clear();
   }
+  //  else {
+  //   localStorage.clear();
+  // }
   return config;
 });
 
