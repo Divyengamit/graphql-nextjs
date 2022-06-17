@@ -1,37 +1,38 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
-import { Decryption, Encryption } from "../utils/EncryptDecrypt";
-
-import { getLocal, setLocal } from "../utils/storage";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
-
+import { Decryption } from "../utils/EncryptDecrypt";
+import { getLocal } from "../utils/storage";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import BreadCrumb from "../components/ui/BreadCrumb";
 import PasswordForm from "../components/onboarding/PasswordForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
 import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 import { createPasswordSchema, resetPasswordSchema } from "../utils/validation";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createUserPassword,
+  resetPassword,
+} from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
   const routerParams = getLocal("tempData");
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+
+  console.log("urlParamsData", urlParamsData);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const registerState = useSelector(({ register }) => register);
+  // const pwdState = useSelector(({ register }) => register.createPassword);
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
-  const { createUserPassword, resetPassword } = useContext(APIContext);
+
   const cancelHandler = useCallback(() => {
     router.push(-2);
   });
@@ -41,6 +42,10 @@ const PasswordScreen = () => {
       pathname: "/create-profile",
     });
   };
+  const onCloseInfo = () => {
+    setError(false);
+    setShowSuccess(false);
+  };
 
   const methods = useForm({
     resolver: urlParamsData?.state?.requestType
@@ -49,59 +54,82 @@ const PasswordScreen = () => {
     mode: "onSubmit",
   });
 
-  const createPasswordMutation = useMutation(
-    (data) => createUserPassword(data),
-    {
-      onSuccess: (data) => {
-        nextHandler();
-      },
-      onError: (error) => {
+  console.log(
+    "urlParamsData?.state?.requestType",
+    urlParamsData?.state?.requestType
+  );
+
+  const handleCreatePassword = (data) => {
+    let tempForm = {
+      requestId: urlParamsData?.state?.requestId,
+      emailAddress: data?.email,
+      password: data?.password,
+      passwordConfirm: data?.confirmPassword,
+    };
+    console.log("handleCreatePassword", tempForm);
+    dispatch(createUserPassword(tempForm)).then((res) => {
+      if (res.error) {
         setError(true);
-        setErrorMessage(error?.response?.data?.message || error?.message);
-      },
-    }
-  );
-
-  const resetPasswordMutation = useMutation((data) => resetPassword(data), {
-    onSuccess: (data) => {
-      setShowSuccess(true);
-      setSuccessMessage("Password Reset Success , Please Login ");
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
-
-  const onSubmit = useCallback(
-    async (data) => {
-      if (urlParamsData?.state?.requestType === "RESET") {
-        await methods.trigger("confirmPassword");
-
-        const password = methods.getValues("password");
-        const passwordConfirm = methods.getValues("confirmPassword");
-        const fieldState = methods.getFieldState("confirmPassword");
-        if (!fieldState.error) {
-          resetPasswordMutation.mutate({
-            emailAddress: urlParamsData?.state?.email,
-            password: password,
-            passwordConfirm: passwordConfirm,
-          });
-        }
-      } else {
-        createPasswordMutation.mutate({
-          requestId: urlParamsData?.state?.requestId,
-          emailAddress: data?.email,
-          password: data?.password,
-          passwordConfirm: data?.confirmPassword,
-        });
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
-    },
-    [methods, methods?.formState]
-  );
+      if (!res.error) {
+        nextHandler();
+      }
+    });
+  };
+  const onResetPassword = (data) => {
+    dispatch(resetPassword(data)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage("Password Reset Success , Please Login ");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      }
+    });
+  };
+
+  // const resetPasswordMutation = useMutation((data) => resetPassword(data), {
+  //   onSuccess: (data) => {
+  //     setShowSuccess(true);
+  //     setSuccessMessage("Password Reset Success , Please Login ");
+  //     setTimeout(() => {
+  //       router.push("/");
+  //     }, 2000);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
+
+  const onSubmit = async (data) => {
+    if (urlParamsData?.state?.requestType === "RESET") {
+      await methods.trigger("confirmPassword");
+
+      const password = methods.getValues("password");
+      const passwordConfirm = methods.getValues("confirmPassword");
+      const fieldState = methods.getFieldState("confirmPassword");
+      if (!fieldState.error) {
+        await onResetPassword({
+          emailAddress: urlParamsData?.state?.email,
+          password: password,
+          passwordConfirm: passwordConfirm,
+        });
+        // resetPasswordMutation.mutate({
+        //   emailAddress: urlParamsData?.state?.email,
+        //   password: password,
+        //   passwordConfirm: passwordConfirm,
+        // });
+      }
+    } else {
+      await handleCreatePassword(data);
+    }
+  };
 
   return (
     <HeroGrid img={img}>
@@ -115,13 +143,12 @@ const PasswordScreen = () => {
           />
         </form>
       </FormProvider>
-      {(createPasswordMutation.isLoading ||
-        resetPasswordMutation.isLoading) && <ProgressIndicator />}
+      {registerState.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError || showSuccess}
         title={!showSuccess ? "Error" : "Success"}
         body={!showSuccess ? errorMessage : successMessage}
-        onClose={() => setError(false)}
+        onClose={() => onCloseInfo()}
       />
     </HeroGrid>
   );

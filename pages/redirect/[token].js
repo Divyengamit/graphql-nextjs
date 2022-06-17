@@ -5,7 +5,7 @@ import { setUser } from "../../store/auth";
 import axios from "axios";
 import style from "../../styles/Redirect.module.css";
 
-const Redirect = () => {
+export default function Redirect() {
   const dispatch = useDispatch();
   const router = useRouter();
   // useEffect(() => {
@@ -108,5 +108,4 @@ const Redirect = () => {
       </container>
     </>
   );
-};
-export default Redirect;
+}

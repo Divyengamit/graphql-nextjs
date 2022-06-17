@@ -1,43 +1,43 @@
-import React, { useCallback, useState, useContext } from "react";
-import { Container, Grid, Paper } from "@mui/material";
-
-import { Decryption, Encryption } from "../../../utils/EncryptDecrypt";
-import { setLocal, getLocal } from "../../../utils/storage";
-import { useRouter } from "next/router";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../../../services/api-provider";
-
-import EquipmentForm from "../../../components/finance/EquipmentForm";
-import FooterMain from "../../../components/navigation/FooterMain";
+import { useState } from "react";
+import {
+  // Button,
+  // IconButton,
+  // Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  // Typography,
+} from "@mui/material";
+import style from "../../../styles/EquipmentForm.module.css";
+import { Container } from "@mui/material";
 import MainAppBar from "../../../components/navigation/MainAppBar";
-import InfoAlert from "../../../components/ui/InfoAlert";
-import ProgressIndicator from "../../../components/ui/ProgressIndicator";
-import EquipmentContent from "../../../components/finance/EquipmentContent";
+import { getLocal } from "../../../utils/storage";
+import { Decryption } from "../../../utils/EncryptDecrypt";
+import FooterMain from "../../../components/navigation/FooterMain";
+// import FlexBox from "../../../components/ui/FlexBox";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+// import InputField from "../../../components/ui/InputField";
+// import OptionsTypes from "../../../components/onboarding/OptionsTypes";
+import { FormProvider, useForm } from "react-hook-form";
+import ProfessionalDetailsForm from "../../../components/finance/ProfessionalDetails";
+import LoanDetailsForm from "../../../components/finance/LoanDetails";
+import FinancialDocumentsForm from "../../../components/finance/FinancialDocuments";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, FormProvider } from "react-hook-form";
+const steps = [
+  "Professional Details",
+  "Loan Details",
+  "Personal and Financial Documents",
+];
+const sx = { mt: 2, mb: 2, mr: "auto", ml: "auto" };
 
-import { EquipmentFinanceSchema } from "../../../utils/validation";
-import { styled } from "@mui/material/styles";
-
-const FinanceScreen = () => {
-  const router = useRouter();
+const EquipmentFinance = () => {
+  const [activeStep, setActivestep] = useState(0);
   const routerParams = getLocal("tempData");
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState();
-  const { applyEquipmentFinance } = useContext(APIContext);
-
-  const [showError, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
-
   const methods = useForm({
-    resolver: yupResolver(EquipmentFinanceSchema),
+    // resolver: yupResolver(EquipmentFinanceSchema),
     mode: "onSubmit",
     defaultValues: {
       profileType: "Salaried",
@@ -47,74 +47,63 @@ const FinanceScreen = () => {
     },
   });
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-  }));
+  const onSubmitHandler = () => {};
 
-  const applyEquipmentFinanceMutation = useMutation(
-    (data) => applyEquipmentFinance(data),
-    {
-      onSuccess: (data) => {
-        setShowSuccess(true);
-        setSuccessMessage(data?.data?.message);
-        setTimeout(() => {
-          router.push({ pathname: "/home" });
-        }, 2000);
-      },
-      onError: (error) => {
-        setErrorMessage(error?.response?.data?.message || error?.message);
-        setError(true);
-      },
-    }
-  );
-
-  const onSubmitHandler = useCallback((data) => {
-    applyEquipmentFinanceMutation.mutate({
-      entityId: urlParamsData?.state?.userData?.entityId,
-      ...data,
-    });
-  });
+  const onClickNext = () => {
+    setActivestep(activeStep + 1);
+  };
 
   return (
-    <>
+    <div>
       <MainAppBar userData={urlParamsData?.state?.userData} />
       <Container>
-        <Grid container spacing={2}>
-          <Grid
-            item
-            xs={12}
-            md={6}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-          >
-            <EquipmentContent />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Item>
+        <div className={style.Finance_Form_main_box}>
+          <div className={style.Form_Stepper_div}>
+            <Stepper
+              activeStep={activeStep}
+              alternativeLabel
+              className={style.abcd}
+            >
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
+
+          {activeStep === 0 && (
+            <div className={style.form_main_div}>
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-                  <EquipmentForm
-                    sx={{ mt: 2, mb: 2, mr: "auto", ml: "auto" }}
-                    onBack={() => router.push("/home")}
-                  />
+                  <ProfessionalDetailsForm onClickNext={onClickNext} />
                 </form>
               </FormProvider>
-            </Item>
-          </Grid>
-        </Grid>
-        {applyEquipmentFinanceMutation.isLoading && <ProgressIndicator />}
-        <InfoAlert
-          show={showError || showSuccess}
-          title={!showSuccess ? "Error" : "Success"}
-          body={!showSuccess ? errorMessage : successMessage}
-          onClose={() => setError(false)}
-        />
-      </Container>
+            </div>
+          )}
 
+          {activeStep === 1 && (
+            <div className={style.form_main_div}>
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
+                  <LoanDetailsForm onClickNext={onClickNext} />
+                </form>
+              </FormProvider>
+            </div>
+          )}
+          {activeStep === 2 && (
+            <div className={style.form_main_div}>
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
+                  <FinancialDocumentsForm onClickNext={onClickNext} />
+                </form>
+              </FormProvider>
+            </div>
+          )}
+        </div>
+      </Container>
       <FooterMain />
-    </>
+    </div>
   );
 };
-export default FinanceScreen;
+export default EquipmentFinance;

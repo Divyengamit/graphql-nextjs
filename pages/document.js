@@ -1,15 +1,9 @@
-import React, { useCallback, useContext, useState } from "react";
-// import { useNavigate, useLocation } from "react-router";
+import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
 import { getLocal, setLocal } from "../utils/storage";
 import { Decryption, Encryption } from "../utils/EncryptDecrypt";
-
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import BreadCrumb from "../components/ui/BreadCrumb";
 import DocumentForm from "../components/onboarding/DocumentForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
@@ -17,24 +11,24 @@ import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 
 import { DocumentSchema } from "../utils/validation";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadDoc } from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const DocumentScreen = () => {
-  const routerParams = getLocal("tempData");
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
-  );
   const router = useRouter();
+  const dispatch = useDispatch();
+  const registerState = useSelector(({ register }) => register);
+  const routerParams = getLocal("tempData");
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
 
   const [file, setFile] = useState();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  const [isChecked, setisChecked] = useState(false);
-  const [checkedError, setcheckError] = useState(false);
-
-  const { uploadDoc } = useContext(APIContext);
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkedError, setCheckError] = useState(false);
 
   const nextHandler = ({ mobile, sessionId }) => {
     router.push({
@@ -63,45 +57,39 @@ const DocumentScreen = () => {
     },
   });
 
-  const uploadMutation = useMutation((data) => uploadDoc(data), {
-    onSuccess: (data) => {
-      const userData = data?.data;
-      nextHandler(userData);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
-
-  const onSubmit = (data) => {
-    if (!isChecked) {
-      setcheckError(true);
-    } else {
-      setcheckError(false);
-      uploadMutation.mutate({
-        requestId: urlParamsData?.state?.requestId,
-        docType: data?.docType,
-        docNumber: data?.docNumber,
-        docFile: data?.docImage,
-      });
-    }
+  const onSubmit = async (data) => {
+    const tempForm = {
+      requestId: urlParamsData?.state?.requestId,
+      docType: data?.docType,
+      docNumber: data?.docNumber,
+      docFile: data?.docImage,
+    };
+    dispatch(uploadDoc(tempForm)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        console.log("res", res);
+        nextHandler(res?.payload);
+      }
+    });
   };
 
-  const onError = (error) => {
+  const onError = () => {
     if (!isChecked) {
-      setcheckError(true);
+      setCheckError(true);
     } else {
-      setcheckError(false);
+      setCheckError(false);
     }
   };
 
   const onAgreeHandler = useCallback(() => {
-    setisChecked((prev) => !prev);
+    setIsChecked((prev) => !prev);
     if (!isChecked) {
-      setcheckError(false);
+      setCheckError(false);
     } else {
-      setcheckError(true);
+      setCheckError(true);
     }
   }, [isChecked, checkedError]);
 
@@ -119,7 +107,7 @@ const DocumentScreen = () => {
           />
         </form>
       </FormProvider>
-      {uploadMutation.isLoading && <ProgressIndicator />}
+      {registerState?.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError}
         title="Error"

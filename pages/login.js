@@ -1,9 +1,5 @@
-import React, { useContext, useState, useCallback } from "react";
-// import { useNavigate } from "react-router";
+import React, { useState, useCallback } from "react";
 import { useRouter } from "next/router";
-
-// import { useMutation } from "react-query";
-// import { APIContext } from "../services/api-provider";
 import { useDispatch } from "react-redux";
 
 // import { setUser } from "../store/auth";
@@ -16,16 +12,23 @@ import { useForm, FormProvider } from "react-hook-form";
 import BreadCrumb from "../components/ui/BreadCrumb";
 import LoginForm from "../components/onboarding/LoginForm";
 import HeroGrid from "../components/onboarding/HeroGrid";
-// import ProgressIndicator from "../components/ui/ProgressIndicator";
+import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 import OtpDialog from "../components/dashboard/OtpDialog";
 
 import { loginSchema } from "../utils/validation";
 import { userLogin } from "../store/auth/loginSlice";
+import { useSelector } from "react-redux";
+import { forgetPassword } from "../store/Slice/registerSlice";
+import { setLocal } from "../utils/storage";
+import { Encryption } from "../utils/EncryptDecrypt";
 const img = require("../assets/backgrounds/background_onbording.png");
 const LoginScreen = () => {
   //   const navigate = useNavigate();
   // const state = useSelector((state) => state);
+  const registerState = useSelector(({ register }) => register);
+  const loginState = useSelector(({ auth }) => auth);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -35,7 +38,6 @@ const LoginScreen = () => {
   const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
-  // const { login, forgetPassword } = useContext(APIContext);
   const [mobileNo, setMobileNo] = useState();
 
   const signupHandler = () => {
@@ -49,6 +51,10 @@ const LoginScreen = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const onCloseInfo = () => {
+    setError(false);
+    setShowSuccess(false);
   };
 
   // const loginMutation = useMutation((data) => login(data), {
@@ -76,6 +82,35 @@ const LoginScreen = () => {
   //     setErrorMessage(error?.response?.data?.message || error?.message);
   //   },
   // });
+
+  const onForgotPassword = (data) => {
+    dispatch(forgetPassword(data)).then((res) => {
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage(res.payload?.message);
+
+        setLocal(
+          "tempData",
+          Encryption(
+            JSON.stringify({
+              state: {
+                email: data.emailAddress,
+                requestType: "RESET",
+              },
+            }),
+            process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+          )
+        );
+        router.push({
+          pathname: "/otp",
+        });
+      }
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+    });
+  };
 
   // const forgetPasswordMutation = useMutation((data) => forgetPassword(data), {
   //   onSuccess: (data) => {
@@ -106,16 +141,22 @@ const LoginScreen = () => {
 
   const onSubmitHandler = (values) => {
     dispatch(userLogin({ ...values })).then((res) => {
-      if (res?.payload?.access_token) {
-        setShowSuccess(true);
-        setSuccessMessage("Login Success");
-        setTimeout(() => {
+      if (!res.error) {
+        const userData = res?.payload;
+        if (userData?.access_token === "2FA") {
+          setMobileNo(userData?.mobileNo);
+          setOpen(true);
+        } else {
+          setShowSuccess(true);
+          setSuccessMessage("Login Success");
           router.push({ pathname: "/home" });
-        }, [1000]);
+        }
+      }
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
     });
-
-    // loginMutation.mutate(values);
   };
 
   const forgetPasswordHandler = useCallback(async () => {
@@ -123,11 +164,11 @@ const LoginScreen = () => {
     const emailValue = methods.getValues("email");
     const fieldState = methods.getFieldState("email");
 
-    // if (!fieldState.error) {
-    //   forgetPasswordMutation.mutate({
-    //     emailAddress: emailValue,
-    //   });
-    // }
+    if (!fieldState.error) {
+      await onForgotPassword({
+        emailAddress: emailValue,
+      });
+    }
   }, [methods, methods?.formState]);
 
   return (
@@ -142,16 +183,12 @@ const LoginScreen = () => {
           />
         </form>
       </FormProvider>
-      {
-        //   (loginMutation?.isLoading || forgetPasswordMutation?.isLoading) && (
-        //   <ProgressIndicator />
-        // )
-      }
+      {(registerState?.loading || loginState?.loading) && <ProgressIndicator />}
       <InfoAlert
         show={showError || showSuccess}
         title={!showSuccess ? "Error" : "Success"}
         body={!showSuccess ? errorMessage : successMessage}
-        onClose={() => setError(false)}
+        onClose={onCloseInfo}
       />
       <OtpDialog
         state={open}

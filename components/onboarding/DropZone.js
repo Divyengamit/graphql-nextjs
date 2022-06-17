@@ -21,16 +21,9 @@ const DropZone = (props) => {
       <Typography variant="h5SemiBold" sx={{ mt: 2, mb: 1.2 }}>
         {props?.title}
       </Typography>
-      {/* <img
-        src={require("../../assets/icons/upload.png")}
-        style={{ width: 32 }}
-      /> */}
-      <Image
-        src={require("../../assets/icons/upload.png")}
-        // height={24}
-        width={32}
-        alt="image"
-      />
+      <div style={{ maxWidth: "32px" }}>
+        <Image src={require("../../assets/icons/upload.png")} alt="image" />
+      </div>
       <Typography
         variant="small"
         sx={{ mt: 1, mb: 1.2, fontWeight: "normal" }}

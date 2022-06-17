@@ -1,17 +1,11 @@
-import React, { useContext, useState } from "react";
-// import { useNavigate, useLocation } from "react-router";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../styles/theme";
 import { getLocal } from "../utils/storage";
-import { Decryption, Encryption } from "../utils/EncryptDecrypt";
-
+import { Decryption } from "../utils/EncryptDecrypt";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../services/api-provider";
-
 import BreadCrumb from "../components/ui/BreadCrumb";
 import ProfileForm from "../components/onboarding/ProfileForm";
 import ProgressIndicator from "../components/ui/ProgressIndicator";
@@ -19,17 +13,20 @@ import InfoAlert from "../components/ui/InfoAlert";
 import HeroGrid from "../components/onboarding/HeroGrid";
 
 import { ProfileSchema } from "../utils/validation";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUserInfo } from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const CreateProfileScreen = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const routerParams = getLocal("tempData");
+  const registerState = useSelector(({ register }) => register);
   const [urlParamsData, setUrlParamsData] = useState(
     JSON.parse(
       Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
     )
   );
-  const router = useRouter();
-  const { registerUserInfo } = useContext(APIContext);
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
@@ -47,19 +44,6 @@ const CreateProfileScreen = () => {
     },
   });
 
-  const registerUserInfoMutation = useMutation(
-    (data) => registerUserInfo(data),
-    {
-      onSuccess: (data) => {
-        nextHandler();
-      },
-      onError: (error) => {
-        setErrorMessage(error?.response?.data?.message || error?.message);
-        setError(true);
-      },
-    }
-  );
-
   const getAddressType = (type) => {
     switch (type) {
       case "PERMANENT":
@@ -72,7 +56,7 @@ const CreateProfileScreen = () => {
   };
 
   const onSubmit = (data) => {
-    registerUserInfoMutation.mutate({
+    let tempForm = {
       requestId: urlParamsData?.state?.requestId,
       nameOnCard: data?.cardName,
       address1: data?.addressLine,
@@ -83,6 +67,15 @@ const CreateProfileScreen = () => {
       gender: data?.gender == "male" ? "M" : "F",
       addressType: getAddressType(data?.addressType),
       state: data?.state,
+    };
+    dispatch(registerUserInfo(tempForm)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        nextHandler();
+      }
     });
   };
 
@@ -95,7 +88,7 @@ const CreateProfileScreen = () => {
             <ProfileForm sx={{ mt: 2, mb: 2 }} />
           </form>
         </FormProvider>
-        {registerUserInfoMutation.isLoading && <ProgressIndicator />}
+        {registerState.loading && <ProgressIndicator />}
         <InfoAlert
           show={showError}
           title="Error"

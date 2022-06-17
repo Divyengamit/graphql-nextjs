@@ -82,5 +82,45 @@ a {
 .dashboard-equipment-finance-img {
   background-image: url('../assets/backgrounds/EquipmentFinance.jpg');
 }
+.MuiStepLabel-label {
+  font-weight: 600 !important;
+}
+.MuiStepLabel-label {
+  font-size: 14px !important;
+}
 
+.overlay-modal {
+  position: absolute;
+    width: 100%;
+    height: 100%;
+    /* min-height: calc(100vh - 83px); */
+    background-color: #0000009e;
+    z-index: 9;
+    top: 0px;
+}
+.highlight-text {
+  margin-bottom: 0px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.modal-contains {
+  background-color: #ffffff;
+    max-width: 350px;
+    margin: 0 auto;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.not-allow-icon span {
+  max-width: 100px !important;
+}
 
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+	
+}

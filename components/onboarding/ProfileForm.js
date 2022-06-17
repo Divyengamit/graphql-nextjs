@@ -1,40 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Paper, Typography } from "@mui/material";
-
 import FlexBox from "../ui/FlexBox";
 import InputField from "../ui/InputField";
 import GenderTypes from "./GenderTypes";
 import OptionsTypes from "./OptionsTypes";
-
 import stateData from "../../data/states";
-import { isPastDate } from "../../utils/date";
 
 const ProfileForm = (props) => {
-  const [gender, setGender] = useState("male");
-  const [addressType, setAddressType] = useState("PERMENANT");
-  const [state, setState] = useState();
-
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear() - 18;
 
   today = yyyy + "-" + mm + "-" + dd;
-
-  const genderChangeHandler = (event) => {
-    setGender(event.target.value);
-    props?.onGenderSelect(event.target.value);
-  };
-
-  const addressTypeChangeHandler = (event) => {
-    setAddressType(event.target.value);
-    props?.onAddressTypeSelect(event.target.value);
-  };
-
-  const stateChangeHandler = (event) => {
-    setState(event.target.value);
-    props?.onStateSelect(event.target.value);
-  };
 
   return (
     <Paper variant="card" sx={props.sx}>
@@ -48,7 +26,7 @@ const ProfileForm = (props) => {
             Step:
           </Typography>
           <Typography variant="large" color="secondary">
-            04/05
+            03/05
           </Typography>
         </FlexBox>
       </FlexBox>
@@ -207,7 +185,14 @@ const ProfileForm = (props) => {
             placeholder="400001"
             settings={{
               variant: "outlined",
-              sx: { mt: 1.2 },
+              sx: {
+                mt: 1.2,
+                ".MuiInputBase-input": {
+                  paddingLeft: 4,
+                  paddingTop: 3,
+                  paddingBottom: 3,
+                },
+              },
               fullWidth: true,
             }}
           />
