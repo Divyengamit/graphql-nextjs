@@ -28,6 +28,7 @@ export const createUserPassword = createAsyncThunk(
   "register/createUserPassword",
   async (formData, { rejectWithValue }) => {
     try {
+      // console.log("formData slice", formData);
       const response = await createUserPasswordService(formData);
       const data = await response.data;
       return data;
@@ -56,10 +57,10 @@ export const uploadDoc = createAsyncThunk(
     try {
       const response = await uploadDocService(formData);
       const data = await response.data;
-      console.log("data Slice", data);
+      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      console.log("data Slice", error);
+      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -71,10 +72,10 @@ export const verifyOTP = createAsyncThunk(
     try {
       const response = await verifyOTPService(formData);
       const data = await response.data;
-      console.log("data Slice", data);
+      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      console.log("data Slice", error);
+      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -86,10 +87,10 @@ export const verifyEmailOtp = createAsyncThunk(
     try {
       const response = await verifyEmailOtpService(formData);
       const data = await response.data;
-      console.log("data Slice", data);
+      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      console.log("data Slice", error);
+      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -101,10 +102,10 @@ export const resendOTP = createAsyncThunk(
     try {
       const response = await resendOTPService(formData);
       const data = await response.data;
-      console.log("data Slice", data);
+      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      console.log("data Slice", error);
+      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -116,10 +117,10 @@ export const forgetPassword = createAsyncThunk(
     try {
       const response = await forgetPasswordService(formData);
       const data = await response.data;
-      console.log("data Slice", data);
+      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      console.log("data Slice", error);
+      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -131,10 +132,10 @@ export const resetPassword = createAsyncThunk(
     try {
       const response = await resetPasswordService(formData);
       const data = await response.data;
-      console.log("data Slice", data);
+      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      console.log("data Slice", error);
+      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }

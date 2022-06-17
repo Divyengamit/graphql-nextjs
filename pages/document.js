@@ -70,7 +70,7 @@ const DocumentScreen = () => {
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
       if (!res.error) {
-        console.log("res", res);
+        // console.log("res", res);
         nextHandler(res?.payload);
       }
     });

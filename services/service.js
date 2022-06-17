@@ -105,3 +105,10 @@ export const resetPasswordService = (body) => {
     body
   );
 };
+
+export const createUserPasswordService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/credentials",
+    body
+  );
+};

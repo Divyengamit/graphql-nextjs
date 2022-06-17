@@ -23,7 +23,7 @@ const PasswordScreen = () => {
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
 
-  console.log("urlParamsData", urlParamsData);
+  // console.log("urlParamsData", urlParamsData);
   const router = useRouter();
   const dispatch = useDispatch();
   const registerState = useSelector(({ register }) => register);
@@ -54,19 +54,15 @@ const PasswordScreen = () => {
     mode: "onSubmit",
   });
 
-  console.log(
-    "urlParamsData?.state?.requestType",
-    urlParamsData?.state?.requestType
-  );
-
   const handleCreatePassword = (data) => {
+    // console.log("data ", data);
     let tempForm = {
       requestId: urlParamsData?.state?.requestId,
       emailAddress: data?.email,
       password: data?.password,
       passwordConfirm: data?.confirmPassword,
     };
-    console.log("handleCreatePassword", tempForm);
+    // console.log("handleCreatePassword", tempForm);
     dispatch(createUserPassword(tempForm)).then((res) => {
       if (res.error) {
         setError(true);

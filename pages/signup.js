@@ -48,7 +48,7 @@ const SignupScreen = () => {
   };
 
   const onAgreeHandler = (name, value) => {
-    console.log("name, value", name, value);
+    // console.log("name, value", name, value);
     let tempIsChecked = {
       ...isChecked,
       [name]: value,
@@ -77,7 +77,7 @@ const SignupScreen = () => {
     dispatch(
       registerUser({ ...data, termConditionConsent: isChecked.agreement })
     ).then((res) => {
-      console.log("res", res);
+      // console.log("res", res);
       if (!res.error) {
         nextHandler(res?.payload?.data);
       }
