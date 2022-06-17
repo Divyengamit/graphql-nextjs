@@ -10,7 +10,6 @@ import {
   Avatar,
   Tooltip,
 } from "@mui/material";
-// import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
 
 import { useDispatch } from "react-redux";
@@ -25,12 +24,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
 import Image from "next/image";
-import { removeLocal } from "../../utils/storage";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
 const MainAppBar = ({ userData }) => {
-  // const navigate = useNavigate();
   const router = useRouter();
   const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -54,6 +51,7 @@ const MainAppBar = ({ userData }) => {
 
   const onLogoutClickHandler = () => {
     dispatch(logout());
+    localStorage.clear();
     router.push("/login");
   };
 
