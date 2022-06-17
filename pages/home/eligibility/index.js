@@ -42,7 +42,7 @@ const FinanceScreen = () => {
 
   const methods = useForm({
     resolver: yupResolver(EquipmentFinanceSchema),
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues: {
       profileType: "Salaried",
       highestQualification: "MBBS",
@@ -50,6 +50,7 @@ const FinanceScreen = () => {
       experience: 0,
     },
   });
+  console.log("methods", methods.formState.errors);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -85,8 +86,8 @@ const FinanceScreen = () => {
   // );
 
   const onSubmitHandler = () => {
-    router.push({ pathname: "home/finance" });
     // console.log("onSubmitHandler data");
+    router.push({ pathname: "/home/finance" });
     // if (!isChecked.agreement || !isChecked.privacy) {
     //   setCheckError(true);
     //   return;

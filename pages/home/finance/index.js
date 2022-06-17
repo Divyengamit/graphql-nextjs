@@ -22,7 +22,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import ProfessionalDetailsForm from "../../../components/finance/ProfessionalDetails";
 import LoanDetailsForm from "../../../components/finance/LoanDetails";
 import FinancialDocumentsForm from "../../../components/finance/FinancialDocuments";
-
+import { useRouter } from "next/router";
 const steps = [
   "Professional Details",
   "Loan Details",
@@ -31,6 +31,7 @@ const steps = [
 const sx = { mt: 2, mb: 2, mr: "auto", ml: "auto" };
 
 const EquipmentFinance = () => {
+  const router = useRouter();
   const [activeStep, setActivestep] = useState(0);
   const routerParams = getLocal("tempData");
   const urlParamsData = JSON.parse(
@@ -47,10 +48,15 @@ const EquipmentFinance = () => {
     },
   });
 
-  const onSubmitHandler = () => {};
+  const onSubmitHandler = () => {
+    console.log("testasttsttsststtsts");
+  };
 
   const onClickNext = () => {
     setActivestep(activeStep + 1);
+    if (activeStep === 2) {
+      router.push({ pathname: "/home" });
+    }
   };
 
   return (
