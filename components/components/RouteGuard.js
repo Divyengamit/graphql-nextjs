@@ -54,7 +54,6 @@ function RouteGuard({ children }) {
         query: { returnUrl: router.asPath },
       });
     } else {
-      alert();
       setAuthorized(true);
       return;
     }
