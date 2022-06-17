@@ -5,6 +5,7 @@ import { setUser } from "../../store/auth";
 import axios from "axios";
 import style from "../../styles/Redirect.module.css";
 import { setRegisterData } from "../../store/Slice/registerSlice";
+import { setLocal } from "../../utils/storage";
 
 export default function Redirect() {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ export default function Redirect() {
           },
         });
         if (data.access_token) {
+          setLocal("access_token", data.access_token);
           dispatch(
             setUser({
               user: tokenVerification?.entityId,
