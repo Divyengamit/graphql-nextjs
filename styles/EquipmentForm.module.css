@@ -3,7 +3,7 @@
 }
 .Equipment_finance_left_div {
     display: grid !important;
-    align-items: flex-end !important;
+    /* align-items: flex-end !important; */
     padding-left: 0px !important;
 }
 .form_main_div .form_card_div {
