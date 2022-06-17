@@ -13,7 +13,7 @@ export default function Redirect() {
   useEffect(() => {
     if (router.isReady) {
       const { token } = router.query;
-      if (!token) return router.push("/");
+      if (!token) return router.push("/signup");
       const fetchData = async () => {
         let { data: tokenVerification } = await axios({
           method: "POST",
