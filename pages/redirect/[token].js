@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../store/auth";
 import axios from "axios";
 import style from "../../styles/Redirect.module.css";
+import { setRegisterData } from "../../store/Slice/registerSlice";
 
 export default function Redirect() {
   const dispatch = useDispatch();
@@ -24,11 +25,19 @@ export default function Redirect() {
             "Content-Type": "application/json",
           },
         });
-        if (!tokenVerification) return router.push("/");
-        if (tokenVerification.isVaild == false) {
+
+        console.log("tokenVerification", tokenVerification);
+        if (!tokenVerification) return router.push("/signup");
+        if (tokenVerification.isValid == false) {
           // add the data to the signup page
-          tokenVerification.userData;
-          dispatch(setRegisterData({}));
+          dispatch(
+            setRegisterData({
+              firstName: tokenVerification.userData.fullName,
+              mobileNo: tokenVerification.userData.mobileNo,
+              dob: tokenVerification.userData.dob,
+            })
+          );
+          return router.push("/signup");
         }
         //   get access token
         let { data } = await axios({
@@ -56,7 +65,7 @@ export default function Redirect() {
       };
       fetchData().catch((err) => {
         console.log(err);
-        router.push("/");
+        // router.push("/signup");
       });
     }
   }, [router.isReady]);

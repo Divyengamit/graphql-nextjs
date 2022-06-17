@@ -36,11 +36,6 @@ export const loginSlice = createSlice({
       state.refreshToken = null;
       state.loading = false;
     },
-    setRegisterData: (state, action) => {
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-      state.mobileNo = action.payload.mobileNo;
-    },
   },
   extraReducers: {
     [userLogin.pending]: (state) => {
@@ -64,5 +59,5 @@ export const loginSlice = createSlice({
     },
   },
 });
-export const { logout, setRegisterData } = loginSlice.actions;
+export const { logout } = loginSlice.actions;
 export default loginSlice.reducer;
