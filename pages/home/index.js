@@ -134,7 +134,7 @@ const HomeScreen = () => {
 
   const handleExploreFinancing = useCallback(() => {
     // router.push("home/finance", { state: { userData: data?.data } });
-    router.push({ pathname: "home/finance" });
+    router.push({ pathname: "home/eligibility" });
     setLocal(
       "tempData",
       Encryption(

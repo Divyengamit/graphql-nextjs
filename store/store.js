@@ -137,15 +137,19 @@ export const persistor = persistStore(store);
 //   // , { debug: isDev }
 // );
 
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  // combineReducers,
+  configureStore,
+} from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import authReducer from "./auth/loginSlice";
-import dashboard from "./dashboardSlice";
+// import authReducer from "./auth/loginSlice";
+// import dashboard from "./dashboardSlice";
+import reducer from "./reducers";
 
-const combinedReducer = combineReducers({
-  auth: authReducer,
-  dashboard,
-});
+// const combinedReducer = combineReducers({
+//   auth: authReducer,
+//   dashboard,
+// });
 
 const masterReducer = (state, action) => {
   // if (action.type === HYDRATE) {
@@ -155,7 +159,7 @@ const masterReducer = (state, action) => {
   //   };
   //   return nextState;
   // } else {
-  return combinedReducer(state, action);
+  return reducer(state, action);
   // }
   // return combinedReducer(state, action);
 };

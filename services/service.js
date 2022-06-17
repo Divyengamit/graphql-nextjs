@@ -33,6 +33,26 @@ export const registerUserInfoService = (body) => {
     body
   );
 };
+
+// export const applyEquipmentFinance = (data) => {
+//   return new Promise((resolve, reject) => {
+//     const body = new FormData();
+//     for (let key in data) {
+//       body.append(key, data[key]);
+//     }
+//     axiosInstance
+//       .post("canopi-payments/portal/dashboard/apply-equipment-finance", body)
+//       .then((response) => {
+//         if (response.status === 200) {
+//           resolve(response);
+//         }
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// };
+
 export const uploadDocService = (data) => {
   return new Promise((resolve, reject) => {
     const body = new FormData();

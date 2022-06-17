@@ -20,7 +20,7 @@ const EquipmentForm = (props) => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h2Bold" color="secondary">
-          Equipment Finance Form
+          Check Eligibility Form
         </Typography>
       </FlexBox>
 
