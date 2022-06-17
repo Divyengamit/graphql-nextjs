@@ -99,7 +99,7 @@ const SignupScreen = () => {
           />
         </form>
       </FormProvider>
-      {registerState.loading && <ProgressIndicator />}
+      {registerState?.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError}
         title={"Error"}

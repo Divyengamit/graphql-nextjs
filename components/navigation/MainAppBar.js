@@ -25,6 +25,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
 import Image from "next/image";
+import { removeLocal } from "../../utils/storage";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
@@ -53,13 +54,16 @@ const MainAppBar = ({ userData }) => {
 
   const onLogoutClickHandler = () => {
     dispatch(logout());
-
     router.push("/login");
   };
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl" sx={{ pt: 1.45, pb: 1.45 }}>
+      <Container
+        maxWidth="xl"
+        sx={{ pt: 1.45, pb: 1.45 }}
+        className="custom-container"
+      >
         <Toolbar style={{ padding: 0 }}>
           {/* <img src={logo} style={{ height: 36 }} /> */}
           <div className={"dashboard-canopi-logo"}>
@@ -81,6 +85,7 @@ const MainAppBar = ({ userData }) => {
               <IconButton
                 aria-label="icon"
                 sx={{ p: 0 }}
+                className="notification-icon"
                 onClick={handleOpenNotification}
               >
                 <NotificationsIcon
@@ -114,6 +119,7 @@ const MainAppBar = ({ userData }) => {
                   <Avatar
                     {...stringAvatar(userData?.fullName)}
                     sx={{ height: 51, width: 51, background: "#FF9921" }}
+                    className="avatar-circle-div"
                   />
                   <Typography
                     sx={{
@@ -122,6 +128,7 @@ const MainAppBar = ({ userData }) => {
                       color: "#FFFFFF",
                       lineHeight: "21px",
                     }}
+                    className="avtar-name-hide-mob"
                   >
                     <Typography
                       component={"span"}
@@ -143,6 +150,7 @@ const MainAppBar = ({ userData }) => {
                   <ArrowDropDownIcon
                     sx={{ ml: 2.63 }}
                     style={{ color: "#FFFFFF" }}
+                    className="avtar-down-icon-mob"
                   />
                 </IconButton>
               </Tooltip>

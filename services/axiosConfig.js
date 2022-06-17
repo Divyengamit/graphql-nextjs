@@ -14,15 +14,26 @@ axiosInstance.interceptors.request.use(function (config) {
   // }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    localStorage.clear();
   }
-  console.log("token get", config);
   return config;
 });
 
 export default axiosInstance;
 
-// /* eslint-disable no-undef */
-// // import { toast } from "react-toastify";
+// import axios from "axios";
+// import { getLocal } from "../utils/storage";
+// const API_BASE_URL = "https://ppi-test.canopi.in/";
+
+// const token = getLocal("access_token");
+// const instance = axios.create({
+//   baseURL: API_BASE_URL,
+// });
+// instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+// export default instance;
+
+// import { toast } from "react-toastify";
 // import axios from "axios";
 // // import { API_BASE_URL } from "../config";
 

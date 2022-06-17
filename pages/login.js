@@ -1,6 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+
+// import { setUser } from "../store/auth";
+// import { getLocal, setLocal } from "../utils/storage";
+// import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
 
@@ -18,8 +23,9 @@ import { forgetPassword } from "../store/Slice/registerSlice";
 import { getLocal, setLocal } from "../utils/storage";
 import { Encryption } from "../utils/EncryptDecrypt";
 const img = require("../assets/backgrounds/background_onbording.png");
-
 const LoginScreen = () => {
+  //   const navigate = useNavigate();
+  // const state = useSelector((state) => state);
   const registerState = useSelector(({ register }) => register);
   const loginState = useSelector(({ auth }) => auth);
 
