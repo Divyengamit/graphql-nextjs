@@ -23,11 +23,10 @@ const PasswordScreen = () => {
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
 
-  // console.log("urlParamsData", urlParamsData);
   const router = useRouter();
   const dispatch = useDispatch();
   const registerState = useSelector(({ register }) => register);
-  // const pwdState = useSelector(({ register }) => register.createPassword);
+
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [showSuccess, setShowSuccess] = useState(false);
@@ -55,14 +54,13 @@ const PasswordScreen = () => {
   });
 
   const handleCreatePassword = (data) => {
-    // console.log("data ", data);
     let tempForm = {
       requestId: urlParamsData?.state?.requestId,
       emailAddress: data?.email,
       password: data?.password,
       passwordConfirm: data?.confirmPassword,
     };
-    // console.log("handleCreatePassword", tempForm);
+
     dispatch(createUserPassword(tempForm)).then((res) => {
       if (res.error) {
         setError(true);

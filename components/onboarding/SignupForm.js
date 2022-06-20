@@ -1,12 +1,29 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Button, Checkbox, Paper, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 import InputField from "../ui/InputField";
 import FlexBox from "../ui/FlexBox";
 import Link from "next/link";
+const useStyles = makeStyles({
+  input: {
+    "& input[type=number]": {
+      "-moz-appearance": "textfield",
+    },
+    "& input[type=number]::-webkit-outer-spin-button": {
+      "-webkit-appearance": "none",
+      margin: 0,
+    },
+    "& input[type=number]::-webkit-inner-spin-button": {
+      "-webkit-appearance": "none",
+      margin: 0,
+    },
+  },
+});
 
 const SignupForm = (props) => {
+  const classes = useStyles();
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
@@ -79,6 +96,8 @@ const SignupForm = (props) => {
             Mobile Number *
           </Typography>
           <InputField
+            className={classes.input}
+            maxLength={10}
             type="number"
             placeholder="Enter Phone Number"
             name="mobileNo"
