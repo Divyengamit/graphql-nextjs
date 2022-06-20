@@ -9,7 +9,7 @@ const walletIcon = require("../../assets/icons/wallet.png");
 const infoIcon = require("../../assets/icons/infoIcon.png");
 const closeIcon = require("../../assets/icons/close-icons.png");
 
-const backgroundImage = require("../../assets/backgrounds/EquipmentFinance.jpg");
+// const backgroundImage = require("../../assets/backgrounds/EquipmentFinance.jpg");
 
 const Dashboard = (props) => {
   const Item = styled(Paper)(({ theme }) => ({
@@ -25,26 +25,34 @@ const Dashboard = (props) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12} md={7}>
-      <Item>
-      <Box className="information-box-div" >
-      <div className={"icon-div"}>
-              <Image src={infoIcon} alt="logo" />
-            </div>
-      <Typography className="texts-div">
-      Your card is being processed. Please await further updates. You can also call <label className="color-text">+91 01234 56789</label> for more details.
-      </Typography>
-      <div className="close-icon-div">
-      <Image src={closeIcon} alt="logo" />
-      </div>
-      </Box>
-      </Item>
+        {props?.userData?.cards[0]?.status === "INACTIVE" ? (
+          <Item>
+            <Box className="information-box-div">
+              <div className={"icon-div"}>
+                <Image src={infoIcon} alt="logo" />
+              </div>
+              <Typography className="texts-div">
+                Your card is being processed. Please await further updates. You
+                can also call{" "}
+                <label className="color-text">+91 01234 56789</label> for more
+                details.
+              </Typography>
+              )
+              <div className="close-icon-div">
+                <Image src={closeIcon} alt="logo" />
+              </div>
+            </Box>
+          </Item>
+        ) : (
+          ""
+        )}
         <Item>
           <Box sx={{ position: "absolute", right: "15px", top: "14px" }}>
             <IconButton sx={{ p: 0.7 }}>
               <MoreVertIcon />
             </IconButton>
           </Box>
-          
+
           <Box display="flex" justifyContent="space-between">
             <Box>
               <Typography color="secondary" variant="h6Bold">
