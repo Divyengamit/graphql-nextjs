@@ -26,7 +26,7 @@ import Alert from "../../../components/ui/Alert";
 const FinanceScreen = () => {
   const router = useRouter();
   const routerParams = getLocal("tempData");
-  // // console.log("router data", router);
+
   const [urlParamsData, setUrlParamsData] = useState(
     JSON.parse(
       Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
@@ -50,7 +50,6 @@ const FinanceScreen = () => {
       experience: 0,
     },
   });
-  // console.log("methods", methods.formState.errors);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -76,7 +75,7 @@ const FinanceScreen = () => {
 
   // const onSubmitHandler = useCallback(
   //   (data) => {
-  //     // console.log("on submit call");
+
   //     applyEquipmentFinanceMutation.mutate({
   //       entityId: urlParamsData?.state?.userData?.entityId,
   //       ...data,
@@ -86,7 +85,6 @@ const FinanceScreen = () => {
   // );
 
   const onSubmitHandler = () => {
-    // // console.log("onSubmitHandler data");
     router.push({ pathname: "/home/finance" });
     // if (!isChecked.agreement || !isChecked.privacy) {
     //   setCheckError(true);
@@ -95,7 +93,7 @@ const FinanceScreen = () => {
     // dispatch(
     //   registerUser({ ...data, termConditionConsent: isChecked.agreement })
     // ).then((res) => {
-    //   // console.log("res", res);
+
     //   if (!res.error) {
     //     nextHandler(res?.payload?.data);
     //   }
@@ -107,7 +105,7 @@ const FinanceScreen = () => {
   };
   // const nextHandler = ({ requestId }) => {
   //   router.push({ pathname: "/finance" });
-  //   // console.log("nextHandler", requestId);
+
   // };
 
   const onClose = () => {

@@ -4,7 +4,6 @@ const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
 });
 axiosInstance.interceptors.request.use(function (config) {
-  // console.log("config", config);
   const token = getLocal("access_token");
   config.headers = {
     "Content-Type": "application/json",
