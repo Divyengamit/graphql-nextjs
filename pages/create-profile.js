@@ -22,11 +22,10 @@ const CreateProfileScreen = () => {
   const dispatch = useDispatch();
   const routerParams = getLocal("tempData");
   const registerState = useSelector(({ register }) => register);
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
@@ -41,6 +40,9 @@ const CreateProfileScreen = () => {
       gender: "male",
       addressType: "PERMANENT",
       state: "Maharashtra",
+      cardName: urlParamsData?.state?.nameOnCard
+        ? urlParamsData?.state?.nameOnCard
+        : "",
     },
   });
 
@@ -63,7 +65,7 @@ const CreateProfileScreen = () => {
       address2: data?.addressLine2,
       city: data?.city,
       pincode: data?.pincode,
-      dob: data?.dob,
+      // dob: data?.dob,
       gender: data?.gender == "male" ? "M" : "F",
       addressType: getAddressType(data?.addressType),
       state: data?.state,
@@ -85,7 +87,7 @@ const CreateProfileScreen = () => {
         <BreadCrumb items={["Account", "Setup Profile"]} />
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <ProfileForm sx={{ mt: 2, mb: 2 }} />
+            <ProfileForm sx={{ mt: 2, mb: 2 }} methods={methods} />
           </form>
         </FormProvider>
         {registerState.loading && <ProgressIndicator />}
