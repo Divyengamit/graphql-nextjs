@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import axiosInstance from "./axiosConfig";
 
+// Auth Services
 export const login = async (data) => {
   const response = await axiosInstance.post(
     "canopi-payments/registration/v1/authenticate",
@@ -8,50 +9,6 @@ export const login = async (data) => {
   );
   return response.data;
 };
-
-export const registerUserService = async (body) => {
-  Object.keys(body).forEach((key) => {
-    if (body[key] === undefined) {
-      delete body[key];
-    }
-  });
-  body["countryCode"] = "91";
-
-  return axiosInstance.post("canopi-payments/portal/register/basic-info", body);
-};
-
-export const fetchDashboardDetailService = async (entityId) => {
-  const response = await axiosInstance.get(
-    `canopi-payments/portal/dashboard/${entityId}`
-  );
-  return response.data;
-};
-
-export const registerUserInfoService = (body) => {
-  return axiosInstance.post(
-    "canopi-payments/portal/register/address-info",
-    body
-  );
-};
-
-// export const applyEquipmentFinance = (data) => {
-//   return new Promise((resolve, reject) => {
-//     const body = new FormData();
-//     for (let key in data) {
-//       body.append(key, data[key]);
-//     }
-//     axiosInstance
-//       .post("canopi-payments/portal/dashboard/apply-equipment-finance", body)
-//       .then((response) => {
-//         if (response.status === 200) {
-//           resolve(response);
-//         }
-//       })
-//       .catch((error) => {
-//         reject(error);
-//       });
-//   });
-// };
 
 export const uploadDocService = (data) => {
   return new Promise((resolve, reject) => {
@@ -112,3 +69,48 @@ export const createUserPasswordService = (body) => {
     body
   );
 };
+
+export const registerUserService = async (body) => {
+  Object.keys(body).forEach((key) => {
+    if (body[key] === undefined) {
+      delete body[key];
+    }
+  });
+  body["countryCode"] = "91";
+
+  return axiosInstance.post("canopi-payments/portal/register/basic-info", body);
+};
+
+export const registerUserInfoService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/address-info",
+    body
+  );
+};
+
+// Dashboard Services
+export const fetchDashboardDetailService = async (entityId) => {
+  const response = await axiosInstance.get(
+    `canopi-payments/portal/dashboard/${entityId}`
+  );
+  return response.data;
+};
+
+// export const applyEquipmentFinance = (data) => {
+//   return new Promise((resolve, reject) => {
+//     const body = new FormData();
+//     for (let key in data) {
+//       body.append(key, data[key]);
+//     }
+//     axiosInstance
+//       .post("canopi-payments/portal/dashboard/apply-equipment-finance", body)
+//       .then((response) => {
+//         if (response.status === 200) {
+//           resolve(response);
+//         }
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// };

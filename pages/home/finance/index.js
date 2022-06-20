@@ -56,6 +56,9 @@ const EquipmentFinance = () => {
       router.push({ pathname: "/home" });
     }
   };
+  const onBack = () => {
+    setActivestep(activeStep - 1);
+  };
 
   return (
     <div>
@@ -90,7 +93,7 @@ const EquipmentFinance = () => {
             <div className={style.form_main_div}>
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-                  <LoanDetailsForm onClickNext={onClickNext} />
+                  <LoanDetailsForm onClickNext={onClickNext} onBack={onBack} />
                 </form>
               </FormProvider>
             </div>
@@ -99,7 +102,10 @@ const EquipmentFinance = () => {
             <div className={style.form_main_div}>
               <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-                  <FinancialDocumentsForm onClickNext={onClickNext} />
+                  <FinancialDocumentsForm
+                    onClickNext={onClickNext}
+                    onBack={onBack}
+                  />
                 </form>
               </FormProvider>
             </div>
