@@ -84,7 +84,7 @@ const ProfileSchema = yup.object().shape({
     .matches(/^[a-zA-Z ]+$/, "Invalid card name")
     .trim()
     .required("Card name is required"),
-  dob: yup.string().required("Select sate of birth"),
+  // dob: yup.string().required("Select sate of birth"),
   addressLine: yup.string().required("Address is required"),
   addressLine2: yup.string().required("Address 2 is required"),
   city: yup
@@ -101,10 +101,23 @@ const ProfileSchema = yup.object().shape({
 
 const DocumentSchema = yup.object().shape({
   docType: yup.string().trim().required("Document type is required"),
-  docNumber: yup
-    .string()
-    .required("Document Number is required")
-    .matches(/^[A-Z0-9]{10}$/, "Invalid document number"),
+  PanNumber: yup.string().when("docType", {
+    is: "PAN",
+    then: yup
+      .string()
+      .required("Document Number is required")
+      .matches(/^$|^[A-Z0-9]{10}$/, "Invalid Pan Number"),
+  }),
+  AadharNumber: yup.string().when("docType", {
+    is: "AADHAAR",
+    then: yup
+      .string()
+      .required("Document Number is required")
+      .matches(
+        /^$|^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/,
+        "Invalid Aadhaar number"
+      ),
+  }),
   docImage: yup.mixed().required("File is required"),
   agreement: yup.bool(),
 });

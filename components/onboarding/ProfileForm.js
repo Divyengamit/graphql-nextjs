@@ -1,10 +1,20 @@
-import React from "react";
-import { Button, Paper, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Paper,
+  Radio,
+  Typography,
+} from "@mui/material";
 import FlexBox from "../ui/FlexBox";
 import InputField from "../ui/InputField";
 import GenderTypes from "./GenderTypes";
 import OptionsTypes from "./OptionsTypes";
 import stateData from "../../data/states";
+import { Decryption } from "../../utils/EncryptDecrypt";
+import { getLocal } from "../../utils/storage";
 
 const ProfileForm = (props) => {
   var today = new Date();
@@ -13,6 +23,48 @@ const ProfileForm = (props) => {
   var yyyy = today.getFullYear() - 18;
 
   today = yyyy + "-" + mm + "-" + dd;
+  const methods = props.methods;
+  const reset = methods.reset;
+  const setValue = methods.setValue;
+  const form = methods.watch();
+
+  const routerParams = getLocal("tempData");
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (
+      urlParamsData?.state?.AddressInfo &&
+      urlParamsData?.state?.AddressInfo?.length
+    ) {
+      setIsOpen(true);
+    }
+  }, []);
+
+  const onSelectAddress = () => {
+    const selectedAddress =
+      urlParamsData?.state?.AddressInfo[form.address] || {};
+
+    const temp = {
+      state: selectedAddress?.State || "",
+      addressLine: selectedAddress?.Address || "",
+      // addressLine2: "",
+      city: selectedAddress?.State || "",
+      pincode: selectedAddress?.Postal || "",
+    };
+
+    reset({
+      ...form,
+      ...temp,
+    });
+    onClose();
+  };
 
   return (
     <Paper variant="card" sx={props.sx}>
@@ -46,7 +98,7 @@ const ProfileForm = (props) => {
         }}
       />
 
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
+      {/* <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Date of Birth *
       </Typography>
 
@@ -59,7 +111,7 @@ const ProfileForm = (props) => {
           fullWidth: true,
           InputProps: { inputProps: { min: "100", max: today } },
         }}
-      />
+      /> */}
 
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Gender *
@@ -107,6 +159,13 @@ const ProfileForm = (props) => {
           { key: "DELIVERY", value: "DELIVERY" },
         ])}
       </InputField>
+
+      {urlParamsData?.state?.AddressInfo &&
+        urlParamsData?.state?.AddressInfo?.length && (
+          <Button sx={{ mt: 2 }} onClick={() => setIsOpen(true)}>
+            Click To Select Address
+          </Button>
+        )}
 
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Address Line 1 *
@@ -213,6 +272,75 @@ const ProfileForm = (props) => {
           Cancel
         </Button>
       </FlexBox> */}
+      <Dialog
+        open={isOpen}
+        // onClose={onClose}
+        fullWidth
+        // maxWidth={"xs"}
+        sx={{ borderRadius: "10px" }}
+        PaperProps={{
+          style: { borderRadius: "15px", padding: "16px" },
+        }}
+      >
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          <Typography variant="h5SemiBold" style={{ fontSize: "18px" }}>
+            Select Address
+          </Typography>
+        </DialogTitle>
+        {urlParamsData?.state?.AddressInfo &&
+          urlParamsData?.state?.AddressInfo?.length !== 0 &&
+          urlParamsData?.state?.AddressInfo.map((item, index) => {
+            return (
+              <div key={index} style={{ marginBottom: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="h6" gutterBottom component="div">
+                    {`Address ${index + 1}`}
+                  </Typography>
+                  <Radio
+                    name="address"
+                    color="success"
+                    checked={form.address === index}
+                    onChange={() => setValue("address", index)}
+                    sx={{ p: 0 }}
+                    size="small"
+                  />
+                </div>
+
+                <Typography variant="subtitle1" gutterBottom component="div">
+                  {item?.Address && `${item?.Address},`}
+                  {item?.State && `${item?.State},`}
+                  {item?.Postal && `${item?.Postal}`}
+                </Typography>
+              </div>
+            );
+          })}
+        <DialogActions>
+          <Button
+            onClick={onClose}
+            autoFocus
+            variant="contained"
+            color="secondary"
+            sx={{ width: "70px" }}
+          >
+            {"Cancel"}
+          </Button>
+
+          <Button
+            onClick={onSelectAddress}
+            autoFocus
+            variant="contained"
+            sx={{ width: "70px" }}
+          >
+            {"Ok"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

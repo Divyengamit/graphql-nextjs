@@ -56,12 +56,13 @@ const DocumentScreen = () => {
       docType: "PAN",
     },
   });
+  const form = methods.watch();
 
   const onSubmit = async (data) => {
     const tempForm = {
       requestId: urlParamsData?.state?.requestId,
       docType: data?.docType,
-      docNumber: data?.docNumber,
+      docNumber: form.docType === "PAN" ? data?.PanNumber : data?.AadharNumber,
       docFile: data?.docImage,
     };
     dispatch(uploadDoc(tempForm)).then((res) => {
@@ -70,7 +71,6 @@ const DocumentScreen = () => {
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
       if (!res.error) {
-        // console.log("res", res);
         nextHandler(res?.payload);
       }
     });
@@ -104,6 +104,7 @@ const DocumentScreen = () => {
             isAgree={isChecked}
             onAgreeChecked={onAgreeHandler}
             isCheckedcheckedError={checkedError}
+            methods={methods}
           />
         </form>
       </FormProvider>
