@@ -8,6 +8,7 @@ import { Controller, useFormContext } from "react-hook-form";
 const InputField = (props) => {
   const { control, defaultValue } = useFormContext();
   const [type, setType] = useState(props?.type);
+  const { maxLength } = props;
 
   const handleClickShowPassword = () => {
     setType((prev) => (prev === "text" ? "password" : "text"));
@@ -23,6 +24,7 @@ const InputField = (props) => {
       control={control}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <TextField
+          className={props.className}
           type={type}
           value={value}
           defaultValue={defaultValue}
@@ -46,6 +48,13 @@ const InputField = (props) => {
                   </IconButton>
                 </InputAdornment>
               ) : null,
+          }}
+          onInput={(e) => {
+            maxLength
+              ? (e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, maxLength))
+              : "";
           }}
           {...props?.settings}
         >

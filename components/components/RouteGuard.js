@@ -42,9 +42,6 @@ function RouteGuard({ children }) {
     ];
     const path = url.split("?")[0];
 
-    // console.log("path", path);
-    // console.log("log", getLocal("access_token"));
-
     if (path.includes("redirect") && !publicPaths.includes(path)) {
       setAuthorized(true);
       return;

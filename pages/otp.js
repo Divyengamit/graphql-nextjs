@@ -35,6 +35,8 @@ const OTPScreen = () => {
   const [errorMessage, setErrorMessage] = useState();
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
+  const [showProgress, setShowProgress] = useState(false);
+  const [progressMessage, setProgressMessage] = useState();
 
   const nextHandler = () => {
     router.push("/");
@@ -69,13 +71,19 @@ const OTPScreen = () => {
       otp,
     };
     dispatch(verifyOTP(temp)).then((res) => {
-      if (res.error) {
+      if (res?.payload?.data?.message === "Min KYC could not be completed.") {
+        setShowProgress(true);
+        setProgressMessage("Please wait the minimum KYC is under progress.");
+      } else {
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
+      // if (res.error) {
+
+      // }
       if (!res.error) {
         const userData = res.payload;
-        // // console.log("userData", userData);
+
         setShowSuccess(true);
         setSuccessMessage(userData?.message);
         setTimeout(() => {
@@ -103,6 +111,7 @@ const OTPScreen = () => {
   const onCloseInfo = () => {
     setError(false);
     setShowSuccess(false);
+    setShowProgress(false);
   };
 
   const onResend = () => {
@@ -231,9 +240,17 @@ const OTPScreen = () => {
         />
         {registerState?.loading && <ProgressIndicator />}
         <InfoAlert
-          show={showError || showSuccess}
-          title={!showSuccess ? "Error" : "Success"}
-          body={!showSuccess ? errorMessage : successMessage}
+          show={showError || showSuccess || showProgress}
+          title={
+            (showSuccess && "Success") ||
+            (showError && "Error") ||
+            (showProgress && "Progress")
+          }
+          body={
+            (showSuccess && successMessage) ||
+            (showError && errorMessage) ||
+            (showProgress && progressMessage)
+          }
           onClose={() => onCloseInfo()}
         />
       </HeroGrid>
