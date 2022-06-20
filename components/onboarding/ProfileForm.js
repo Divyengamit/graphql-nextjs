@@ -299,7 +299,12 @@ const ProfileForm = (props) => {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="h6" gutterBottom component="div">
+                  <Typography
+                    variant="h5SemiBold"
+                    gutterBottom
+                    component="div"
+                    sx={{ fontSize: "14px" }}
+                  >
                     {`Address ${index + 1}`}
                   </Typography>
                   <Radio
