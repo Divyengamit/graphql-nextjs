@@ -8,6 +8,9 @@ import OptionsTypes from "./OptionsTypes";
 import FileUpload from "./FileUpload";
 
 const DocumentForm = (props) => {
+  const methods = props.methods;
+  const form = methods.watch();
+
   return (
     <Paper variant="card" sx={props.sx}>
       <FlexBox row sx={{ justifyContent: "space-between" }}>
@@ -51,14 +54,25 @@ const DocumentForm = (props) => {
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Document Number *
       </Typography>
-      <InputField
-        name="docNumber"
-        placeholder="ABCDEl 1FSK or 3100000100020003"
-        settings={{
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      />
+      {form.docType === "PAN" ? (
+        <InputField
+          name="PanNumber"
+          placeholder="AA11BB22CC"
+          settings={{
+            sx: { mt: 1.2 },
+            fullWidth: true,
+          }}
+        />
+      ) : (
+        <InputField
+          name="AadharNumber"
+          placeholder="3100000100020003"
+          settings={{
+            sx: { mt: 1.2 },
+            fullWidth: true,
+          }}
+        />
+      )}
 
       <FileUpload name="docImage" title="Upload Document Copy" />
 

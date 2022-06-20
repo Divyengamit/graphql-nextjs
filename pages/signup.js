@@ -32,15 +32,13 @@ const SignupScreen = () => {
     router.push("/");
   };
 
-  const nextHandler = ({ requestId }) => {
+  const nextHandler = (payload) => {
     router.push({ pathname: "/password" });
     setLocal(
       "tempData",
       Encryption(
         JSON.stringify({
-          state: {
-            requestId,
-          },
+          state: { ...payload },
         }),
         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
       )
