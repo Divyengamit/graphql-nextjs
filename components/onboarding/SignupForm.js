@@ -140,7 +140,7 @@ const SignupForm = (props) => {
           name="privacy"
           checked={props?.isChecked.privacy}
           onChange={(e) => props?.onAgreeHandler("privacy", e.target.checked)}
-          sx={{ pt: 0 }}
+          sx={{ p: 0, m: 0, mr: 1 }}
         />
         <Typography
           color="primary"
@@ -161,7 +161,7 @@ const SignupForm = (props) => {
           name="agreement"
           checked={props?.isChecked.agreement}
           onChange={(e) => props?.onAgreeHandler("agreement", e.target.checked)}
-          sx={{ pt: 0, "& .MuiSvgIcon-root": { fontSize: 24 } }}
+          sx={{ p: 0, m: 0, mr: 1, "& .MuiSvgIcon-root": { fontSize: 24 } }}
         />
 
         <Typography
@@ -179,7 +179,10 @@ const SignupForm = (props) => {
       </Typography>
 
       {props?.checkedError && (
-        <Typography sx={{ color: "red", ml: 5, mt: 0.5 }}>
+        <Typography
+          variant="body2Regular"
+          sx={{ color: "red", ml: 5, mt: 0.5 }}
+        >
           *please check the box{" "}
         </Typography>
       )}
