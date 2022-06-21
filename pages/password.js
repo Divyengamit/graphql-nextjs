@@ -15,6 +15,7 @@ import {
   createUserPassword,
   resetPassword,
 } from "../store/Slice/registerSlice";
+import { CREATE_PROFILE } from "@/utils/paths";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
@@ -38,7 +39,7 @@ const PasswordScreen = () => {
 
   const nextHandler = () => {
     router.push({
-      pathname: "/create-profile",
+      pathname: CREATE_PROFILE,
     });
   };
   const onCloseInfo = () => {

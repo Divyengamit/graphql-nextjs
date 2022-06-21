@@ -13,6 +13,7 @@ import { SignUpSchema } from "../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
+import { CREATE_PASSWORD } from "@/utils/paths.js";
 
 const SignupScreen = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const SignupScreen = () => {
   };
 
   const nextHandler = (payload) => {
-    router.push({ pathname: "/password" });
+    router.push({ pathname: CREATE_PASSWORD });
     setLocal(
       "tempData",
       Encryption(

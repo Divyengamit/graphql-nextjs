@@ -18,6 +18,7 @@ import {
   verifyEmailOtp,
   verifyOTP,
 } from "../store/Slice/registerSlice";
+import { CREATE_PASSWORD } from "@/utils/paths";
 
 const img = require("../assets/backgrounds/background_onbording.png");
 
@@ -44,7 +45,7 @@ const OTPScreen = () => {
 
   const nextHandlerReset = () => {
     router.push({
-      pathname: "/password",
+      pathname: CREATE_PASSWORD,
     });
     setLocal(
       "tempData",

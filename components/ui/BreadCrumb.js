@@ -51,11 +51,11 @@ const BreadCrumb = (props) => {
         </IconButton>
       )}
 
-      {items?.map((item) => (
-        <>
+      {items?.map((item, index) => (
+        <div key={index} style={{ display: "flex", alignItems: "center" }}>
           <StyledText variant="subtitle1">{item}</StyledText>
           <ChevronRightOutlinedIcon sx={{ mr: 0.2 }} />
-        </>
+        </div>
       ))}
       <StyledText
         variant="subtitle1"
