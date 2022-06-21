@@ -40,6 +40,12 @@ theme = createTheme({
       fontWeight: "400",
     },
 
+    h2SemiBold: {
+      fontSize: "1.2rem", //original 1.625rem
+      fontFamily: "Work Sans",
+      fontWeight: "600",
+    },
+
     h3Bold: {
       fontSize: "1rem", //original 1.6rem
       fontFamily: "Work Sans",
