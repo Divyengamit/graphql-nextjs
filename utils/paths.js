@@ -6,3 +6,5 @@ export const DOCUMENT = "/document";
 export const OTP = "/otp";
 
 export const HOME = "/home";
+export const MYPROFILE = "/home/myprofile";
+export const USERS = "/home/users";

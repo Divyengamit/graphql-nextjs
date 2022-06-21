@@ -34,6 +34,12 @@ theme = createTheme({
       fontWeight: "300",
     },
 
+    h2Regular: {
+      fontSize: "1.2rem", //original 1.625rem
+      fontFamily: "Work Sans",
+      fontWeight: "400",
+    },
+
     h3Bold: {
       fontSize: "1rem", //original 1.6rem
       fontFamily: "Work Sans",
@@ -178,6 +184,26 @@ theme = createTheme({
             width: "90%",
             [theme.breakpoints.up("md")]: {
               width: "80%",
+            },
+          },
+        },
+        {
+          props: { variant: "item" },
+          elevation: 3,
+          backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+          ...theme.typography.body2,
+          color: theme.palette.text.secondary,
+          style: {
+            position: "relative",
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
+            paddingLeft: theme.spacing(3.25),
+            paddingRight: theme.spacing(3.25),
+            marginBottom: theme.spacing(2),
+            borderRadius: 15,
+            width: "90%",
+            [theme.breakpoints.up("md")]: {
+              width: "100%",
             },
           },
         },
