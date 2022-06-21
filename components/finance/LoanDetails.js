@@ -27,13 +27,13 @@ const LoanDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Loan Amount *
+          <strong>Loan Amount *</strong>
         </Typography>
 
         <InputField
           type="number"
-          name="qualificationYear"
-          placeholder="Enter Qualification Year"
+          name="loanAmount"
+          placeholder="Enter loan amount"
           settings={{
             variant: "outlined",
             sx: { mt: 1.2 },
@@ -44,17 +44,20 @@ const LoanDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Performa Invoice of Equipment
+          <strong>Preforma Invoice of Equipment</strong>
         </Typography>
-        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
+        <FileUpload
+          name="performaInvoiceFile"
+          title="Upload Preforma Invoice of Equipment"
+        />
       </div>
 
       <Button
-        type="button"
+        type="submit"
         variant="block"
         color="primary"
         sx={{ mt: 2, mb: 3 }}
-        onClick={props.onClickNext}
+        // onClick={props.onClickNext}
       >
         Next
       </Button>
