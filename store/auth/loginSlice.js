@@ -28,7 +28,7 @@ export const userLogin = createAsyncThunk(
           process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
         )
       );
-
+      console.log("data", data);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response);
@@ -37,46 +37,38 @@ export const userLogin = createAsyncThunk(
 );
 
 const initialState = {
-  user: null,
   token: null,
   refreshToken: null,
   loading: false,
-  is2FA: false,
+  role: null,
+  token_type: null,
 };
 
 export const loginSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
-      state.loading = false;
+    logout: () => {
+      return initialState;
     },
   },
   extraReducers: {
-    [userLogin.pending]: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
-      state.loading = true;
+    [userLogin.pending]: () => {
+      return { ...initialState, loading: true };
     },
     [userLogin.fulfilled]: (state, action) => {
       let data = {
-        user: action.payload.entityId,
         token: action.payload.access_token,
         refreshToken: action.payload.expires_in,
+        role: action.payload.role,
+        token_type: action.payload.token_type,
         loading: false,
       };
 
       return data;
     },
-    [userLogin.rejected]: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
-      state.loading = false;
+    [userLogin.rejected]: () => {
+      return initialState;
     },
   },
 });
