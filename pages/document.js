@@ -13,6 +13,7 @@ import InfoAlert from "../components/ui/InfoAlert";
 import { DocumentSchema } from "../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
 import { uploadDoc } from "../store/Slice/registerSlice";
+import { OTP } from "@/utils/paths";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const DocumentScreen = () => {
@@ -32,7 +33,7 @@ const DocumentScreen = () => {
 
   const nextHandler = ({ mobile, sessionId }) => {
     router.push({
-      pathname: "/otp",
+      pathname: OTP,
     });
     setLocal(
       "tempData",
