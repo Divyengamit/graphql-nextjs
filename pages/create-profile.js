@@ -15,6 +15,7 @@ import HeroGrid from "../components/onboarding/HeroGrid";
 import { ProfileSchema } from "../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserInfo } from "../store/Slice/registerSlice";
+import { DOCUMENT } from "@/utils/paths";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const CreateProfileScreen = () => {
@@ -30,7 +31,7 @@ const CreateProfileScreen = () => {
   const [errorMessage, setErrorMessage] = useState();
 
   const nextHandler = () => {
-    router.push({ pathname: "/document" });
+    router.push({ pathname: DOCUMENT });
   };
 
   const methods = useForm({

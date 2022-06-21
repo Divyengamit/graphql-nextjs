@@ -135,7 +135,7 @@ const SignupForm = (props) => {
         phone number. Message and data rates may apply.
       </Typography>
 
-      <Typography display="flex" alignItems="center">
+      <Typography display="flex" alignItems="center" sx={{ mt: 1 }}>
         <Checkbox
           name="privacy"
           checked={props?.isChecked.privacy}
@@ -148,7 +148,6 @@ const SignupForm = (props) => {
           sx={{
             alignSelf: "center",
             lineHeight: "21.43px",
-            pt: 1.375,
           }}
         >
           I agree to receive marketing communications from Canopi. I can change
