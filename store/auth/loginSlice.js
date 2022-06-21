@@ -28,7 +28,6 @@ export const userLogin = createAsyncThunk(
           process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
         )
       );
-      console.log("data", data);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response);
