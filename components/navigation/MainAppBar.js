@@ -9,6 +9,7 @@ import {
   Container,
   Avatar,
   Tooltip,
+  Link,
 } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -65,7 +66,9 @@ const MainAppBar = ({ userData }) => {
         <Toolbar style={{ padding: 0 }}>
           {/* <img src={logo} style={{ height: 36 }} /> */}
           <div className={"dashboard-canopi-logo"}>
-            <Image src={logo} alt="image" />
+            <Link href="/home">
+              <Image src={logo} alt="image" />
+            </Link>
           </div>
           <FlexBox row sx={{ ml: "auto" }}>
             {/* <img src={docModeLogo} style={{ height: 36, marginRight: 18 }} /> */}

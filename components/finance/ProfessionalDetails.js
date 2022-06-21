@@ -1,7 +1,12 @@
 import React from "react";
 
-import { Button, Paper, Typography, IconButton } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {
+  Button,
+  Paper,
+  Typography,
+  //  IconButton
+} from "@mui/material";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import InputField from "../ui/InputField";
 import OptionsTypes from "../onboarding/OptionsTypes";
@@ -13,15 +18,8 @@ const ProfessionalDetailsForm = (props) => {
   return (
     <Paper variant="card" sx={props.sx} className={style.form_card_div}>
       <FlexBox row>
-        <IconButton
-          aria-label="close"
-          onClick={props?.onBack}
-          sx={{ mr: 2, p: 0 }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
         <Typography variant="h2Bold" color="secondary">
-          Equipment Finance Form
+          Professional Details
         </Typography>
       </FlexBox>
 
@@ -57,13 +55,6 @@ const ProfessionalDetailsForm = (props) => {
             fullWidth: true,
           }}
         />
-      </div>
-
-      <div>
-        <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Degree Certificate
-        </Typography>
-        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
       </div>
 
       <div>
@@ -177,6 +168,12 @@ const ProfessionalDetailsForm = (props) => {
             fullWidth: true,
           }}
         />
+      </div>
+      <div>
+        <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
+          Degree Certificate
+        </Typography>
+        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
       </div>
 
       <Button

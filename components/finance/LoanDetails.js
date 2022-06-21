@@ -4,7 +4,7 @@ import { Button, Paper, Typography, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import InputField from "../ui/InputField";
-import OptionsTypes from "../onboarding/OptionsTypes";
+// import OptionsTypes from "../onboarding/OptionsTypes";
 import FileUpload from "../onboarding/FileUpload";
 import FlexBox from "../ui/FlexBox";
 import style from "../../styles/EquipmentForm.module.css";
@@ -21,13 +21,13 @@ const LoanDetailsForm = (props) => {
           <ArrowBackIcon />
         </IconButton>
         <Typography variant="h2Bold" color="secondary">
-          loan Form
+          Loan Details
         </Typography>
       </FlexBox>
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Loan Amount *
+          Loan Amount *
         </Typography>
 
         <InputField
@@ -44,12 +44,10 @@ const LoanDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Performa Invoice of Equipment
+          Performa Invoice of Equipment
         </Typography>
         <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
       </div>
-
-     
 
       <Button
         type="button"
@@ -57,7 +55,6 @@ const LoanDetailsForm = (props) => {
         color="primary"
         sx={{ mt: 2, mb: 3 }}
         onClick={props.onClickNext}
-
       >
         Next
       </Button>
