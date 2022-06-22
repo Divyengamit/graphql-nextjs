@@ -5,12 +5,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
-  // env: {
-  //   NEXT_PUBLIC_PUBLIC_KEY: process.env.NEXT_PUBLIC_PUBLIC_KEY,
-  // },
-  // api: {
-  //   bodyParser: false,
-  // },
+  images: {
+    domains: ["ppi-test.canopi.in"],
+  },
 };
 
 module.exports = nextConfig;

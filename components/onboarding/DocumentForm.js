@@ -44,10 +44,10 @@ const DocumentForm = (props) => {
             key: "PAN",
             value: "PAN",
           },
-          {
-            key: "AADHAAR",
-            value: "AADHAAR",
-          },
+          // {
+          //   key: "AADHAAR",
+          //   value: "AADHAAR",
+          // },
         ])}
       </InputField>
 
