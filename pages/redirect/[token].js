@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/auth";
+import { setUser } from "@/store/auth/loginSlice";
 import axios from "axios";
 import style from "../../styles/Redirect.module.css";
 import { setRegisterData } from "../../store/Slice/registerSlice";
 import { setLocal } from "../../utils/storage";
+import { Encryption } from "@/utils/EncryptDecrypt";
 
 export default function Redirect() {
   const dispatch = useDispatch();
@@ -54,9 +55,20 @@ export default function Redirect() {
         });
         if (data.access_token) {
           setLocal("access_token", data.access_token);
+          setLocal(
+            "userId",
+            Encryption(
+              JSON.stringify({
+                state: {
+                  userId: tokenVerification?.entityId,
+                },
+              }),
+              process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+            )
+          );
           dispatch(
             setUser({
-              user: tokenVerification?.entityId,
+              role: data?.role,
               token: data?.access_token,
               refreshToken: data?.expires_in,
             })

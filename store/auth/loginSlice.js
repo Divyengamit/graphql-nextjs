@@ -50,26 +50,27 @@ export const loginSlice = createSlice({
     logout: () => {
       return initialState;
     },
+    setUser: (state, action) => {
+      state.role = action.payload.role;
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
+    },
   },
   extraReducers: {
     [userLogin.pending]: () => {
       return { ...initialState, loading: true };
     },
     [userLogin.fulfilled]: (state, action) => {
-      let data = {
-        token: action.payload.access_token,
-        refreshToken: action.payload.expires_in,
-        role: action.payload.role,
-        token_type: action.payload.token_type,
-        loading: false,
-      };
-
-      return data;
+      state.token = action.payload?.access_token;
+      state.refreshToken = action.payload?.expires_in;
+      state.role = action.payload?.role;
+      state.token_type = action.payload?.token_type;
+      state.loading = false;
     },
     [userLogin.rejected]: () => {
       return initialState;
     },
   },
 });
-export const { logout } = loginSlice.actions;
+export const { logout, setUser } = loginSlice.actions;
 export default loginSlice.reducer;
