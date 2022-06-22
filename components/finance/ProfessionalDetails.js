@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Button,
   Paper,
+  // TextField,
   Typography,
   //  IconButton
 } from "@mui/material";
@@ -18,6 +19,13 @@ import style from "../../styles/EquipmentForm.module.css";
 // import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 const ProfessionalDetailsForm = (props) => {
+  // const { watch, setValue, formState } = props;
+  // console.log("watch props data", props);
+  // const [yearValue, setYearValue, formState] = useState(new Date());
+
+  // const handleChange = (newValue) => {
+  //   setValue(newValue);
+  // };
   return (
     <Paper variant="card" sx={props.sx} className={style.form_card_div}>
       <FlexBox row>
@@ -60,19 +68,27 @@ const ProfessionalDetailsForm = (props) => {
         />
       </div>
       {/* <div>
-        <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
+        <Typography variant="h5SemiBold" sx={{ mt: 2, mb: 2 }}>
           <strong>Qualification Year *</strong>
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             views={["year"]}
-            label="Year only"
-            // name="qualificationYear"
-            // value={value}
-            // onChange={(newValue) => {
-            //   setValue(newValue);
-            // }}
-            // renderInput={(params) => <TextField {...params} helperText={null} />}
+            fullWidth
+            // value={yearValue}
+            value={new Date(props.watch.qualificationYear)}
+            onChange={(newValue) => {
+              props.setValue("qualificationYear", newValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="qualificationYear"
+                // error={!!props.formState?.errors["qualificationYear"]}
+                helperText={null}
+                // props.formState?.errors?.["qualificationYear"]?.message
+              />
+            )}
           />
         </LocalizationProvider>
       </div> */}

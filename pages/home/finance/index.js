@@ -48,6 +48,10 @@ const EquipmentFinance = () => {
       ...equipmentData,
     },
   });
+  const { reset, control, watch, formState, handleSubmit, setValue } =
+    methodsProfessional;
+  // const checkData = methodsProfessional.watch();
+  // console.log("checkData", checkData);
   const methodsLoanDetails = useForm({
     resolver: yupResolver(LoanDetailsSchema),
     mode: "onSubmit",
@@ -113,7 +117,11 @@ const EquipmentFinance = () => {
                     onSubmitProfessionalHandler
                   )}
                 >
-                  <ProfessionalDetailsForm />
+                  <ProfessionalDetailsForm
+                    watch={watch}
+                    setValue={setValue}
+                    formState={formState}
+                  />
                 </form>
               </FormProvider>
             </div>
