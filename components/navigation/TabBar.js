@@ -75,7 +75,7 @@ const TabBar = (props) => {
           alignItems="center"
           sx={{ mt: 2.75, mb: 3 }}
         >
-          <Button
+          {/* <Button
             variant="contained"
             sx={{ fontSize: "1rem" }}
             onClick={props?.onApplyClick}
@@ -84,7 +84,7 @@ const TabBar = (props) => {
             <div style={{ width: "24px", height: "24px", marginLeft: "6px" }}>
               <Image src={arrowIcon} alt="image" />
             </div>
-          </Button>
+          </Button> */}
           <Box
             display="flex"
             alignItems="center"

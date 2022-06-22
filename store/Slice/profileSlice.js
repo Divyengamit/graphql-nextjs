@@ -2,6 +2,7 @@ import {
   addAddressService,
   addEmailService,
   addPhoneNumberService,
+  applyCardConfirmService,
   removeAddressService,
   removeInfoService,
   setPrimaryAddressService,
@@ -99,6 +100,19 @@ export const addPhoneNumber = createAsyncThunk(
   }
 );
 
+export const applyCardConfirm = createAsyncThunk(
+  "profile/applyCardConfirm",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await applyCardConfirmService(formData);
+      const data = await response;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
 const initialState = {
   loading: false,
 };
@@ -175,6 +189,16 @@ export const profileSlice = createSlice({
       state.loading = false;
     },
     [addPhoneNumber.rejected]: (state) => {
+      state.loading = false;
+    },
+    // applyCardConfirm
+    [applyCardConfirm.pending]: (state) => {
+      state.loading = true;
+    },
+    [applyCardConfirm.fulfilled]: (state) => {
+      state.loading = false;
+    },
+    [applyCardConfirm.rejected]: (state) => {
       state.loading = false;
     },
   },

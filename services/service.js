@@ -190,3 +190,10 @@ export const addPhoneNumberService = (body) => {
     body
   );
 };
+
+export const applyCardConfirmService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/apply-app-confirm",
+    body
+  );
+};
