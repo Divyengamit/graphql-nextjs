@@ -73,7 +73,6 @@ export const verifyOTP = createAsyncThunk(
 
       return data;
     } catch (error) {
-      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -85,10 +84,8 @@ export const verifyEmailOtp = createAsyncThunk(
     try {
       const response = await verifyEmailOtpService(formData);
       const data = await response.data;
-      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -100,10 +97,8 @@ export const resendOTP = createAsyncThunk(
     try {
       const response = await resendOTPService(formData);
       const data = await response.data;
-      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -115,10 +110,8 @@ export const forgetPassword = createAsyncThunk(
     try {
       const response = await forgetPasswordService(formData);
       const data = await response.data;
-      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -130,10 +123,8 @@ export const resetPassword = createAsyncThunk(
     try {
       const response = await resetPasswordService(formData);
       const data = await response.data;
-      // console.log("data Slice", data);
       return data;
     } catch (error) {
-      // console.log("data Slice", error);
       return rejectWithValue(error?.response);
     }
   }

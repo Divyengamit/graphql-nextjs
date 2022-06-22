@@ -88,20 +88,6 @@ const PasswordScreen = () => {
     });
   };
 
-  // const resetPasswordMutation = useMutation((data) => resetPassword(data), {
-  //   onSuccess: (data) => {
-  //     setShowSuccess(true);
-  //     setSuccessMessage("Password Reset Success , Please Login ");
-  //     setTimeout(() => {
-  //       router.push("/");
-  //     }, 2000);
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
-
   const onSubmit = async (data) => {
     if (urlParamsData?.state?.requestType === "RESET") {
       await methods.trigger("confirmPassword");
@@ -115,11 +101,6 @@ const PasswordScreen = () => {
           password: password,
           passwordConfirm: passwordConfirm,
         });
-        // resetPasswordMutation.mutate({
-        //   emailAddress: urlParamsData?.state?.email,
-        //   password: password,
-        //   passwordConfirm: passwordConfirm,
-        // });
       }
     } else {
       await handleCreatePassword(data);

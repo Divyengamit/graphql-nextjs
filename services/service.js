@@ -161,3 +161,10 @@ export const removeInfoService = (body) => {
     body
   );
 };
+
+export const addPhoneNumberService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/add-aditional-mobile",
+    body
+  );
+};
