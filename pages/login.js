@@ -2,10 +2,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-// import { setUser } from "../store/auth";
-// import { getLocal, setLocal } from "../utils/storage";
-// import { Decryption, Encryption } from "../utils/EncryptDecrypt";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, FormProvider } from "react-hook-form";
 
@@ -23,9 +19,8 @@ import { forgetPassword } from "../store/Slice/registerSlice";
 import { getLocal, setLocal } from "../utils/storage";
 import { Encryption } from "../utils/EncryptDecrypt";
 const img = require("../assets/backgrounds/background_onbording.png");
+
 const LoginScreen = () => {
-  //   const navigate = useNavigate();
-  // const state = useSelector((state) => state);
   const registerState = useSelector(({ register }) => register);
   const loginState = useSelector(({ auth }) => auth);
 
@@ -64,32 +59,6 @@ const LoginScreen = () => {
     }
   }, []);
 
-  // const loginMutation = useMutation((data) => login(data), {
-  //   onSuccess: (data) => {
-  //     const userData = data?.data;
-  //     if (userData?.access_token === "2FA") {
-  //       setMobileNo(userData?.mobileNo);
-  //       setOpen(true);
-  //     } else {
-  //       dispatch(
-  //         setUser({
-  //           user: userData?.entityId,
-  //           token: userData?.access_token,
-  //           refreshToken: userData?.expires_in,
-  //         })
-  //       );
-  //       setShowSuccess(true);
-  //       setSuccessMessage("Login Success");
-
-  //       router.push({ pathname: "/home" });
-  //     }
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
-
   const onForgotPassword = (data) => {
     dispatch(forgetPassword(data)).then((res) => {
       if (!res.error) {
@@ -118,33 +87,6 @@ const LoginScreen = () => {
       }
     });
   };
-
-  // const forgetPasswordMutation = useMutation((data) => forgetPassword(data), {
-  //   onSuccess: (data) => {
-  //     const email = methods.getValues("email");
-  //     setShowSuccess(true);
-  //     setSuccessMessage(data?.data?.message);
-  //     router.push({
-  //       pathname: "/otp",
-  //     });
-  //     setLocal(
-  //       "tempData",
-  //       Encryption(
-  //         JSON.stringify({
-  //           state: {
-  //             email: email,
-  //             requestType: "RESET",
-  //           },
-  //         }),
-  //         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
-  //       )
-  //     );
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
 
   const onSubmitHandler = (values) => {
     dispatch(userLogin({ ...values })).then((res) => {

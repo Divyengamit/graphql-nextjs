@@ -28,7 +28,6 @@ export const userLogin = createAsyncThunk(
           process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
         )
       );
-
       return data;
     } catch (error) {
       return rejectWithValue(error?.response);
@@ -37,48 +36,41 @@ export const userLogin = createAsyncThunk(
 );
 
 const initialState = {
-  user: null,
   token: null,
   refreshToken: null,
   loading: false,
-  is2FA: false,
+  role: null,
+  token_type: null,
 };
 
 export const loginSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
-      state.loading = false;
+    logout: () => {
+      return initialState;
+    },
+    setUser: (state, action) => {
+      state.role = action.payload.role;
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
     },
   },
   extraReducers: {
-    [userLogin.pending]: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
-      state.loading = true;
+    [userLogin.pending]: () => {
+      return { ...initialState, loading: true };
     },
     [userLogin.fulfilled]: (state, action) => {
-      let data = {
-        user: action.payload.entityId,
-        token: action.payload.access_token,
-        refreshToken: action.payload.expires_in,
-        loading: false,
-      };
-
-      return data;
-    },
-    [userLogin.rejected]: (state) => {
-      state.user = null;
-      state.token = null;
-      state.refreshToken = null;
+      state.token = action.payload?.access_token;
+      state.refreshToken = action.payload?.expires_in;
+      state.role = action.payload?.role;
+      state.token_type = action.payload?.token_type;
       state.loading = false;
+    },
+    [userLogin.rejected]: () => {
+      return initialState;
     },
   },
 });
-export const { logout } = loginSlice.actions;
+export const { logout, setUser } = loginSlice.actions;
 export default loginSlice.reducer;

@@ -94,21 +94,7 @@ const OTPScreen = () => {
       }
     });
   };
-  // const otpMutation = useMutation((data) => verifyOTP(data), {
-  //   onSuccess: (data) => {
-  //     const userData = data?.data;
-  //     setShowSuccess(true);
-  //     setSuccessMessage(userData?.message);
-  //     setTimeout(() => {
-  //       nextHandler();
-  //       removeLocal("tempData");
-  //     }, [3000]);
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
+
   const onCloseInfo = () => {
     setError(false);
     setShowSuccess(false);
@@ -127,16 +113,6 @@ const OTPScreen = () => {
       }
     });
   };
-  // const resendMutation = useMutation((mobile) => resendOTP(mobile), {
-  //   onSuccess: (data) => {
-  //     setShowSuccess(true);
-  //     setSuccessMessage(data?.data?.message);
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
 
   // email
   const onVerifyEmailOtp = () => {
@@ -156,17 +132,6 @@ const OTPScreen = () => {
       }
     });
   };
-  // const verifyEmailOtpMutation = useMutation((data) => verifyEmailOtp(data), {
-  //   onSuccess: (data) => {
-  //     setShowSuccess(true);
-  //     setSuccessMessage("Email verified successfully");
-  //     nextHandlerReset();
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
 
   const onResendEmailOtp = (data) => {
     dispatch(forgetPassword(data)).then((res) => {
@@ -180,16 +145,6 @@ const OTPScreen = () => {
       }
     });
   };
-  // const resendEmailOtpMutation = useMutation((data) => forgetPassword(data), {
-  //   onSuccess: (data) => {
-  //     setShowSuccess(true);
-  //     setSuccessMessage(data?.data?.message);
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
 
   const onChangeOtpHandler = (value) => {
     setOtp(value);
@@ -197,32 +152,18 @@ const OTPScreen = () => {
 
   const onSubmitHandler = async () => {
     if (urlParamsData?.state?.requestType === "RESET") {
-      // verifyEmailOtpMutation.mutate({
-      //   emailAddress: urlParamsData?.state.email,
-      //   otp,
-      // });
       await onVerifyEmailOtp();
     } else {
       await onVerifyOTP();
-      // otpMutation.mutate({
-      //   requestId: urlParamsData?.state?.requestId,
-      //   sessionId: urlParamsData?.state?.sessionId,
-      //   mobileNo: urlParamsData?.state?.mobile,
-      //   otp,
-      // });
     }
   };
 
   const resendHandler = async () => {
     if (urlParamsData?.state?.requestType === "RESET") {
-      // resendEmailOtpMutation.mutate({
-      //   emailAddress: urlParamsData?.state?.email,
-      // });
       await onResendEmailOtp({
         emailAddress: urlParamsData?.state?.email,
       });
     } else {
-      // resendMutation.mutate(urlParamsData?.state?.mobile);
       await onResend();
     }
   };
