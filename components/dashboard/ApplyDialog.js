@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Dialog,
@@ -9,47 +9,23 @@ import {
   Divider,
   Grid,
 } from "@mui/material";
-
-import { useMutation, useQuery } from "react-query";
-import { APIContext } from "../../services/api-provider";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import ProgressIndicator from "../ui/ProgressIndicator";
 
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import InfoAlert from "../ui/InfoAlert";
 import Image from "next/image";
-
-const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
+import { applyCardConfirm } from "@/store/Slice/profileSlice";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
+const arrowIcon = require("@/assets/icons/mini_left_arrow.png");
 
 const ApplyDialog = (props) => {
+  const dispatch = useDispatch();
   const [showCards, setShowCards] = useState(false);
-  const { applyCard, applyCardConfirm } = useContext(APIContext);
-  const { user } = useSelector((state) => state.auth);
+  const profileState = useSelector(({ profile }) => profile);
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-
-  // const { data, isLoading, refetch } = useQuery(
-  //   ["applyCard", user],
-  //   () => applyCard(user),
-
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     enabled: false,
-  //   }
-  // );
-
-  const applyCardMutation = useMutation((data) => applyCardConfirm(data), {
-    onSuccess: (data) => {
-      props?.onClose();
-      props?.handleSuccessDialog();
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
 
   const buttonStyle = {
     display: "flex",
@@ -61,13 +37,27 @@ const ApplyDialog = (props) => {
   };
 
   const handleApplyClick = () => {
-    // refetch();
-    // props?.onClose();
-    // props?.handleOtpDialog();
-    applyCardMutation.mutate({
-      entityId: user,
-      applicationType:
-        props?.userData?.applicationType === "NA" && "APP_TYPE_C91",
+    dispatch(
+      applyCardConfirm({
+        entityId: props?.userData?.entityId,
+        applicationType:
+          props?.userData?.applicationType === "NA" && "APP_TYPE_C91",
+      })
+    ).then((res) => {
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(props?.userData?.entityId));
+        props?.onClose();
+        props?.handleSuccessDialog();
+      }
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      setInterval(() => {
+        props?.onClose();
+        props?.handleSuccessDialog();
+        setError(false);
+      }, 1000);
     });
   };
 
@@ -182,7 +172,7 @@ const ApplyDialog = (props) => {
         </DialogContent>
       </Dialog>
 
-      {applyCardMutation.isLoading && <ProgressIndicator />}
+      {profileState?.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError}
         title="Error"

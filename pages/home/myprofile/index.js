@@ -92,7 +92,7 @@ const MyProfile = () => {
         <OtpDialog
           state={open}
           onClose={handleClose}
-          userData={data?.data}
+          userData={data}
           handleSuccessDialog={handleClickOpenSuccess}
         />
 
@@ -101,7 +101,7 @@ const MyProfile = () => {
         <ApplyDialog
           state={openApplyDialog}
           onClose={handleApplyClose}
-          userData={data?.data}
+          userData={data}
           handleOtpDialog={handleClickOpen}
           handleSuccessDialog={handleClickOpenSuccess}
         />
