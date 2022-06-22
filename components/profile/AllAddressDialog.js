@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,11 +10,7 @@ import {
   Chip,
   Box,
 } from "@mui/material";
-
-import { useMutation, useQueryClient } from "react-query";
-import { APIContext } from "../../services/api-provider";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import ProgressIndicator from "../ui/ProgressIndicator";
 import InfoAlert from "../ui/InfoAlert";
 
@@ -25,11 +21,22 @@ import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import RemoveAddressDialog from "./RemoveAddressDialog";
 import AddressDialog from "./AddressDialog";
+import { removeAddress, setPrimaryAddress } from "@/store/Slice/profileSlice";
+import { getLocal } from "@/utils/storage";
+import { Decryption } from "@/utils/EncryptDecrypt";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
 // const cardIcon = require("../../assets/icons/card.png");
 // const infoIcon = require("../../assets/icons/info.png");
 const AllAddressDialog = (props) => {
-  const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const userId = getLocal("userId");
+  const userID = JSON.parse(
+    Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
+
+  const userData = useSelector(({ dashboard }) => dashboard.data);
+  const profileState = useSelector(({ profile }) => profile);
 
   const [removeDialog, setRemoveDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
@@ -39,48 +46,46 @@ const AllAddressDialog = (props) => {
   const [addressDetail, setAddressDetail] = useState();
   const [requestType, setRequestType] = useState();
 
-  const { removeAddress, setPrimaryAddress } = useContext(APIContext);
-  const queryClient = useQueryClient();
-
   const { onClose } = props;
 
-  const removeAddressMutation = useMutation((data) => removeAddress(data), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("dashboard");
-      setRemoveDialog(false);
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage("Removed Successfully ");
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
-
-  const primaryAddressMutation = useMutation(
-    (data) => setPrimaryAddress(data),
-    {
-      onSuccess: (data) => {
-        onClose();
-        setError(true);
-        setErrorTitle("Success");
-        setErrorMessage(" Address set to Primary ");
-        queryClient.invalidateQueries("dashboard");
-      },
-      onError: (error) => {
-        setError(true);
-        setErrorTitle("Error");
-        setErrorMessage(error?.response?.data?.message || error?.message);
-      },
-    }
-  );
+  // const removeAddressMutation = useMutation((data) => removeAddress(data), {
+  //   onSuccess: (data) => {
+  //     queryClient.invalidateQueries("dashboard");
+  //     setRemoveDialog(false);
+  //     setError(true);
+  //     setErrorTitle("Success");
+  //     setErrorMessage("Removed Successfully ");
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorTitle("Error");
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   const handleConfirmRemove = () => {
-    removeAddressMutation.mutate({
-      entityId: props?.userData?.entityId,
-      id: addressDetail?.id,
+    dispatch(
+      removeAddress({
+        entityId: userData?.entityId,
+        id: addressDetail?.id,
+      })
+    ).then((res) => {
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(userID?.state?.userId));
+        setRemoveDialog(false);
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage("Removed Successfully ");
+      }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage("Some thing went wrong!");
+      }
+      setInterval(() => {
+        setError(false);
+        setRemoveDialog(false);
+      }, 1000);
     });
   };
 
@@ -96,9 +101,23 @@ const AllAddressDialog = (props) => {
   );
 
   const handleSetAsPrimary = ({ id }) => {
-    primaryAddressMutation.mutate({
-      entityId: userData?.entityId,
-      id,
+    dispatch(
+      setPrimaryAddress({
+        entityId: userID?.state?.userId,
+        id,
+      })
+    ).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(userID?.state?.userId));
+        onClose();
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage(" Address set to Primary ");
+      }
     });
   };
 
@@ -339,8 +358,7 @@ const AllAddressDialog = (props) => {
         userData={userData}
         address={addressDetail}
       />
-      {(removeAddressMutation.isLoading ||
-        primaryAddressMutation.isLoading) && <ProgressIndicator />}
+      {profileState?.loading && <ProgressIndicator />}
     </>
   );
 };

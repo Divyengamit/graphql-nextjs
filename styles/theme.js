@@ -71,6 +71,13 @@ theme = createTheme({
       display: "block",
     },
 
+    h5Regular: {
+      fontSize: "0.8rem", //Original 1 rem
+      fontFamily: "Work Sans",
+      fontWeight: "400",
+      display: "block",
+    },
+
     h6Bold: {
       fontSize: "1rem", //Original 1.25 rem
       fontFamily: "Work Sans",

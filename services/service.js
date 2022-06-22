@@ -114,3 +114,50 @@ export const fetchDashboardDetailService = async (entityId) => {
 //       });
 //   });
 // };
+
+export const updateProfileService = (data) => {
+  const body = new FormData();
+  for (let key in data) {
+    body.append(key, data[key]);
+  }
+
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/update-profile",
+    body
+  );
+};
+
+export const addAddressService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/save-address",
+    body
+  );
+};
+
+export const setPrimaryAddressService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/set-address-primary",
+    body
+  );
+};
+
+export const removeAddressService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/delete-address",
+    body
+  );
+};
+
+export const addEmailService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/add-aditional-email",
+    body
+  );
+};
+
+export const removeInfoService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/delete-aditional-contact",
+    body
+  );
+};

@@ -35,7 +35,10 @@ const AccountOptions = (props) => {
         justifyContent="space-between"
         sx={{ mt: 2.5, mb: 0.7 }}
       >
-        <Button variant="text" onClick={props?.onSecureAccount}>
+        <Button
+          variant="text"
+          // onClick={props?.onSecureAccount}
+        >
           Security of your Account{" "}
           <div style={{ width: "20px", height: "20px", marginLeft: "16px" }}>
             <Image alt="arrow" src={arrowIcon} />

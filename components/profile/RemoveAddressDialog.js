@@ -11,6 +11,7 @@ import {
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Image from "next/image";
 
 const WarnIcon = require("../../assets/warning.png");
 
@@ -76,11 +77,9 @@ const RemoveAddressDialog = (props) => {
               background: "#F5F7FA",
             }}
           >
-            <img
-              alt="warning"
-              src={WarnIcon}
-              style={{ width: "87px", height: "76px" }}
-            />
+            <div style={{ width: "87px", height: "76px" }}>
+              <Image alt="warning" src={WarnIcon} />
+            </div>
 
             <Typography
               variant="h2Bold"

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,31 +6,26 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-
-import { useMutation, useQueryClient } from "react-query";
-import { APIContext } from "../../services/api-provider";
-
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import ProgressIndicator from "../ui/ProgressIndicator";
 import InfoAlert from "../ui/InfoAlert";
-
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
 import { addAddressSchema } from "../../utils/validation";
 import AddressForm from "./AddressForm";
+import { useDispatch, useSelector } from "react-redux";
+import { addAddress } from "@/store/Slice/profileSlice";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
 const AddressDialog = (props) => {
+  const dispatch = useDispatch();
+  const profileState = useSelector(({ profile }) => profile);
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [primaryCheck, setPrimaryCheck] = useState();
-
-  const { addAddress } = useContext(APIContext);
-  const queryClient = useQueryClient();
 
   const methods = useForm({
     resolver: yupResolver(addAddressSchema),
@@ -72,28 +67,6 @@ const AddressDialog = (props) => {
     );
   }, [props.address, props?.requestType, methods]);
 
-  const addAddressMutation = useMutation((data) => addAddress(data), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("dashboard");
-      methods.reset({});
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage(
-        props?.requestType === "UPDATE"
-          ? "Address updated Successfully "
-          : "Address Added Successfully "
-      );
-      setTimeout(() => {
-        props?.onClose();
-      }, 1000);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
-
   const getAddressType = (type) => {
     switch (type) {
       case "PERMANENT":
@@ -121,7 +94,27 @@ const AddressDialog = (props) => {
       formData["id"] = props?.address?.id;
     }
 
-    addAddressMutation.mutate(formData);
+    dispatch(addAddress(formData)).then((res) => {
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(props?.userData?.entityId));
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage(
+          props?.requestType === "UPDATE"
+            ? "Address updated Successfully "
+            : "Address Added Successfully "
+        );
+        setTimeout(() => {
+          props?.onClose();
+          setError(false);
+        }, 1000);
+      }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+    });
   };
 
   const handleSetAsPrimary = () => {
@@ -194,7 +187,7 @@ const AddressDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {addAddressMutation.isLoading && <ProgressIndicator />}
+      {profileState?.loading && <ProgressIndicator />}
     </>
   );
 };

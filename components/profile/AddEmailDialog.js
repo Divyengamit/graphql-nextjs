@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -8,9 +8,7 @@ import {
   Box,
 } from "@mui/material";
 
-import { useMutation } from "react-query";
-import { APIContext } from "../../services/api-provider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,52 +22,77 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { addEmailSchema } from "../../utils/validation";
+import { addEmailSchema } from "@/utils/validation";
+import { addEmail } from "@/store/Slice/profileSlice";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
 const AddEmailDialog = (props) => {
-  const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const userData = useSelector(({ dashboard }) => dashboard.data);
+  const profileState = useSelector(({ profile }) => profile);
 
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
-
-  const { addEmail } = useContext(APIContext);
 
   const methods = useForm({
     resolver: yupResolver(addEmailSchema),
     mode: "onSubmit",
   });
 
-  const addEmailMutation = useMutation((data) => addEmail(data), {
-    onSuccess: (data) => {
-      methods.reset({});
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage("Email Added Successfully ");
-      setTimeout(() => {
-        props?.onClose();
-      }, 1000);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onCloseDialog = () => {
+    props?.onClose();
+    methods.reset({});
+  };
+
+  // const addEmailMutation = useMutation((data) => addEmail(data), {
+  //   onSuccess: (data) => {
+  //     methods.reset({});
+  //     setError(true);
+  //     setErrorTitle("Success");
+  //     setErrorMessage("Email Added Successfully ");
+  //     setTimeout(() => {
+  //       props?.onClose();
+  //     }, 1000);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorTitle("Error");
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   const onSubmitHandler = (values) => {
     const data = {
       entityId: userData?.entityId,
       emailAddress: values?.emailAddress,
     };
-    addEmailMutation.mutate(data);
+
+    dispatch(addEmail({ ...data })).then((res) => {
+      if (!res.error) {
+        onCloseDialog();
+        dispatch(fetchDashboardDetail(userData?.entityId));
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage("Email Added Successfully ");
+      }
+      if (res.error) {
+        onCloseDialog();
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage("Some thing went wrong!");
+      }
+      setTimeout(() => {
+        setError(false);
+      }, 1000);
+    });
   };
 
   return (
     <>
       <Dialog
         open={props?.state}
-        onClose={props?.onClose}
+        onClose={onCloseDialog}
         fullWidth
         maxWidth={"xs"}
         PaperProps={{
@@ -85,7 +108,7 @@ const AddEmailDialog = (props) => {
             top: 17,
           }}
         >
-          <IconButton aria-label="close" onClick={props?.onClose}>
+          <IconButton aria-label="close" onClick={onCloseDialog}>
             <ArrowBackIcon sx={{ width: "16px", height: "16px" }} />
           </IconButton>
           <Typography variant="h5SemiBold" sx={{ color: "#5F7388" }}>
@@ -95,7 +118,7 @@ const AddEmailDialog = (props) => {
 
         <IconButton
           aria-label="close"
-          onClick={props?.onClose}
+          onClick={onCloseDialog}
           sx={{
             position: "absolute",
             right: 20,
@@ -147,7 +170,7 @@ const AddEmailDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {addEmailMutation.isLoading && <ProgressIndicator />}
+      {profileState?.loading && <ProgressIndicator />}
     </>
   );
 };

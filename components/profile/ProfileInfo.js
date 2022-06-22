@@ -1,15 +1,12 @@
 import React from "react";
 import { Typography, IconButton, Box, Stack, Button } from "@mui/material";
-
-import { baseUrl } from "../../services/api-provider";
-
 import { styled } from "@mui/material/styles";
-
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import Image from "next/image";
 
 const galleryIcon = require("@/assets/icons/gallery.png");
 const uploadImage = require("@/assets/upload_profile.png");
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
 const ProfileInfo = (props) => {
   const Input = styled("input")({
@@ -30,15 +27,14 @@ const ProfileInfo = (props) => {
         sx={{ mt: 1 }}
       >
         <Box display="flex" flexDirection="column" sx={{ flex: 0.2 }}>
-          <div
-            style={{
-              width: "117px",
-              height: "117px",
-              borderRadius: "50%",
-            }}
-          >
+          <div>
             <Image
               alt="Profile"
+              width="117px"
+              height="117px"
+              style={{
+                borderRadius: "50%",
+              }}
               src={
                 props?.userData?.profilePicturePath
                   ? baseUrl + props?.userData?.profilePicturePath

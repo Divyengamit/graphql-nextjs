@@ -154,6 +154,24 @@ const EquipmentFinanceSchema = yup.object().shape({
   //   .required("Business ownership status  is required"),
   // bankStmtFile: yup.mixed(),
 });
+const addAddressSchema = yup.object().shape({
+  address1: yup.string().required("Address is Required"),
+  address2: yup.string().required("Address 2 is Required"),
+  city: yup.string().required("Town / City is Required"),
+  pincode: yup
+    .string()
+    .trim()
+    .required("Pincode is required")
+    .test("len", "Enter Valid Pincode", (val) => val?.length === 6),
+});
+
+const addEmailSchema = yup.object().shape({
+  emailAddress: yup
+    .string()
+    .trim()
+    .email("Invalid Email")
+    .required("Email is required"),
+});
 
 export {
   loginSchema,
@@ -163,4 +181,6 @@ export {
   DocumentSchema,
   resetPasswordSchema,
   EquipmentFinanceSchema,
+  addAddressSchema,
+  addEmailSchema,
 };

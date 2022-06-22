@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Paper, Typography, Box } from "@mui/material";
-import { useMutation } from "react-query";
-import { APIContext } from "@/services/api-provider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import AddressDialog from "./AddressDialog";
 import theme from "styles/theme";
@@ -21,10 +19,21 @@ import EmailInfo from "./EmailInfo";
 import PhoneNumberInfo from "./PhoneNumberInfo";
 import ConfirmAlert from "../ui/ConfirmAlert";
 import { useRouter } from "next/router";
+import { removeInfo, updateProfile } from "@/store/Slice/profileSlice";
+import { SECURITY } from "@/utils/paths";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
+import { getLocal } from "@/utils/storage";
+import { Decryption } from "@/utils/EncryptDecrypt";
 
 const Myprofile = (props) => {
-  const userData = useSelector(({ dashboard }) => dashboard.data);
+  const userId = getLocal("userId");
+  const userID = JSON.parse(
+    Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
   const router = useRouter();
+  const dispatch = useDispatch();
+  const userData = useSelector(({ dashboard }) => dashboard.data);
+  const profileState = useSelector(({ profile }) => profile);
 
   const [addressDialog, setAddressDialog] = useState(false);
   const [allAddressDialog, setAllAddressDialog] = useState(false);
@@ -44,40 +53,62 @@ const Myprofile = (props) => {
 
   const [removeItem, setRemoveItem] = useState();
 
-  const { updateProfile, removeInfo } = useContext(APIContext);
+  // const uploadProfileMutation = useMutation((data) => updateProfile(data), {
+  //   onSuccess: (data) => {
+  //     setError(true);
+  //     setErrorTitle("Success");
+  //     setErrorMessage("Uploaded Successfully ");
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorTitle("Error");
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
-  const uploadProfileMutation = useMutation((data) => updateProfile(data), {
-    onSuccess: (data) => {
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage("Uploaded Successfully ");
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
-
-  const removeInfoMutation = useMutation((data) => removeInfo(data), {
-    onSuccess: (data) => {
-      setShowConfirm(false);
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage("Removed Successfully ");
-    },
-    onError: (error) => {
-      setShowConfirm(false);
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  // const removeInfoMutation = useMutation((data) => removeInfo(data), {
+  //   onSuccess: (data) => {
+  //     setShowConfirm(false);
+  //     setError(true);
+  //     setErrorTitle("Success");
+  //     setErrorMessage("Removed Successfully ");
+  //   },
+  //   onError: (error) => {
+  //     setShowConfirm(false);
+  //     setError(true);
+  //     setErrorTitle("Error");
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   const handleRemoveInfo = ({ id }) => {
-    removeInfoMutation.mutate({
-      entityId: userData?.entityId,
-      id,
+    console.log("id -", id, "userData?.entityId", userData?.entityId);
+    // removeInfoMutation.mutate({
+    //   entityId: userData?.entityId,
+    //   id,
+    // });
+    dispatch(
+      removeInfo({
+        entityId: userData?.entityId,
+        id,
+      })
+    ).then((res) => {
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(userID?.state?.userId));
+        setShowConfirm(false);
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage("Removed Successfully ");
+      }
+      if (res.error) {
+        setShowConfirm(false);
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+      setInterval(() => {
+        setError(false);
+      }, 1000);
     });
   };
 
@@ -102,15 +133,27 @@ const Myprofile = (props) => {
   }, [userData?.addresses]);
 
   const handleSecureAccount = () => {
-    // navigate("/home/security", {
-    //   state: { userData },
-    // });
+    router.push(SECURITY);
   };
 
   const handleUploadProfile = ({ target }) => {
-    uploadProfileMutation.mutate({
-      entityId: userData?.entityId,
-      profilePicture: target.files[0],
+    dispatch(
+      updateProfile({
+        entityId: userData?.entityId,
+        profilePicture: target.files[0],
+      })
+    ).then((res) => {
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(userID?.state?.userId));
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage("Uploaded Successfully ");
+      }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage("Some thing went wrong!");
+      }
     });
   };
 
@@ -231,9 +274,7 @@ const Myprofile = (props) => {
         onClose={() => setShowConfirm(false)}
         onConfirm={() => handleRemoveInfo(removeItem)}
       />
-      {(uploadProfileMutation.isLoading || removeInfoMutation.isLoading) && (
-        <ProgressIndicator />
-      )}
+      {profileState?.loading && <ProgressIndicator />}
     </Box>
   );
 };
