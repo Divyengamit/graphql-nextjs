@@ -8,6 +8,7 @@ const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
 const cardImage = require("../../assets/CardLogo.png");
 
 const TabBar = (props) => {
+  console.log('tabBar Props', props);
   const menuButtonStyle = {
     mr: 2.5,
     fontSize: "1rem",
@@ -49,6 +50,16 @@ const TabBar = (props) => {
             onClick={props?.onDashboardClick}
           >
             Dashboard
+          </Button>
+          <Button
+            variant={props?.showDashboard ? "text" : "contained"}
+            sx={{
+              ...menuButtonStyle,
+              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+            }}
+            onClick={props?.onTransactionClick}
+          >
+            Users
           </Button>
           <Button
             variant={props?.showDashboard ? "text" : "contained"}
