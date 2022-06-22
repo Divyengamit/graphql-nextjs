@@ -155,6 +155,53 @@ const EquipmentFinanceSchema = yup.object().shape({
   // bankStmtFile: yup.mixed(),
 });
 
+const ProfessionalSchema = yup.object().shape({
+  universityName: yup.string().trim().required("University name required"),
+  qualificationYear: yup
+    .string()
+    .trim()
+    .required("Qualification year required")
+    .test("len", "Enter Valid Year", (val) => val?.length === 4),
+  registrationNo: yup.string().trim().required("Registration number required"),
+  stateMedicalCouncil: yup
+    .string()
+    .trim()
+    .required(" State medical council required"),
+  experience: yup
+    .string()
+    .trim()
+    .required(" Years of experience required")
+    .min(0, "Min value 0."),
+  hospitalName: yup
+    .string()
+    .trim()
+    .required("Hospital/Diagnostic/Clinic Centre name required"),
+  hospitalVintage: yup
+    .string()
+    .trim()
+    .required("Hospital/Diagnostic/Clinic Centre Vintage required"),
+  businessStatus: yup
+    .string()
+    .trim()
+    .required("Business ownership status  is required"),
+  degreeCertificateFile: yup.mixed().required("Degree Certificate required"),
+});
+
+const LoanDetailsSchema = yup.object().shape({
+  loanAmount: yup
+    .string()
+    .trim()
+    .max(9, "Enter valid amount")
+    .required("Loan amount is required"),
+  performaInvoiceFile: yup.mixed().required("Performa Invoice required"),
+});
+const FinancialDocumentSchema = yup.object().shape({
+  addressProof: yup.mixed().required("Address proof required"),
+  bankStmtFile: yup.mixed().required("Bank statement required"),
+  ownershipProofFile: yup.mixed().required("Ownership proof required"),
+  itrFile: yup.mixed().required("ITR required"),
+});
+
 export {
   loginSchema,
   SignUpSchema,
@@ -163,4 +210,7 @@ export {
   DocumentSchema,
   resetPasswordSchema,
   EquipmentFinanceSchema,
+  ProfessionalSchema,
+  LoanDetailsSchema,
+  FinancialDocumentSchema,
 };

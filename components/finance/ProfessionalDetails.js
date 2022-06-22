@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Button,
   Paper,
+  // TextField,
   Typography,
   //  IconButton
 } from "@mui/material";
@@ -13,19 +14,29 @@ import OptionsTypes from "../onboarding/OptionsTypes";
 import FileUpload from "../onboarding/FileUpload";
 import FlexBox from "../ui/FlexBox";
 import style from "../../styles/EquipmentForm.module.css";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 const ProfessionalDetailsForm = (props) => {
+  // const { watch, setValue, formState } = props;
+  // console.log("watch props data", props);
+  // const [yearValue, setYearValue, formState] = useState(new Date());
+
+  // const handleChange = (newValue) => {
+  //   setValue(newValue);
+  // };
   return (
     <Paper variant="card" sx={props.sx} className={style.form_card_div}>
       <FlexBox row>
         <Typography variant="h2Bold" color="secondary">
-          Professional Details
+          <strong>Professional Details</strong>
         </Typography>
       </FlexBox>
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          University Name *
+          <strong>University Name *</strong>
         </Typography>
 
         <InputField
@@ -42,7 +53,7 @@ const ProfessionalDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Qualification Year *
+          <strong>Qualification Year *</strong>
         </Typography>
 
         <InputField
@@ -56,10 +67,35 @@ const ProfessionalDetailsForm = (props) => {
           }}
         />
       </div>
+      {/* <div>
+        <Typography variant="h5SemiBold" sx={{ mt: 2, mb: 2 }}>
+          <strong>Qualification Year *</strong>
+        </Typography>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            views={["year"]}
+            fullWidth
+            // value={yearValue}
+            value={new Date(props.watch.qualificationYear)}
+            onChange={(newValue) => {
+              props.setValue("qualificationYear", newValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="qualificationYear"
+                // error={!!props.formState?.errors["qualificationYear"]}
+                helperText={null}
+                // props.formState?.errors?.["qualificationYear"]?.message
+              />
+            )}
+          />
+        </LocalizationProvider>
+      </div> */}
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Registration Number *
+          <strong>Registration Number *</strong>
         </Typography>
 
         <InputField
@@ -76,7 +112,7 @@ const ProfessionalDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          State Medical Council *
+          <strong>State Medical Council *</strong>
         </Typography>
 
         <InputField
@@ -93,7 +129,7 @@ const ProfessionalDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Experience *
+          <strong>Experience *</strong>
         </Typography>
 
         <InputField
@@ -111,7 +147,7 @@ const ProfessionalDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Hospital/Diagnostic/Clinic Centre Name *
+          <strong>Hospital/Diagnostic/Clinic Centre Name *</strong>
         </Typography>
 
         <InputField
@@ -128,7 +164,7 @@ const ProfessionalDetailsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Hospital/Diagnostic/Clinic Centre Vintage *
+          <strong>Hospital/Diagnostic/Clinic Centre Vintage *</strong>
         </Typography>
 
         <InputField
@@ -153,9 +189,9 @@ const ProfessionalDetailsForm = (props) => {
         </InputField>
       </div>
 
-      <div>
+      {/* <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Business Ownership Status *
+          <strong>Business Ownership Status *</strong>
         </Typography>
 
         <InputField
@@ -168,20 +204,54 @@ const ProfessionalDetailsForm = (props) => {
             fullWidth: true,
           }}
         />
-      </div>
+      </div> */}
+
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          Degree Certificate
+          <strong>Business Ownership Status *</strong>
         </Typography>
-        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
+
+        <InputField
+          name="businessStatus"
+          settings={{
+            fullWidth: true,
+            select: true,
+            sx: {
+              mt: 1.2,
+              ".MuiInputBase-input": {
+                paddingLeft: 4,
+                paddingTop: 3,
+                paddingBottom: 3,
+              },
+            },
+          }}
+        >
+          {OptionsTypes([
+            { key: "SP", value: "Sole Proprietorship" },
+            { key: "PF", value: "Partnership Firm" },
+            { key: "LLP", value: "LLP" },
+            { key: "Pvt", value: "Private Limited Company" },
+            { key: "Plc", value: "Public Limited Company" },
+          ])}
+        </InputField>
+      </div>
+
+      <div>
+        <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
+          <strong>Degree Certificate</strong>
+        </Typography>
+        <FileUpload
+          name="degreeCertificateFile"
+          title="Upload Degree Certificate"
+        />
       </div>
 
       <Button
-        type="button"
+        type="submit"
         variant="block"
         color="primary"
         sx={{ mt: 2, mb: 3 }}
-        onClick={props.onClickNext}
+        // onClick={props.onClickNext}
       >
         Next
       </Button>

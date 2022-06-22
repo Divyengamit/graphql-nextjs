@@ -1,12 +1,12 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useState } from "react";
 import { Container, Grid, Paper } from "@mui/material";
 
-import { Decryption, Encryption } from "../../../utils/EncryptDecrypt";
-import { setLocal, getLocal } from "../../../utils/storage";
+import { Decryption } from "../../../utils/EncryptDecrypt";
+import { getLocal } from "../../../utils/storage";
 import { useRouter } from "next/router";
 
-import { useMutation } from "react-query";
-import { APIContext } from "../../../services/api-provider";
+// import { useMutation } from "react-query";
+// import { APIContext } from "../../../services/api-provider";
 
 import EquipmentForm from "../../../components/finance/EquipmentForm";
 import FooterMain from "../../../components/navigation/FooterMain";
@@ -22,20 +22,27 @@ import { EquipmentFinanceSchema } from "../../../utils/validation";
 import { styled } from "@mui/material/styles";
 import style from "../../../styles/EquipmentForm.module.css";
 import Alert from "../../../components/ui/Alert";
+import { useDispatch, useSelector } from "react-redux";
+import { checkEquipmentFinanceEligibility } from "@/store/Slice/equipmentSlice";
 
 const FinanceScreen = () => {
+  const dispatch = useDispatch();
+  const equipmentState = useSelector(({ equipment }) => equipment);
   const router = useRouter();
   const routerParams = getLocal("tempData");
-
-  const [urlParamsData, setUrlParamsData] = useState(
-    JSON.parse(
-      Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-    )
+  const urlParamsData = JSON.parse(
+    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+  const userId = getLocal("userId");
+  const userID = JSON.parse(
+    Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
+
+  console.log("userID data", userID);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
-  const { applyEquipmentFinance } = useContext(APIContext);
+  // const { applyEquipmentFinance } = useContext(APIContext);
 
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -46,7 +53,6 @@ const FinanceScreen = () => {
     defaultValues: {
       profileType: "Salaried",
       highestQualification: "MBBS",
-      hospitalVintage: "Less than 3 years",
       experience: 0,
     },
   });
@@ -56,22 +62,26 @@ const FinanceScreen = () => {
     ...theme.typography.body2,
   }));
 
-  const applyEquipmentFinanceMutation = useMutation(
-    (data) => applyEquipmentFinance(data),
-    {
-      onSuccess: (data) => {
-        setShowSuccess(true);
-        setSuccessMessage(data?.data?.message);
-        setTimeout(() => {
-          router.push({ pathname: "/home" });
-        }, 2000);
-      },
-      onError: (error) => {
-        setErrorMessage(error?.response?.data?.message || error?.message);
-        setError(true);
-      },
-    }
-  );
+  const nextHandler = () => {
+    router.push({ pathname: "/home/finance" });
+  };
+
+  // const applyEquipmentFinanceMutation = useMutation(
+  //   (data) => applyEquipmentFinance(data),
+  //   {
+  //     onSuccess: (data) => {
+  //       setShowSuccess(true);
+  //       setSuccessMessage(data?.data?.message);
+  //       setTimeout(() => {
+  //         router.push({ pathname: "/home" });
+  //       }, 2000);
+  //     },
+  //     onError: (error) => {
+  //       setErrorMessage(error?.response?.data?.message || error?.message);
+  //       setError(true);
+  //     },
+  //   }
+  // );
 
   // const onSubmitHandler = useCallback(
   //   (data) => {
@@ -84,30 +94,30 @@ const FinanceScreen = () => {
   //   [urlParamsData, applyEquipmentFinanceMutation]
   // );
 
-  const onSubmitHandler = () => {
-    router.push({ pathname: "/home/finance" });
-    // if (!isChecked.agreement || !isChecked.privacy) {
-    //   setCheckError(true);
-    //   return;
-    // }
-    // dispatch(
-    //   registerUser({ ...data, termConditionConsent: isChecked.agreement })
-    // ).then((res) => {
-
-    //   if (!res.error) {
-    //     nextHandler(res?.payload?.data);
-    //   }
-    //   if (res?.error) {
-    //     setErrorMessage(res?.payload?.data?.message || res?.error?.message);
-    //     setError(true);
-    //   }
-    // });
+  const onSubmitHandler = (data) => {
+    console.log("onSubmitHandler data", data);
+    let tempForm = {
+      entityId: userID?.state?.userId,
+      profileType: "SAL",
+      highestQualification: data?.highestQualification,
+      experience: data?.experience,
+      annualIncome: data?.annualIncome,
+    };
+    dispatch(checkEquipmentFinanceEligibility(tempForm)).then((res) => {
+      console.log("res dataaaaaaaa", res);
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        // router.push({ pathname: "/home" });
+        // setTimeout(() => {
+        //   router.push({ pathname: "/home" });
+        // }, 4000);
+      }
+      if (!res.error) {
+        nextHandler();
+      }
+    });
   };
-  // const nextHandler = ({ requestId }) => {
-  //   router.push({ pathname: "/finance" });
-
-  // };
-
   const onClose = () => {
     setIsOpen(false);
   };
@@ -153,7 +163,7 @@ const FinanceScreen = () => {
             </Item>
           </Grid>
         </Grid>
-        {applyEquipmentFinanceMutation?.isLoading && <ProgressIndicator />}
+        {equipmentState?.loading && <ProgressIndicator />}
         <InfoAlert
           show={showError || showSuccess}
           title={!showSuccess ? "Error" : "Success"}

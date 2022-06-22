@@ -23,32 +23,62 @@ import ProfessionalDetailsForm from "../../../components/finance/ProfessionalDet
 import LoanDetailsForm from "../../../components/finance/LoanDetails";
 import FinancialDocumentsForm from "../../../components/finance/FinancialDocuments";
 import { useRouter } from "next/router";
-const steps = [
-  "Professional Details",
-  "Loan Details",
-  "Personal and Financial Documents",
-];
+import {
+  FinancialDocumentSchema,
+  LoanDetailsSchema,
+  ProfessionalSchema,
+} from "@/utils/validation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useSelector } from "react-redux";
+const steps = ["Professional Details", "Loan Details", "Upload Documents"];
 const sx = { mt: 2, mb: 2, mr: "auto", ml: "auto" };
 
 const EquipmentFinance = () => {
   const router = useRouter();
   const [activeStep, setActivestep] = useState(0);
+  const equipmentData = useSelector(({ equipment }) => equipment.equipmentData);
   const routerParams = getLocal("tempData");
   const urlParamsData = JSON.parse(
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
-  const methods = useForm({
-    // resolver: yupResolver(EquipmentFinanceSchema),
+  const methodsProfessional = useForm({
+    resolver: yupResolver(ProfessionalSchema),
     mode: "onSubmit",
     defaultValues: {
-      profileType: "Salaried",
-      highestQualification: "MBBS",
-      hospitalVintage: "Less than 3 years",
-      experience: 0,
+      ...equipmentData,
+    },
+  });
+  const { reset, control, watch, formState, handleSubmit, setValue } =
+    methodsProfessional;
+  // const checkData = methodsProfessional.watch();
+  // console.log("checkData", checkData);
+  const methodsLoanDetails = useForm({
+    resolver: yupResolver(LoanDetailsSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      ...equipmentData,
+    },
+  });
+  const methodsFinancialDocuments = useForm({
+    resolver: yupResolver(FinancialDocumentSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      ...equipmentData,
     },
   });
 
-  const onSubmitHandler = () => {};
+  const onSubmitProfessionalHandler = (data) => {
+    console.log("onSubmitProfessionalHandler data", data);
+    onClickNext();
+  };
+  const onSubmitLoanDetailsHandler = (data) => {
+    console.log("onSubmitLoanDetailsHandler data", data);
+    onClickNext();
+  };
+  const onSubmitFinancialDocumentsHandler = (data) => {
+    console.log("onSubmitFinancialDocumentsHandler data", data);
+    onClickNext();
+  };
 
   const onClickNext = () => {
     setActivestep(activeStep + 1);
@@ -81,29 +111,44 @@ const EquipmentFinance = () => {
 
           {activeStep === 0 && (
             <div className={style.form_main_div}>
-              <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-                  <ProfessionalDetailsForm onClickNext={onClickNext} />
+              <FormProvider {...methodsProfessional}>
+                <form
+                  onSubmit={methodsProfessional.handleSubmit(
+                    onSubmitProfessionalHandler
+                  )}
+                >
+                  <ProfessionalDetailsForm
+                    watch={watch}
+                    setValue={setValue}
+                    formState={formState}
+                  />
                 </form>
               </FormProvider>
             </div>
           )}
-
           {activeStep === 1 && (
             <div className={style.form_main_div}>
-              <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-                  <LoanDetailsForm onClickNext={onClickNext} onBack={onBack} />
+              <FormProvider {...methodsLoanDetails}>
+                <form
+                  onSubmit={methodsLoanDetails.handleSubmit(
+                    onSubmitLoanDetailsHandler
+                  )}
+                >
+                  <LoanDetailsForm onBack={onBack} />
                 </form>
               </FormProvider>
             </div>
           )}
           {activeStep === 2 && (
             <div className={style.form_main_div}>
-              <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
+              <FormProvider {...methodsFinancialDocuments}>
+                <form
+                  onSubmit={methodsFinancialDocuments.handleSubmit(
+                    onSubmitFinancialDocumentsHandler
+                  )}
+                >
                   <FinancialDocumentsForm
-                    onClickNext={onClickNext}
+                    // onClickNext={onClickNext}
                     onBack={onBack}
                   />
                 </form>
