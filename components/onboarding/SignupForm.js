@@ -150,6 +150,8 @@ const SignupForm = (props) => {
             lineHeight: "21.43px",
           }}
         >
+          {/* I agree to receive marketing communications from Canopi. I can change
+          my notification preferences at any time. */}
           I agree to provide my consent to receive my CIR on my behalf.{" "}
           <a
             href="https://canopi.in/terms-of-service.html"
