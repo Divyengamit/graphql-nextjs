@@ -48,21 +48,6 @@ const AllAddressDialog = (props) => {
 
   const { onClose } = props;
 
-  // const removeAddressMutation = useMutation((data) => removeAddress(data), {
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries("dashboard");
-  //     setRemoveDialog(false);
-  //     setError(true);
-  //     setErrorTitle("Success");
-  //     setErrorMessage("Removed Successfully ");
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorTitle("Error");
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
-
   const handleConfirmRemove = () => {
     dispatch(
       removeAddress({

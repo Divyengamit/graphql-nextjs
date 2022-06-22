@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -7,11 +7,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-
-import { useMutation, useQueryClient } from "react-query";
-import { APIContext } from "../../services/api-provider";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -25,54 +21,59 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { addPhoneNumberSchema } from "../../utils/validation";
+import { addPhoneNumber } from "@/store/Slice/profileSlice";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
 const AddPhoneDialog = (props) => {
-  const { userData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const userData = useSelector(({ dashboard }) => dashboard.data);
+  const profileState = useSelector(({ profile }) => profile);
 
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
-
-  const { addPhoneNumber } = useContext(APIContext);
-  const queryClient = useQueryClient();
 
   const methods = useForm({
     resolver: yupResolver(addPhoneNumberSchema),
     mode: "onSubmit",
   });
 
-  const addPhoneNumberMutation = useMutation((data) => addPhoneNumber(data), {
-    onSuccess: (data) => {
-      methods.reset({});
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage("Phone Number Added Successfully ");
-      setTimeout(() => {
-        props?.onClose();
-      }, 1000);
-      queryClient.invalidateQueries("dashboard");
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onCloseDialog = () => {
+    props?.onClose();
+    methods.reset({});
+  };
 
   const onSubmitHandler = (values) => {
     const data = {
       entityId: userData?.entityId,
       mobileNo: "91" + values?.mobileNo,
     };
-
-    addPhoneNumberMutation.mutate(data);
+    props?.onClose();
+    dispatch(addPhoneNumber(data)).then((res) => {
+      if (!res.error) {
+        dispatch(fetchDashboardDetail(userData?.entityId));
+        methods.reset({});
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage("Phone Number Added Successfully ");
+      }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.error?.payload?.message || res?.error?.message);
+      }
+      setTimeout(() => {
+        onCloseDialog();
+        setError(false);
+      }, 1000);
+    });
   };
 
   return (
     <>
       <Dialog
         open={props?.state}
-        onClose={props?.onClose}
+        onClose={onCloseDialog}
         fullWidth
         maxWidth={"xs"}
         PaperProps={{
@@ -88,7 +89,7 @@ const AddPhoneDialog = (props) => {
             top: 17,
           }}
         >
-          <IconButton aria-label="close" onClick={props?.onClose}>
+          <IconButton aria-label="close" onClick={onCloseDialog}>
             <ArrowBackIcon sx={{ width: "16px", height: "16px" }} />
           </IconButton>
           <Typography variant="h5SemiBold" sx={{ color: "#5F7388" }}>
@@ -98,7 +99,7 @@ const AddPhoneDialog = (props) => {
 
         <IconButton
           aria-label="close"
-          onClick={props?.onClose}
+          onClick={onCloseDialog}
           sx={{
             position: "absolute",
             right: 20,
@@ -150,7 +151,7 @@ const AddPhoneDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {addPhoneNumberMutation.isLoading && <ProgressIndicator />}
+      {profileState?.loading && <ProgressIndicator />}
     </>
   );
 };

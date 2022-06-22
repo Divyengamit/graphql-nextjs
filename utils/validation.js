@@ -173,6 +173,19 @@ const addEmailSchema = yup.object().shape({
     .required("Email is required"),
 });
 
+const addPhoneNumberSchema = yup.object().shape({
+  mobileNo: yup
+    .string()
+    .trim()
+    .matches(/^[6-9]/, {
+      message: "Invalid Mobile number",
+      excludeEmptyString: false,
+    })
+    .max(10, "Enter Valid Number")
+    .required("Phone number is required")
+    .test("len", "Enter Valid Phone number", (val) => val?.length === 10),
+});
+
 export {
   loginSchema,
   SignUpSchema,
@@ -183,4 +196,5 @@ export {
   EquipmentFinanceSchema,
   addAddressSchema,
   addEmailSchema,
+  addPhoneNumberSchema,
 };

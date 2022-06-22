@@ -53,40 +53,7 @@ const Myprofile = (props) => {
 
   const [removeItem, setRemoveItem] = useState();
 
-  // const uploadProfileMutation = useMutation((data) => updateProfile(data), {
-  //   onSuccess: (data) => {
-  //     setError(true);
-  //     setErrorTitle("Success");
-  //     setErrorMessage("Uploaded Successfully ");
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorTitle("Error");
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
-
-  // const removeInfoMutation = useMutation((data) => removeInfo(data), {
-  //   onSuccess: (data) => {
-  //     setShowConfirm(false);
-  //     setError(true);
-  //     setErrorTitle("Success");
-  //     setErrorMessage("Removed Successfully ");
-  //   },
-  //   onError: (error) => {
-  //     setShowConfirm(false);
-  //     setError(true);
-  //     setErrorTitle("Error");
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
-
   const handleRemoveInfo = ({ id }) => {
-    console.log("id -", id, "userData?.entityId", userData?.entityId);
-    // removeInfoMutation.mutate({
-    //   entityId: userData?.entityId,
-    //   id,
-    // });
     dispatch(
       removeInfo({
         entityId: userData?.entityId,

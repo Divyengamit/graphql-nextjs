@@ -18,7 +18,6 @@ import Transactions from "@/components/transactions/Transactions";
 const MyProfile = () => {
   const dispatch = useDispatch();
   const { role } = useSelector(({ auth }) => auth);
-  console.log("role", role);
 
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);

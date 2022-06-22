@@ -45,23 +45,6 @@ const AddEmailDialog = (props) => {
     methods.reset({});
   };
 
-  // const addEmailMutation = useMutation((data) => addEmail(data), {
-  //   onSuccess: (data) => {
-  //     methods.reset({});
-  //     setError(true);
-  //     setErrorTitle("Success");
-  //     setErrorMessage("Email Added Successfully ");
-  //     setTimeout(() => {
-  //       props?.onClose();
-  //     }, 1000);
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorTitle("Error");
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //   },
-  // });
-
   const onSubmitHandler = (values) => {
     const data = {
       entityId: userData?.entityId,

@@ -1,6 +1,7 @@
 import {
   addAddressService,
   addEmailService,
+  addPhoneNumberService,
   removeAddressService,
   removeInfoService,
   setPrimaryAddressService,
@@ -85,6 +86,19 @@ export const removeInfo = createAsyncThunk(
   }
 );
 
+export const addPhoneNumber = createAsyncThunk(
+  "profile/addPhoneNumber",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await addPhoneNumberService(formData);
+      const data = await response;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
 const initialState = {
   loading: false,
 };
@@ -151,6 +165,16 @@ export const profileSlice = createSlice({
       state.loading = false;
     },
     [removeInfo.rejected]: (state) => {
+      state.loading = false;
+    },
+    // addPhoneNumber
+    [addPhoneNumber.pending]: (state) => {
+      state.loading = true;
+    },
+    [addPhoneNumber.fulfilled]: (state) => {
+      state.loading = false;
+    },
+    [addPhoneNumber.rejected]: (state) => {
       state.loading = false;
     },
   },
