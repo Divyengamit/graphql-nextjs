@@ -7,8 +7,10 @@ import InputField from "../ui/InputField";
 import OptionsTypes from "../onboarding/OptionsTypes";
 import FileUpload from "../onboarding/FileUpload";
 import FlexBox from "../ui/FlexBox";
+import { useStyles } from "@/utils/removeEncrCss";
 
 const EquipmentForm = (props) => {
+  const classes = useStyles();
   return (
     <Paper variant="card" sx={props.sx}>
       <FlexBox row>
@@ -93,6 +95,7 @@ const EquipmentForm = (props) => {
 
       <InputField
         type="number"
+        className={classes.input}
         name="experience"
         InputProps={{ inputProps: { min: 0, max: 10 } }}
         placeholder="Enter Years of Experience"
@@ -108,6 +111,7 @@ const EquipmentForm = (props) => {
 
       <InputField
         type="number"
+        className={classes.input}
         name="annualIncome"
         placeholder="Enter Annual Income"
         settings={{

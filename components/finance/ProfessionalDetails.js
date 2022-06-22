@@ -17,8 +17,10 @@ import style from "../../styles/EquipmentForm.module.css";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { useStyles } from "@/utils/removeEncrCss";
 
 const ProfessionalDetailsForm = (props) => {
+  const classes = useStyles();
   const { watch, setValue, formState } = props;
 
   const form = watch();
@@ -84,6 +86,7 @@ const ProfessionalDetailsForm = (props) => {
         </Typography>
 
         <InputField
+          className={classes.input}
           type="number"
           name="registrationNo"
           placeholder="Enter Registration Number:"
@@ -118,6 +121,7 @@ const ProfessionalDetailsForm = (props) => {
         </Typography>
 
         <InputField
+          className={classes.input}
           type="number"
           name="experience"
           InputProps={{ inputProps: { min: 0, max: 10 } }}

@@ -8,8 +8,10 @@ import InputField from "../ui/InputField";
 import FileUpload from "../onboarding/FileUpload";
 import FlexBox from "../ui/FlexBox";
 import style from "../../styles/EquipmentForm.module.css";
+import { useStyles } from "@/utils/removeEncrCss";
 
 const LoanDetailsForm = (props) => {
+  const classes = useStyles();
   return (
     <Paper variant="card" sx={props.sx} className={style.form_card_div}>
       <FlexBox row>
@@ -31,6 +33,7 @@ const LoanDetailsForm = (props) => {
         </Typography>
 
         <InputField
+          className={classes.input}
           type="number"
           name="loanAmount"
           placeholder="Enter loan amount"
