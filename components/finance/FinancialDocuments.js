@@ -27,10 +27,10 @@ const FinancialDocumentsForm = (props) => {
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          <strong>Address Proof</strong> (PAN Card/ Driving License/ Passport/
-          Voter's ID/ Aadhaar Card)
+          <strong>Address Proof</strong> (Driving License/ Passport/ Voter's ID/
+          Aadhaar Card)
         </Typography>
-        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
+        <FileUpload name="addressProof" title="Upload Address Proof" />
       </div>
 
       <div>
@@ -46,22 +46,22 @@ const FinancialDocumentsForm = (props) => {
           Maintenance Bill with share certificate / Municipal tax bill/Share
           certificate)
         </Typography>
-        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
+        <FileUpload name="ownershipProofFile" title="Upload Ownership Proof" />
       </div>
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
           <strong>ITR</strong>
         </Typography>
-        <FileUpload name="bankStmtFile" title="Upload Bank Statment" />
+        <FileUpload name="itrFile" title="Upload ITR" />
       </div>
 
       <Button
-        type="button"
+        type="submit"
         variant="block"
         color="primary"
         sx={{ mt: 2, mb: 3 }}
-        onClick={props.onClickNext}
+        // onClick={props.onClickNext}
       >
         Submit
       </Button>

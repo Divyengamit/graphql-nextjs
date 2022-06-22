@@ -43,8 +43,17 @@ const EquipmentForm = (props) => {
         }}
       >
         {OptionsTypes([
-          { key: "Salaried", value: "Salaried" },
-          { key: "Self_Employed ", value: "Self Employed" },
+          { value: "Salaried", key: "SAL" },
+          { value: "Self Employed Professional", key: "SEP" },
+          { value: "Self Employed Non Professional", key: "SENP" },
+          { value: "Public Ltd ", key: "PUB" },
+          { value: "Pvt Ltd", key: "PVT" },
+          { value: "Partnership Firm ", key: "P1" },
+          { value: "Hindu Undivided Family", key: "HUF" },
+          { value: "Proprietorship ", key: "SP" },
+          { value: "Trust ", key: "T" },
+          { value: "Society ", key: "SOCIETY" },
+          { value: "Limited Liability Partnership ", key: "LLP" },
         ])}
       </InputField>
 
