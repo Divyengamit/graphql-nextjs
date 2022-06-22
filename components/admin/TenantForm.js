@@ -1,13 +1,10 @@
 import React from "react";
 import { Button, Typography, Box } from "@mui/material";
-
 import InputField from "../ui/InputField";
 import OptionsTypes from "../onboarding/OptionsTypes";
 import FlexBox from "../ui/FlexBox";
-
 import AddIcon from "@mui/icons-material/Add";
-
-import stateList from "../../data/states";
+import stateList from "@/data/states";
 
 const TenantForm = (props) => {
   return (

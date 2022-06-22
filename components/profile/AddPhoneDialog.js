@@ -1,97 +1,71 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import {
+  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   Typography,
   Box,
 } from "@mui/material";
+
 import { useMutation, useQueryClient } from "react-query";
 import { APIContext } from "../../services/api-provider";
+import { useSelector } from "react-redux";
+
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import InputField from "../ui/InputField";
 import ProgressIndicator from "../ui/ProgressIndicator";
 import InfoAlert from "../ui/InfoAlert";
+
+import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { addTenantSchema } from "@/utils/validation";
-import TenantForm from "./TenantForm";
 
-const TenantDialog = (props) => {
+import { addPhoneNumberSchema } from "../../utils/validation";
+
+const AddPhoneDialog = (props) => {
+  const { userData } = useSelector((state) => state.auth);
+
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
-  const { addTenant } = useContext(APIContext);
+  const { addPhoneNumber } = useContext(APIContext);
   const queryClient = useQueryClient();
 
   const methods = useForm({
-    resolver: yupResolver(addTenantSchema),
+    resolver: yupResolver(addPhoneNumberSchema),
     mode: "onSubmit",
-    defaultValues: {
-      state: "AP",
-    },
   });
 
-  useEffect(() => {
-    let updatedFields = {};
-    let formatMobileNo = props?.formData?.mobileNo?.substring(2);
-
-    for (let key in props?.formData) {
-      if (props?.formData[key]) {
-        updatedFields[key] = props?.formData[key];
-        if (key === "mobileNo") {
-          updatedFields[key] = formatMobileNo;
-        }
-      }
-    }
-    methods.reset(
-      props?.requestType === "UPDATE"
-        ? updatedFields
-        : {
-            state: "AP",
-          }
-    );
-  }, [methods, props]);
-
-  const addTenantMutation = useMutation((data) => addTenant(data), {
+  const addPhoneNumberMutation = useMutation((data) => addPhoneNumber(data), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("dashboard");
+      methods.reset({});
       setError(true);
       setErrorTitle("Success");
-      setErrorMessage(
-        props?.requestType === "UPDATE"
-          ? "Tenant updated Successfully "
-          : "Tenant Added Successfully "
-      );
+      setErrorMessage("Phone Number Added Successfully ");
       setTimeout(() => {
         props?.onClose();
       }, 1000);
-      methods.reset({
-        state: "AP",
-      });
+      queryClient.invalidateQueries("dashboard");
     },
     onError: (error) => {
       setError(true);
       setErrorTitle("Error");
       setErrorMessage(error?.response?.data?.message || error?.message);
-      methods.reset({
-        state: "AP",
-      });
     },
   });
 
   const onSubmitHandler = (values) => {
     const data = {
-      ...values,
+      entityId: userData?.entityId,
       mobileNo: "91" + values?.mobileNo,
     };
-    if (props?.requestType === "UPDATE") {
-      data["id"] = props?.formData?.id;
-    }
 
-    addTenantMutation.mutate(data);
+    addPhoneNumberMutation.mutate(data);
   };
 
   return (
@@ -100,7 +74,7 @@ const TenantDialog = (props) => {
         open={props?.state}
         onClose={props?.onClose}
         fullWidth
-        maxWidth={"sm"}
+        maxWidth={"xs"}
         PaperProps={{
           style: { borderRadius: "15px" },
         }}
@@ -111,7 +85,7 @@ const TenantDialog = (props) => {
           sx={{
             position: "absolute",
             left: 20,
-            top: 12,
+            top: 17,
           }}
         >
           <IconButton aria-label="close" onClick={props?.onClose}>
@@ -128,7 +102,7 @@ const TenantDialog = (props) => {
           sx={{
             position: "absolute",
             right: 20,
-            top: 8,
+            top: 12,
           }}
         >
           <CloseIcon />
@@ -138,12 +112,34 @@ const TenantDialog = (props) => {
           color="secondary"
           sx={{ pb: 1.1, px: 5, pt: 3.25, textAlign: "center" }}
         >
-          Add Tenant
+          Add Phone Number
         </DialogTitle>
-        <DialogContent sx={{ px: 5, py: 3.75 }}>
+        <DialogContent sx={{ px: 5, py: 3.75, mt: 1 }}>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
-              <TenantForm requestType={props?.requestType} />
+              <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
+                New Phone Number
+              </Typography>
+
+              <InputField
+                type="number"
+                name="mobileNo"
+                placeholder="Enter New Phone Number"
+                settings={{
+                  variant: "outlined",
+                  sx: { mt: 1.2 },
+                  fullWidth: true,
+                }}
+              />
+
+              <Button
+                type="submit"
+                variant="block"
+                color="secondary"
+                sx={{ mt: 3 }}
+              >
+                <AddIcon /> Add Phone Number
+              </Button>
             </form>
           </FormProvider>
         </DialogContent>
@@ -154,9 +150,9 @@ const TenantDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {addTenantMutation.isLoading && <ProgressIndicator />}
+      {addPhoneNumberMutation.isLoading && <ProgressIndicator />}
     </>
   );
 };
 
-export default TenantDialog;
+export default AddPhoneDialog;

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Grid, Box, Button } from "@mui/material";
 
-import { useLocation, useNavigate } from "react-router";
+// import { useLocation, useNavigate } from "react-router";
 
 import AddIcon from "@mui/icons-material/Add";
 import TenantDialog from "./TenantDialog";
+import { useRouter } from "next/router";
+import { HOME, USERS } from "@/utils/paths";
 
-const AdminTabBar = (props) => {
+const AdminTabBar = () => {
+  const router = useRouter();
+  const pathname = router.pathname;
+
   const [addTenantDialog, setAddTenantDialog] = useState(false);
-
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const menuButtonStyle = {
     mr: 2.5,
@@ -45,7 +47,9 @@ const AdminTabBar = (props) => {
                   ? "#FFFFFF"
                   : "#2C3E50",
             }}
-            onClick={() => navigate("/home")}
+            onClick={() => {
+              router.push(HOME);
+            }}
           >
             Dashboard
           </Button>
@@ -55,7 +59,9 @@ const AdminTabBar = (props) => {
               ...menuButtonStyle,
               color: pathname === "/home/users" ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={() => navigate("/home/users")}
+            onClick={() => {
+              router.push(USERS);
+            }}
           >
             Users
           </Button>

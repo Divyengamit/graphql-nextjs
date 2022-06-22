@@ -10,7 +10,6 @@ import {
 import { useMutation, useQuery } from "react-query";
 import { APIContext } from "../../services/api-provider";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../../store/auth";
 
 // import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
@@ -65,13 +64,13 @@ const OtpDialog = (props) => {
   const auth2aMutation = useMutation((data) => auth_2FA(data), {
     onSuccess: (data) => {
       const userData = data?.data;
-      dispatch(
-        setUser({
-          user: userData?.entityId,
-          token: userData?.access_token,
-          refreshToken: userData?.expires_in,
-        })
-      );
+      // dispatch(
+      //   setUser({
+      //     user: userData?.entityId,
+      //     token: userData?.access_token,
+      //     refreshToken: userData?.expires_in,
+      //   })
+      // );
       setError(true);
       setErrorMessage("Login Successfull");
 

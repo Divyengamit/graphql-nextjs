@@ -86,22 +86,16 @@ const TabBar = (props) => {
           alignItems="center"
           sx={{ mt: 2.75, mb: 3 }}
         >
-          {/* <Button
-                variant="contained"
-                sx={{ fontSize: "20px", mr: 3 }}
-                onClick={() => onEnable2faHandler(data?.data)}
-              >
-                Enable 2FA
-              </Button> */}
-          {/* <Button
+          <Button
             variant="contained"
             sx={{ fontSize: "1rem" }}
             onClick={props?.onApplyClick}
           >
             Apply{" "}
-            <Image src={arrowIcon} height={24} width={24} alt="image" />
-          </Button> */}
-
+            <div style={{ width: "24px", height: "24px", marginLeft: "6px" }}>
+              <Image src={arrowIcon} alt="image" />
+            </div>
+          </Button>
           <Box
             display="flex"
             alignItems="center"
@@ -113,19 +107,16 @@ const TabBar = (props) => {
               ml: 2,
             }}
           >
-            {/* <img
-              src={cardImage}
+            <div
               style={{
                 width: "90px",
                 height: "37px",
                 marginRight: "8px",
                 objectFit: "contain",
               }}
-            /> */}
-            <div>
-              <Image src={cardImage} height={37} width={90} alt="image" />
+            >
+              <Image src={cardImage} alt="image" />
             </div>
-
             <div>
               <Typography
                 variant="h5"
