@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { equipmentFinanceEligibility } from "../../services/service";
+import {
+  equipmentFinance,
+  equipmentFinanceEligibility,
+} from "../../services/service";
 
 export const checkEquipmentFinanceEligibility = createAsyncThunk(
   "equipment/checkEquipmentFinanceEligibility",
@@ -7,6 +10,20 @@ export const checkEquipmentFinanceEligibility = createAsyncThunk(
     console.log("formData data", formData);
     try {
       const response = await equipmentFinanceEligibility(formData);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
+export const applyEquipmentFinance = createAsyncThunk(
+  "equipment/applyEquipmentFinance",
+  async (formData, { rejectWithValue }) => {
+    console.log("formData data", formData);
+    try {
+      const response = await equipmentFinance(formData);
       const data = await response.data;
       return data;
     } catch (error) {
@@ -23,7 +40,7 @@ const initialState = {
     experience: "",
     annualIncome: "",
     universityName: "",
-    qualificationYear: "",
+    qualificationYear: null,
     registrationNo: "",
     stateMedicalCouncil: "",
     hospitalName: "",
@@ -52,6 +69,7 @@ export const equipmentSlice = createSlice({
     // },
   },
   extraReducers: {
+    // FinanceEligibility
     [checkEquipmentFinanceEligibility.pending]: (state) => {
       state.eligibilityData = null;
       state.loading = true;
@@ -62,6 +80,20 @@ export const equipmentSlice = createSlice({
     },
     [checkEquipmentFinanceEligibility.rejected]: (state) => {
       state.eligibilityData = null;
+      state.loading = false;
+    },
+    // EquipmentFinance
+    [applyEquipmentFinance.pending]: (state) => {
+      state.equipmentData = null;
+      state.loading = true;
+    },
+    [applyEquipmentFinance.fulfilled]: (state, action) => {
+      console.log("applyEquipmentFinance payload", action.payload);
+      state.equipmentData = action.payload;
+      state.loading = false;
+    },
+    [applyEquipmentFinance.rejected]: (state) => {
+      state.equipmentData = null;
       state.loading = false;
     },
   },

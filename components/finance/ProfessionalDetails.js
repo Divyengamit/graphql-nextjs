@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Button,
   Paper,
-  // TextField,
+  TextField,
   Typography,
   //  IconButton
 } from "@mui/material";
@@ -14,18 +14,15 @@ import OptionsTypes from "../onboarding/OptionsTypes";
 import FileUpload from "../onboarding/FileUpload";
 import FlexBox from "../ui/FlexBox";
 import style from "../../styles/EquipmentForm.module.css";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 const ProfessionalDetailsForm = (props) => {
-  // const { watch, setValue, formState } = props;
-  // console.log("watch props data", props);
-  // const [yearValue, setYearValue, formState] = useState(new Date());
+  const { watch, setValue, formState } = props;
 
-  // const handleChange = (newValue) => {
-  //   setValue(newValue);
-  // };
+  const form = watch();
+  console.log("form form", form.qualificationYear);
   return (
     <Paper variant="card" sx={props.sx} className={style.form_card_div}>
       <FlexBox row>
@@ -50,48 +47,36 @@ const ProfessionalDetailsForm = (props) => {
           }}
         />
       </div>
-
       <div>
-        <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          <strong>Qualification Year *</strong>
-        </Typography>
-
-        <InputField
-          type="number"
-          name="qualificationYear"
-          placeholder="Enter Qualification Year"
-          settings={{
-            variant: "outlined",
-            sx: { mt: 1.2 },
-            fullWidth: true,
-          }}
-        />
-      </div>
-      {/* <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2, mb: 2 }}>
           <strong>Qualification Year *</strong>
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             views={["year"]}
-            fullWidth
             // value={yearValue}
-            value={new Date(props.watch.qualificationYear)}
+            value={form?.qualificationYear}
+            minDate={new Date("1950")}
+            maxDate={new Date("2022")}
             onChange={(newValue) => {
+              //   var currentYear = new Date(newValue).getFullYear();
+              console.log("newValue", newValue);
               props.setValue("qualificationYear", newValue);
             }}
             renderInput={(params) => (
               <TextField
+                fullWidth
                 {...params}
                 name="qualificationYear"
-                // error={!!props.formState?.errors["qualificationYear"]}
-                helperText={null}
-                // props.formState?.errors?.["qualificationYear"]?.message
+                error={!!props.formState?.errors["qualificationYear"]}
+                helperText={
+                  props.formState?.errors?.["qualificationYear"]?.message
+                }
               />
             )}
           />
         </LocalizationProvider>
-      </div> */}
+      </div>
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>

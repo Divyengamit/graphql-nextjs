@@ -52,6 +52,7 @@ const EquipmentFinance = () => {
     methodsProfessional;
   // const checkData = methodsProfessional.watch();
   // console.log("checkData", checkData);
+  console.log("equipmentData", equipmentData);
   const methodsLoanDetails = useForm({
     resolver: yupResolver(LoanDetailsSchema),
     mode: "onSubmit",
