@@ -37,7 +37,6 @@ const Dashboard = (props) => {
                 <label className="color-text">+91 01234 56789</label> for more
                 details.
               </Typography>
-              )
               <div className="close-icon-div">
                 <Image src={closeIcon} alt="logo" />
               </div>

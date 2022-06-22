@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   Box,
   Typography,
@@ -9,14 +10,35 @@ import {
   MenuItem,
   ListItemIcon,
 } from "@mui/material";
-
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-
-import { stringAvatar } from "../../utils/Avatar";
-import Image from "next/image";
+import { stringAvatar } from "@/utils/Avatar";
+import { useRouter } from "next/router";
+import { setLocal } from "@/utils/storage";
+import { Encryption } from "@/utils/EncryptDecrypt";
+import { MYPROFILE } from "@/utils/paths";
 const logoutIcon = require("../../assets/icons/logout.png");
 
 const ProfileMenu = (props) => {
+  const router = useRouter();
+
+  const handleProfileClick = () => {
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            userData: props?.userData,
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
+    router.push({
+      pathname: MYPROFILE,
+    });
+    props?.onClose();
+  };
+
   return (
     <Menu
       sx={{
@@ -147,6 +169,7 @@ const ProfileMenu = (props) => {
             pt: 1.75,
             pb: 1.75,
           }}
+          onClick={handleProfileClick}
         >
           <ListItemIcon>
             <AccountCircleOutlinedIcon

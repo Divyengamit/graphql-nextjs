@@ -14,7 +14,6 @@ import {
 import { useRouter } from "next/router";
 
 import { useDispatch } from "react-redux";
-import { logout } from "../../store/auth";
 
 import FlexBox from "../ui/FlexBox";
 import ProfileMenu from "./ProfileMenu";
@@ -25,6 +24,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
 import Image from "next/image";
+import { logout } from "@/store/auth/loginSlice";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
