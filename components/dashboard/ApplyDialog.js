@@ -48,16 +48,14 @@ const ApplyDialog = (props) => {
         dispatch(fetchDashboardDetail(props?.userData?.entityId));
         props?.onClose();
         props?.handleSuccessDialog();
+        props?.onClose();
       }
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
-      }
-      setInterval(() => {
         props?.onClose();
         props?.handleSuccessDialog();
-        setError(false);
-      }, 1000);
+      }
     });
   };
 

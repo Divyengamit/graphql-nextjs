@@ -73,9 +73,6 @@ const Myprofile = (props) => {
         setErrorTitle("Error");
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
-      setInterval(() => {
-        setError(false);
-      }, 1000);
     });
   };
 

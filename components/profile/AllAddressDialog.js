@@ -66,11 +66,8 @@ const AllAddressDialog = (props) => {
         setError(true);
         setErrorTitle("Error");
         setErrorMessage("Some thing went wrong!");
-      }
-      setInterval(() => {
-        setError(false);
         setRemoveDialog(false);
-      }, 1000);
+      }
     });
   };
 

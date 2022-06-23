@@ -37,7 +37,7 @@ const AccountOptions = (props) => {
       >
         <Button
           variant="text"
-          // onClick={props?.onSecureAccount}
+          onClick={props?.onSecureAccount}
         >
           Security of your Account{" "}
           <div style={{ width: "20px", height: "20px", marginLeft: "16px" }}>
