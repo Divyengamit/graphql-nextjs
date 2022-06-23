@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -8,9 +8,6 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-
-import { useMutation } from "react-query";
-import { APIContext } from "../../services/api-provider";
 
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,10 +21,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import OptionsTypes from "../onboarding/OptionsTypes";
 
 import { securityQuestionsSchema } from "../../utils/validation";
+import OptionsTypesText from "../onboarding/OptionsTypeText";
+import { securityQuestions } from "@/store/Slice/profileSlice";
+import { useDispatch } from "react-redux";
 
 const SecurityQuestionsDialog = (props) => {
-  const { securityQuestions } = useContext(APIContext);
-
+  const dispatch = useDispatch();
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
@@ -41,41 +40,40 @@ const SecurityQuestionsDialog = (props) => {
     },
   });
 
-  const setQuestionsMutation = useMutation((data) => securityQuestions(data), {
-    onSuccess: (data) => {
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage("Security Questions are Set Successfully ");
-      methods.reset({});
-      setTimeout(() => {
-        props?.onClose();
-      }, 2000);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
-
   const onSubmitHandler = (values) => {
-    setQuestionsMutation.mutate({
+    const tempForm = {
       entityId: props?.userData?.entityId,
       question1Id: values?.question1,
       answer1: values?.question1_answer,
       question2Id: values?.question2,
       answer2: values?.question2_answer,
+    };
+    dispatch(securityQuestions(tempForm)).then((res) => {
+      if (!res.error) {
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage("Security Questions are Set Successfully ");
+        methods.reset({});
+        setTimeout(() => {
+          props?.onClose();
+        }, 2000);
+      }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
     });
   };
 
   const getQuestions = () => {
     const formattedQuestions = [];
-    for (let item of props?.userData?.securityQuestions) {
+    props?.userData?.securityQuestions.forEach((element) => {
       formattedQuestions.push({
-        text: item?.question,
-        value: item?.id,
+        value: element?.id,
+        text: element?.question,
       });
-    }
+    });
     return formattedQuestions;
   };
 
@@ -135,7 +133,7 @@ const SecurityQuestionsDialog = (props) => {
                   },
                 }}
               >
-                {OptionsTypes(getQuestions().slice(0, 5))}
+                {OptionsTypesText(getQuestions().slice(0, 5))}
               </InputField>
 
               <InputField
@@ -170,7 +168,7 @@ const SecurityQuestionsDialog = (props) => {
                   },
                 }}
               >
-                {OptionsTypes(getQuestions().slice(5, 10))}
+                {OptionsTypesText(getQuestions().slice(5, 10))}
               </InputField>
 
               <InputField
@@ -200,7 +198,7 @@ const SecurityQuestionsDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {setQuestionsMutation.isLoading && <ProgressIndicator />}
+      {/* {setQuestionsMutation.isLoading && <ProgressIndicator />} */}
     </>
   );
 };

@@ -232,3 +232,10 @@ export const applyCardService = (entityId) => {
     `/canopi-payments/portal/dashboard/apply-app/${entityId}`
   );
 };
+
+export const securityQuestionsService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/add-security-questions",
+    body
+  );
+};
