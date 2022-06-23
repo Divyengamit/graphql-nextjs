@@ -264,6 +264,12 @@ a {
   .admin-panel-record-details-main-div .MuiPaper-elevation {
     width: 100%;
   }
+  .user-admin-panel-record-details-main-div .MuiPaper-elevation {
+    width: 100%;
+  }
+  .user-admin-panel-record-details-main-div .MuiBox-root {
+    width: 100%;
+  }
   .add-tenant-btn {
     display: flex;
     padding-top: 0px !important;

@@ -374,6 +374,7 @@ const Users = () => {
       fetchCustomerServicesMutation.mutate({
         entityId: selectedData?.entityId,
       });
+      toggleDrawer()
     },
     [userTableData, fetchCustomerServicesMutation]
   );
@@ -595,7 +596,7 @@ const Users = () => {
           </Paper>
         </Grid>
       </Grid>
-      <Drawer anchor="right" open={anchorElDrawer} onClose={toggleDrawer}>
+      <Drawer anchor="right" open={anchorElDrawer} onClose={toggleDrawer} className="user-admin-panel-record-details-main-div">
         {list()}
       </Drawer>
 
