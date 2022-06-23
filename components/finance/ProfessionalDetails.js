@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Button,
+  IconButton,
   Paper,
   TextField,
   Typography,
   //  IconButton
 } from "@mui/material";
-// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import InputField from "../ui/InputField";
 import OptionsTypes from "../onboarding/OptionsTypes";
@@ -18,16 +19,35 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useStyles } from "@/utils/removeEncrCss";
-
+import ConfirmAlert from "../ui/ConfirmAlert";
+import { useRouter } from "next/router";
 const ProfessionalDetailsForm = (props) => {
+  const router = useRouter();
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmTitle, setConfirmTitle] = useState();
+  const [confirmMessage, setConfirmMessage] = useState();
   const classes = useStyles();
   const { watch, setValue, formState } = props;
 
   const form = watch();
-  console.log("form form", form.qualificationYear);
+  const onBackConfirm = () => {
+    setShowConfirm(false);
+    router.push({ pathname: "/home/eligibility" });
+  };
   return (
     <Paper variant="card" sx={props.sx} className={style.form_card_div}>
       <FlexBox row>
+        <IconButton
+          aria-label="close"
+          onClick={() => {
+            setShowConfirm(true);
+            setConfirmTitle("Confirm");
+            setConfirmMessage("Are you sure you want to exit?");
+          }}
+          sx={{ mr: 2, p: 0 }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
         <Typography variant="h2Bold" color="secondary">
           <strong>Professional Details</strong>
         </Typography>
@@ -56,13 +76,10 @@ const ProfessionalDetailsForm = (props) => {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             views={["year"]}
-            // value={yearValue}
             value={form?.qualificationYear}
             minDate={new Date("1950")}
             maxDate={new Date("2022")}
             onChange={(newValue) => {
-              //   var currentYear = new Date(newValue).getFullYear();
-              console.log("newValue", newValue);
               props.setValue("qualificationYear", newValue);
             }}
             renderInput={(params) => (
@@ -73,6 +90,8 @@ const ProfessionalDetailsForm = (props) => {
                 error={!!props.formState?.errors["qualificationYear"]}
                 helperText={
                   props.formState?.errors?.["qualificationYear"]?.message
+                    ? "Qualification year required "
+                    : null
                 }
               />
             )}
@@ -178,23 +197,6 @@ const ProfessionalDetailsForm = (props) => {
         </InputField>
       </div>
 
-      {/* <div>
-        <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-          <strong>Business Ownership Status *</strong>
-        </Typography>
-
-        <InputField
-          type="text"
-          name="businessStatus"
-          placeholder=" Business Ownership Status"
-          settings={{
-            variant: "outlined",
-            sx: { mt: 1.2 },
-            fullWidth: true,
-          }}
-        />
-      </div> */}
-
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
           <strong>Business Ownership Status *</strong>
@@ -235,12 +237,21 @@ const ProfessionalDetailsForm = (props) => {
         />
       </div>
 
+      <ConfirmAlert
+        show={showConfirm}
+        title={confirmTitle}
+        body={confirmMessage}
+        buttonConfirmText="Yes"
+        buttonCancelText="No"
+        onClose={() => setShowConfirm(false)}
+        onConfirm={onBackConfirm}
+      />
+
       <Button
         type="submit"
         variant="block"
         color="primary"
         sx={{ mt: 2, mb: 3 }}
-        // onClick={props.onClickNext}
       >
         Next
       </Button>

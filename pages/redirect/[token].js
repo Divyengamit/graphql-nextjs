@@ -76,8 +76,7 @@ export default function Redirect() {
           return router.push({ pathname: "/home" });
         }
       };
-      fetchData().catch((err) => {
-        console.log(err);
+      fetchData().catch(() => {
         return router.push("/signup");
       });
     }

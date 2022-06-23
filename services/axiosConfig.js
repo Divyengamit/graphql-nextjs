@@ -1,5 +1,8 @@
+/* eslint-disable no-undef */
 import axios from "axios";
 import { getLocal } from "../utils/storage";
+import { useRouter } from "next/router";
+
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
 });
@@ -8,18 +11,37 @@ axiosInstance.interceptors.request.use(function (config) {
   config.headers = {
     "Content-Type": "application/json",
   };
-  // if (token) {
+  // if (token) {r
   //   config.headers["Authorization"] = `Bearer ${token}`;
   // }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   //  else {
   //   localStorage.clear();
   // }
 
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const {
+      // config,
+      response: { status },
+    } = error;
+    // const originalRequest = config;
+    if (status === 401) {
+      localStorage.clear();
+      const router = useRouter();
+      router.push({ pathname: "/" });
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
 export default axiosInstance;
 
