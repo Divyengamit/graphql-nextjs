@@ -251,6 +251,11 @@ const changePasswordSchema = yup.object().shape({
     .required("Please type password again"),
 });
 
+const securityQuestionsSchema = yup.object().shape({
+  question1_answer: yup.string().trim().required("Type your the answer"),
+  question2_answer: yup.string().trim().required("Type your the answer"),
+});
+
 export {
   loginSchema,
   SignUpSchema,
@@ -266,4 +271,5 @@ export {
   addEmailSchema,
   addPhoneNumberSchema,
   changePasswordSchema,
+  securityQuestionsSchema,
 };

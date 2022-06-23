@@ -9,6 +9,7 @@ import {
   enable_2FAService,
   removeAddressService,
   removeInfoService,
+  securityQuestionsService,
   setPrimaryAddressService,
   updateProfileService,
   verify_2FAService,
@@ -184,6 +185,19 @@ export const applyCard = createAsyncThunk(
   }
 );
 
+export const securityQuestions = createAsyncThunk(
+  "profile/securityQuestions",
+  async (entityId, { rejectWithValue }) => {
+    try {
+      const response = await securityQuestionsService(entityId);
+      const data = await response;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response);
+    }
+  }
+);
+
 const initialState = {
   loading: false,
 };
@@ -320,6 +334,16 @@ export const profileSlice = createSlice({
       state.loading = false;
     },
     [applyCard.rejected]: (state) => {
+      state.loading = false;
+    },
+    // securityQuestions
+    [securityQuestions.pending]: (state) => {
+      state.loading = true;
+    },
+    [securityQuestions.fulfilled]: (state) => {
+      state.loading = false;
+    },
+    [securityQuestions.rejected]: (state) => {
       state.loading = false;
     },
   },
