@@ -197,3 +197,38 @@ export const applyCardConfirmService = (body) => {
     body
   );
 };
+
+export const changePasswordService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/change-password",
+    body
+  );
+};
+
+export const enable_2FAService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/enable-disable-2fa",
+    body
+  );
+};
+
+export const verify_2FAService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/verify-2fa-code",
+    body
+  );
+};
+
+export const auth_2FAservice = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/registration/v1/authenticate-by-2fa",
+    body
+  );
+};
+
+// re send OTP
+export const applyCardService = (entityId) => {
+  return axiosInstance.get(
+    `/canopi-payments/portal/dashboard/apply-app/${entityId}`
+  );
+};

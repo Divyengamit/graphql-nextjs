@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Typography,
   Dialog,
@@ -6,117 +7,119 @@ import {
   DialogContent,
   Button,
 } from "@mui/material";
-
-import { useMutation, useQuery } from "react-query";
-import { APIContext } from "../../services/api-provider";
-import { useSelector, useDispatch } from "react-redux";
-
-// import { useNavigate } from "react-router";
 import { useRouter } from "next/router";
-
 import OtpInput from "react-otp-input";
-
 import FlexBox from "../ui/FlexBox";
 import ProgressIndicator from "../ui/ProgressIndicator";
 import InfoAlert from "../ui/InfoAlert";
+import {
+  applyCard,
+  applyCardConfirm,
+  auth_2FA,
+  verify_2FA,
+} from "@/store/Slice/profileSlice";
+import { setUser } from "@/store/auth/loginSlice";
+import { HOME } from "@/utils/paths";
 
 const OtpDialog = (props) => {
-  const OTPLength =
-    props?.requestType == "2FA" || props?.requestType == "Auth_2FA" ? 4 : 6;
-
-  const { applyCardConfirm, applyCard, auth_2FA, verify_2FA } =
-    useContext(APIContext);
-  const { user } = useSelector((state) => state.auth);
-  // const navigate = useNavigate();
   const router = useRouter();
   const dispatch = useDispatch();
+  const entityId = props?.userData?.entityId;
+  const profileState = useSelector(({ profile }) => profile);
+
+  const OTPLength =
+    props?.requestType == "2FA" || props?.requestType == "Auth_2FA" ? 4 : 6;
 
   const [otp, setOtp] = useState("");
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  const { isLoading, refetch } = useQuery(
-    ["applyCard", user],
-    () => applyCard(user),
-    {
-      refetchOnWindowFocus: false,
-      enabled: false,
-    }
-  );
-
   const handleChange = (otp) => {
     setOtp(otp);
   };
 
-  const applyCardMutation = useMutation((data) => applyCardConfirm(data), {
-    onSuccess: (data) => {
-      props?.onClose();
-      props?.handleSuccessDialog();
-    },
-    onError: (error) => {
-      props?.onClose();
-      props?.handleSuccessDialog();
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onResendOtp = () => {
+    dispatch(applyCard(entityId));
+  };
 
-  const auth2aMutation = useMutation((data) => auth_2FA(data), {
-    onSuccess: (data) => {
-      const userData = data?.data;
-      // dispatch(
-      //   setUser({
-      //     user: userData?.entityId,
-      //     token: userData?.access_token,
-      //     refreshToken: userData?.expires_in,
-      //   })
-      // );
-      setError(true);
-      setErrorMessage("Login Successfull");
+  const onApplyCardConfirm = (data) => {
+    dispatch(applyCardConfirm(data)).then((res) => {
+      if (!res.error) {
+        props?.onClose();
+        props?.handleSuccessDialog();
+      }
+      if (res.error) {
+        props?.onClose();
+        props?.handleSuccessDialog();
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+    });
+  };
 
-      router.push({ pathname: "/home" });
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onAuth_2FA = (data) => {
+    dispatch(auth_2FA(data)).then((res) => {
+      if (!res.error) {
+        const userData = res?.payload;
+        dispatch(
+          setUser({
+            token: userData?.access_token,
+            refreshToken: userData?.expires_in,
+            role: userData?.role,
+          })
+        );
+        setError(true);
+        setErrorMessage("Login Successfully");
+        router.push({ pathname: HOME });
+      }
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+    });
+  };
 
-  const verify2FaMutation = useMutation((data) => verify_2FA(data), {
-    onSuccess: (data) => {
-      props?.onClose();
-      setError(true);
-      setErrorMessage("2FA AUTHENTATION ENABLED");
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  const onVerify2Fa = (data) => {
+    dispatch(verify_2FA(data)).then((res) => {
+      if (!res.error) {
+        props?.onClose();
+        setError(true);
+        setErrorMessage("2FA AUTHENTICATION ENABLED");
+      }
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+      }
+    });
+  };
+
+  useEffect(() => {
+    setOtp("");
+  }, []);
 
   useEffect(() => {
     if (!otp || otp?.length < OTPLength) return;
 
     switch (props?.requestType) {
       case "2FA":
-        auth2aMutation.mutate({
+        onAuth_2FA({
           mobileNo: props?.userMobileNo,
-          otp,
+          otp: otp,
         });
         break;
       case "Auth_2FA":
-        verify2FaMutation.mutate({
-          entityId: user,
+        onVerify2Fa({
+          entityId: entityId,
           enabled_2fa: true,
-          otp,
+          otp: otp,
         });
         break;
 
       default:
-        applyCardMutation.mutate({
-          entityId: user,
+        onApplyCardConfirm({
+          entityId: entityId,
           applicationType: props?.userData?.applicationType,
-          otp,
+          otp: otp,
         });
         break;
     }
@@ -124,7 +127,7 @@ const OtpDialog = (props) => {
 
   const resendOtp = () => {
     setOtp("");
-    refetch();
+    onResendOtp();
   };
 
   return (
@@ -199,10 +202,7 @@ const OtpDialog = (props) => {
           </FlexBox>
         )}
       </DialogContent>
-      {(isLoading ||
-        applyCardMutation.isLoading ||
-        auth2aMutation.isLoading ||
-        verify2FaMutation.isLoading) && <ProgressIndicator />}
+      {profileState?.loading && <ProgressIndicator />}
       <InfoAlert
         show={showError}
         title="Error"
