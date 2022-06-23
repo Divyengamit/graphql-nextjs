@@ -23,8 +23,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { addPhoneNumberSchema } from "../../utils/validation";
 import { addPhoneNumber } from "@/store/Slice/profileSlice";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
-
+import { useStyles } from "@/utils/removeEncrCss";
 const AddPhoneDialog = (props) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const userData = useSelector(({ dashboard }) => dashboard.data);
   const profileState = useSelector(({ profile }) => profile);
@@ -123,6 +124,7 @@ const AddPhoneDialog = (props) => {
               </Typography>
 
               <InputField
+                className={classes.input}
                 type="number"
                 name="mobileNo"
                 placeholder="Enter New Phone Number"

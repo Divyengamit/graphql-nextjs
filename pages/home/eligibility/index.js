@@ -38,7 +38,6 @@ const FinanceScreen = () => {
     Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
 
-  console.log("userID data", userID);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
@@ -95,7 +94,6 @@ const FinanceScreen = () => {
   // );
 
   const onSubmitHandler = (data) => {
-    console.log("onSubmitHandler data", data);
     let tempForm = {
       entityId: userID?.state?.userId,
       profileType: "SAL",
@@ -104,7 +102,6 @@ const FinanceScreen = () => {
       annualIncome: data?.annualIncome,
     };
     dispatch(checkEquipmentFinanceEligibility(tempForm)).then((res) => {
-      console.log("res dataaaaaaaa", res);
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);

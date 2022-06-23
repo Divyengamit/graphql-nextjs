@@ -1,26 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { Button, Checkbox, Paper, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { useStyles } from "@/utils/removeEncrCss";
 
 import InputField from "../ui/InputField";
 import FlexBox from "../ui/FlexBox";
 import Link from "next/link";
-const useStyles = makeStyles({
-  input: {
-    "& input[type=number]": {
-      "-moz-appearance": "textfield",
-    },
-    "& input[type=number]::-webkit-outer-spin-button": {
-      "-webkit-appearance": "none",
-      margin: 0,
-    },
-    "& input[type=number]::-webkit-inner-spin-button": {
-      "-webkit-appearance": "none",
-      margin: 0,
-    },
-  },
-});
 
 const SignupForm = (props) => {
   const classes = useStyles();

@@ -27,10 +27,10 @@ const ConfirmAlert = (props) => {
       )}
       <DialogActions>
         <Button onClick={props.onConfirm} autoFocus>
-          {props?.buttonText || "Remove"}
+          {props?.buttonConfirmText || "Remove"}
         </Button>
         <Button onClick={props.onClose} autoFocus>
-          {props?.buttonText || "Cancel"}
+          {props?.buttonCancelText || "Cancel"}
         </Button>
       </DialogActions>
     </Dialog>

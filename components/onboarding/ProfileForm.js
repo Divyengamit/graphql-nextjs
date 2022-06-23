@@ -15,8 +15,10 @@ import OptionsTypes from "./OptionsTypes";
 import stateData from "../../data/states";
 import { Decryption } from "../../utils/EncryptDecrypt";
 import { getLocal } from "../../utils/storage";
+import { useStyles } from "@/utils/removeEncrCss";
 
 const ProfileForm = (props) => {
+  const classes = useStyles();
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
@@ -239,6 +241,7 @@ const ProfileForm = (props) => {
             Pincode *
           </Typography>
           <InputField
+            className={classes.input}
             type="number"
             name="pincode"
             placeholder="400001"

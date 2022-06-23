@@ -14,10 +14,6 @@ import MainAppBar from "../../../components/navigation/MainAppBar";
 import { getLocal } from "../../../utils/storage";
 import { Decryption } from "../../../utils/EncryptDecrypt";
 import FooterMain from "../../../components/navigation/FooterMain";
-// import FlexBox from "../../../components/ui/FlexBox";
-// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-// import InputField from "../../../components/ui/InputField";
-// import OptionsTypes from "../../../components/onboarding/OptionsTypes";
 import { FormProvider, useForm } from "react-hook-form";
 import ProfessionalDetailsForm from "../../../components/finance/ProfessionalDetails";
 import LoanDetailsForm from "../../../components/finance/LoanDetails";
@@ -29,17 +25,29 @@ import {
   ProfessionalSchema,
 } from "@/utils/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  applyEquipmentFinance,
+  setEquipmentDetails,
+} from "@/store/Slice/equipmentSlice";
+import ConfirmAlert from "@/components/ui/ConfirmAlert";
 const steps = ["Professional Details", "Loan Details", "Upload Documents"];
-const sx = { mt: 2, mb: 2, mr: "auto", ml: "auto" };
 
 const EquipmentFinance = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [activeStep, setActivestep] = useState(0);
   const equipmentData = useSelector(({ equipment }) => equipment.equipmentData);
+  const eligibilityData = useSelector(
+    ({ equipment }) => equipment.eligibilityData
+  );
   const routerParams = getLocal("tempData");
   const urlParamsData = JSON.parse(
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
+  );
+  const userId = getLocal("userId");
+  const userID = JSON.parse(
+    Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
   const methodsProfessional = useForm({
     resolver: yupResolver(ProfessionalSchema),
@@ -48,10 +56,12 @@ const EquipmentFinance = () => {
       ...equipmentData,
     },
   });
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [confirmTitle, setConfirmTitle] = useState();
+  const [confirmMessage, setConfirmMessage] = useState();
+
   const { reset, control, watch, formState, handleSubmit, setValue } =
     methodsProfessional;
-  // const checkData = methodsProfessional.watch();
-  // console.log("checkData", checkData);
   const methodsLoanDetails = useForm({
     resolver: yupResolver(LoanDetailsSchema),
     mode: "onSubmit",
@@ -68,18 +78,71 @@ const EquipmentFinance = () => {
   });
 
   const onSubmitProfessionalHandler = (data) => {
-    console.log("onSubmitProfessionalHandler data", data);
+    const qualificationYear = new Date(data?.qualificationYear).getFullYear();
+    dispatch(
+      setEquipmentDetails({
+        ...equipmentData,
+        universityName: data?.universityName,
+        qualificationYear: qualificationYear,
+        registrationNo: data.registrationNo,
+        stateMedicalCouncil: data?.stateMedicalCouncil,
+        experience: data?.experience,
+        hospitalName: data?.hospitalName,
+        hospitalVintage: data?.hospitalVintage,
+        businessStatus: data?.businessStatus,
+        degreeCertificateFile: data?.degreeCertificateFile,
+      })
+    );
     onClickNext();
   };
   const onSubmitLoanDetailsHandler = (data) => {
-    console.log("onSubmitLoanDetailsHandler data", data);
+    dispatch(
+      setEquipmentDetails({
+        ...equipmentData,
+        loanAmount: data.loanAmount,
+        performaInvoiceFile: data.performaInvoiceFile,
+      })
+    );
     onClickNext();
   };
   const onSubmitFinancialDocumentsHandler = (data) => {
-    console.log("onSubmitFinancialDocumentsHandler data", data);
-    onClickNext();
-  };
+    if (equipmentData) {
+      let tempForm = {
+        profileType: eligibilityData?.profileType,
+        highestQualification: eligibilityData?.highestQualification,
+        annualIncome: eligibilityData?.annualIncome,
+        entityId: userID?.state?.userId,
+        experience: equipmentData?.experience,
+        universityName: equipmentData?.universityName,
+        qualificationYear: equipmentData?.qualificationYear,
+        registrationNo: equipmentData?.registrationNo,
+        stateMedicalCouncil: equipmentData?.stateMedicalCouncil,
+        hospitalName: equipmentData?.hospitalName,
+        hospitalVintage: equipmentData?.hospitalVintage,
+        loanAmount: equipmentData?.loanAmount,
+        businessStatus: equipmentData?.businessStatus,
+        degreeCertificateFile: equipmentData?.degreeCertificateFile,
+        performaInvoiceFile: equipmentData?.performaInvoiceFile,
+        addressProof: data?.addressProof,
+        bankStmtFile: data?.bankStmtFile,
+        itrFile: data?.itrFile,
+        ownershipProofFile: data?.ownershipProofFile,
+      };
 
+      dispatch(applyEquipmentFinance(tempForm)).then((res) => {
+        if (res.error) {
+          if (res.error.message === "Rejected") {
+            setShowConfirm(true);
+            setConfirmTitle("Sorry");
+            setConfirmMessage("Not Acceptable, try to next time");
+          }
+        }
+        // if (!res.error) {
+        //   console.log("res", res.error);
+        // }
+      });
+    }
+  };
   const onClickNext = () => {
     setActivestep(activeStep + 1);
     if (activeStep === 2) {
@@ -89,7 +152,12 @@ const EquipmentFinance = () => {
   const onBack = () => {
     setActivestep(activeStep - 1);
   };
-
+  const onBackConfirm = () => {
+    if (activeStep === 2) {
+      setShowConfirm(false);
+      router.push({ pathname: "/home" });
+    }
+  };
   return (
     <div>
       <MainAppBar userData={urlParamsData?.state?.userData} />
@@ -156,6 +224,15 @@ const EquipmentFinance = () => {
             </div>
           )}
         </div>
+        <ConfirmAlert
+          show={showConfirm}
+          title={confirmTitle}
+          body={confirmMessage}
+          buttonConfirmText="Ok"
+          buttonCancelText="Cancel"
+          onClose={() => setShowConfirm(false)}
+          onConfirm={onBackConfirm}
+        />
       </Container>
       <FooterMain />
     </div>

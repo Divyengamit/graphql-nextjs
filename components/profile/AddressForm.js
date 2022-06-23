@@ -7,8 +7,9 @@ import OptionsTypes from "../onboarding/OptionsTypes";
 import AddIcon from "@mui/icons-material/Add";
 
 import stateList from "../../data/states";
-
+import { useStyles } from "@/utils/removeEncrCss";
 const AddressForm = (props) => {
+  const classes = useStyles();
   return (
     <Box>
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
@@ -98,6 +99,7 @@ const AddressForm = (props) => {
         PinCode
       </Typography>
       <InputField
+        className={classes.input}
         type="number"
         name="pincode"
         placeholder="eg , 385427"
