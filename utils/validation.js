@@ -226,11 +226,34 @@ const LoanDetailsSchema = yup.object().shape({
     .required("Loan amount is required"),
   performaInvoiceFile: yup.mixed().required("Performa Invoice required"),
 });
+
 const FinancialDocumentSchema = yup.object().shape({
   addressProof: yup.mixed().required("Address proof required"),
   bankStmtFile: yup.mixed().required("Bank statement required"),
   ownershipProofFile: yup.mixed().required("Ownership proof required"),
   itrFile: yup.mixed().required("ITR required"),
+});
+
+const changePasswordSchema = yup.object().shape({
+  passwordOld: yup.string().trim().required("Enter old password"),
+  passwordNew: yup
+    .string()
+    .required("Enter new password ")
+    .trim()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
+  passwordConfirm: yup
+    .string()
+    .trim()
+    .oneOf([yup.ref("passwordNew"), null], "Both password should match")
+    .required("Please type password again"),
+});
+
+const securityQuestionsSchema = yup.object().shape({
+  question1_answer: yup.string().trim().required("Type your the answer"),
+  question2_answer: yup.string().trim().required("Type your the answer"),
 });
 
 export {
@@ -247,4 +270,6 @@ export {
   addAddressSchema,
   addEmailSchema,
   addPhoneNumberSchema,
+  changePasswordSchema,
+  securityQuestionsSchema,
 };
