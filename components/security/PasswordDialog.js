@@ -43,8 +43,10 @@ const PasswordDialog = (props) => {
         setErrorTitle("Success");
         setErrorMessage("Password Changed Successfully ");
         methods.reset({});
+        props?.onClose();
       }
       if (res.error) {
+        props?.onClose();
         methods.reset({
           passwordOld: "",
           passwordNew: "",
@@ -54,10 +56,6 @@ const PasswordDialog = (props) => {
         setErrorTitle("Error");
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
-      setInterval(() => {
-        setError(false);
-        props?.onClose();
-      }, 1000);
     });
   };
 
