@@ -73,12 +73,13 @@ const AdminTabBar = () => {
           </Button>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={12} md={5}>
+      <Grid item xs={12} sm={12} md={5} className="add-tenant-btn">
         <Box
           display="flex"
           justifyContent="flex-end"
           alignItems="center"
           sx={{ mt: 2.75, mb: 3 }}
+          
         >
           <Button
             variant="contained"

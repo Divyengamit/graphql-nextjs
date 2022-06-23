@@ -253,10 +253,31 @@ a {
   .mt-div {
     margin-top: 10px;
   }
+  .admin-panel-record-details-div {
+    width: 100% !important;
+    padding: 20px !important;
+    min-height: auto;
+  }
+  .admin-panel-table-data-div table th {
+    white-space: nowrap;
+  }
+  .admin-panel-record-details-main-div .MuiPaper-elevation {
+    width: 100%;
+  }
+  .add-tenant-btn {
+    display: flex;
+    padding-top: 0px !important;
+  }
+  .add-tenant-btn .MuiBox-root {
+    margin-top: 0px !important;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-
+  .add-tenant-btn {
+    position: absolute;
+    right: 20px;
+  }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {

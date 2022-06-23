@@ -21,6 +21,8 @@ import InfoAlert from "../../components/ui/InfoAlert";
 import FlexBox from "../../components/ui/FlexBox";
 import Dashboard from "../../components/dashboard/Dashboard";
 import TabBar from "../../components/navigation/TabBar";
+import AdminTabBar from  "@/components/admin/AdminTabbar"
+import AdminDashboard from  "@/components/admin/AdminDashboard"
 // import { wrapper } from "../../store/store";
 // import { fetchDashboardDetails } from "../../services/service";
 import { fetchDashboardDetail } from "../../store/dashboardSlice";
@@ -46,6 +48,7 @@ const HomeScreen = () => {
   const { enable_2FA } = useContext(APIContext);
   // const { user } = useSelector((state) => state.auth);
   const dashboardState = useSelector((state) => state.dashboard);
+  const { role } = useSelector(({ auth }) => auth);
   // const { data, isLoading } = useQuery(["dashboard", user], () =>
   //   fetchDashboardDetails(user)
   // );
@@ -154,22 +157,32 @@ const HomeScreen = () => {
         <MainAppBar userData={data} />
 
         <Container maxWidth="xl" className="custom-container">
-          <TabBar
-            userData={data}
-            showDashboard={showDashboard}
-            onDashboardClick={handleDashboardClick}
-            onTransactionClick={handleTransactionsClick}
-            onApplyClick={handleApplyClick}
-          />
+          {role === "CUSTOMER" ? (
+            <>
+              <TabBar
+                userData={data}
+                showDashboard={showDashboard}
+                onDashboardClick={handleDashboardClick}
+                onTransactionClick={handleTransactionsClick}
+                onApplyClick={handleApplyClick}
+              />
 
-          {showDashboard ? (
-            <Dashboard
-              userData={data}
-              onExploreFinancingClick={handleExploreFinancing}
-            />
-          ) : (
-            <Transactions userData={data} />
-          )}
+              {showDashboard ? (
+                <Dashboard
+                  userData={data}
+                  onExploreFinancingClick={handleExploreFinancing}
+                />
+              ) : (
+                <Transactions userData={data} />
+              )}
+            </>
+          ) : 
+          <>
+          <AdminTabBar userData={data} />
+          <AdminDashboard/>
+          </>
+          
+          }
           <InfoAlert
             show={showError || showSuccess}
             title={!showSuccess ? "Error" : "Success"}

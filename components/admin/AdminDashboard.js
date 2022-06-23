@@ -45,6 +45,306 @@ import InputField from "../ui/InputField";
 import { addTenantAdminSchema } from "../../utils/validation";
 import ConfirmAlert from "../ui/ConfirmAlert";
 
+const temptabledata = [
+  {
+      "id": 1,
+      "parentId": null,
+      "entityId": "CNP435907644144",
+      "tenantId": "V72MAUKG75NR7L7A",
+      "tenantSecretKey": "VjcyTUFVS0c3NU5SN0w3QWNhbm9waXBheTEyMzAhIw",
+      "adminName": "Canopi India",
+      "companyName": "Canopi India",
+      "gstNumber": "1234ASDFG234",
+      "emailAddress": "prabal@canopi.in",
+      "mobileNo": "919902584804",
+      "address1": "aa",
+      "address2": "aa",
+      "city": "aa",
+      "state": "TN",
+      "pincode": "123456",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 0,
+      "deleted": false,
+      "createdOn": "2022-06-02T13:54:30",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 3,
+      "parentId": null,
+      "entityId": "CNP418259127891",
+      "tenantId": "5ELJEGVYFGW3GAD7",
+      "tenantSecretKey": "NUVMSkVHVllGR1czR0FEN2Nhbm9waXBheTEyMzAhIw",
+      "adminName": "Sarfraz Malik",
+      "companyName": "Canopiere",
+      "gstNumber": "ABCD12330A2",
+      "emailAddress": "sarfraz3@canopi.in",
+      "mobileNo": "917000406953",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1654083408,
+      "deleted": false,
+      "createdOn": "2022-06-01T11:36:49",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 4,
+      "parentId": null,
+      "entityId": "CNP433141013232",
+      "tenantId": "ESMIOQWBFQ5L2FV4",
+      "tenantSecretKey": "RVNNSU9RV0JGUTVMMkZWNGNhbm9waXBheTEyMzAhIw",
+      "adminName": "Hemant",
+      "companyName": "teses",
+      "gstNumber": "asdasdadsad",
+      "emailAddress": "hemant@canopi.in",
+      "mobileNo": "919756264790",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1654083453,
+      "deleted": false,
+      "createdOn": "2022-06-01T11:37:34",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 5,
+      "parentId": null,
+      "entityId": "CNP470857493646",
+      "tenantId": "GF33EFAPADTYSQX8",
+      "tenantSecretKey": null,
+      "adminName": "Salman Malik",
+      "companyName": "Canopiagag",
+      "gstNumber": "ABCD12330A3",
+      "emailAddress": "salman1@canopi.in",
+      "mobileNo": "919756264792",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1654083985,
+      "deleted": false,
+      "createdOn": "2022-06-01T11:46:25",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 6,
+      "parentId": null,
+      "entityId": "CNP278189247388",
+      "tenantId": "O5ESSIP5R6F936RZ",
+      "tenantSecretKey": null,
+      "adminName": "kuhaksas",
+      "companyName": "CanopiNewUpdateg",
+      "gstNumber": "ASDSDSDAASD",
+      "emailAddress": "sarfraz1@canopi.in",
+      "mobileNo": "918871873813",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1654084137,
+      "deleted": false,
+      "createdOn": "2022-06-01T11:48:58",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 30,
+      "parentId": null,
+      "entityId": "CNP506335516589",
+      "tenantId": "AAXR4TZR90U9N3E5",
+      "tenantSecretKey": null,
+      "adminName": "Testt",
+      "companyName": "tyytyt",
+      "gstNumber": "tyyty",
+      "emailAddress": "mmnmnm@gmail.com",
+      "mobileNo": "918871871346",
+      "address1": "tyt",
+      "address2": "asdasdad",
+      "city": "masndmndm",
+      "state": "CG",
+      "pincode": "458700",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1654244837,
+      "deleted": false,
+      "createdOn": "2022-06-03T08:27:17",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 71,
+      "parentId": null,
+      "entityId": "CNP757210777646",
+      "tenantId": "M8U64QABOUN7OXBY",
+      "tenantSecretKey": null,
+      "adminName": "Pooja Sankhala",
+      "companyName": "Canopi",
+      "gstNumber": "ABCD12330A4",
+      "emailAddress": "pooja3@canopi.in",
+      "mobileNo": "919383224446",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": "$2a$10$3O2vJ/hiYEQU8kJMvC6t2esc45aU3MCuzOBKHYUz3cCEw.H40pnxm",
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1655885289,
+      "deleted": false,
+      "createdOn": "2022-06-15T05:18:37",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 72,
+      "parentId": null,
+      "entityId": "CNP247450482021",
+      "tenantId": "4G63W5WGOES630N0",
+      "tenantSecretKey": null,
+      "adminName": "Pooja Sankhala",
+      "companyName": "Canopi",
+      "gstNumber": "ABCD12330A7",
+      "emailAddress": "pooja39@canopi.in",
+      "mobileNo": "919383224448",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": "$2a$10$YIk1X/vlPjxvXaIomyShmeGU4P3W2KxCdPHh9TSsRmxL0mfbW10KW",
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1655296575,
+      "deleted": false,
+      "createdOn": "2022-06-15T06:21:51",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 73,
+      "parentId": null,
+      "entityId": "CNP750677207971",
+      "tenantId": "QMOAOO320NZDDU0R",
+      "tenantSecretKey": null,
+      "adminName": "Pooja Pooja",
+      "companyName": "Canopi",
+      "gstNumber": "ABCD12330A10",
+      "emailAddress": "pooja97@canopi.in",
+      "mobileNo": "919383224440",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": "$2a$10$pzpqnlECoqxWcYFSYbHZeOSm3ROuY4yEOEF1F0BKOhuD3pw8ihi0a",
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1655296825,
+      "deleted": false,
+      "createdOn": "2022-06-15T12:40:25",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 74,
+      "parentId": null,
+      "entityId": "CNP457161747263",
+      "tenantId": "39S7S3T953YAUR2J",
+      "tenantSecretKey": null,
+      "adminName": "Pooja Sankhala",
+      "companyName": "Canopi",
+      "gstNumber": "ABCD12330A97",
+      "emailAddress": "pooja15@canopi.in",
+      "mobileNo": "919756264793",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": null,
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1655725670,
+      "deleted": false,
+      "createdOn": "2022-06-20T11:47:51",
+      "logoFile": null,
+      "brandingFile": null
+  },
+  {
+      "id": 75,
+      "parentId": null,
+      "entityId": "CNP044574967723",
+      "tenantId": "726LPG1VKA5SDTRE",
+      "tenantSecretKey": null,
+      "adminName": "Sreenath Nair",
+      "companyName": "Canopi",
+      "gstNumber": "ABCD12330A5",
+      "emailAddress": "sreenath@mailinator.com",
+      "mobileNo": "919756264794",
+      "address1": "Naagal",
+      "address2": "Kaliyer",
+      "city": "Roorkee",
+      "state": "UK",
+      "pincode": "247667",
+      "password": "$2a$10$0zRQZpdgmK9AmQhjhvC8Bu8X2Krqwt/JxgGYUVwW3qbDJ6bK/YRc.",
+      "passwordConfirm": null,
+      "logoFilePath": null,
+      "brandingFilePath": null,
+      "active": true,
+      "expireOn": 1655884799,
+      "deleted": false,
+      "createdOn": "2022-06-22T07:59:59",
+      "logoFile": null,
+      "brandingFile": null
+  }
+]
+
 const AdminDashboard = () => {
   const { userData } = useSelector((state) => state.auth);
 
@@ -165,15 +465,26 @@ const AdminDashboard = () => {
 
   const tableData = () => {
     let list = [];
-    if (!userData?.tenantList) return list;
+    // if (!userData?.tenantList) return list;
+    // let id = 1;
+    // userData?.tenantList.map((item) => {
+    //   list.push({
+    //     id: item?.id,
+    //     SI_NO: id++,
+    //     Business: item?.companyName,
+    //     ContactInfo: item?.mobileNo,
+    //     DateAdded: formatDate(item?.createdOn),
+    //     Status: item?.active,
+    //   });
+    // });
     let id = 1;
-    userData?.tenantList.map((item) => {
+    temptabledata.forEach((item) => {
       list.push({
         id: item?.id,
         SI_NO: id++,
         Business: item?.companyName,
         ContactInfo: item?.mobileNo,
-        DateAdded: formatDate(item?.createdOn),
+        DateAdded: "02/06/2022",
         Status: item?.active,
       });
     });
@@ -326,7 +637,7 @@ const AdminDashboard = () => {
   };
 
   const list = () => (
-    <Box sx={{ width: "80vh", p: 3 }} role="presentation">
+    <Box sx={{ width: "80vh", p: 3 }} className="admin-panel-record-details-div" role="presentation">
       <IconButton
         aria-label="close"
         onClick={() => setAnchorElUserDrawer(false)}
@@ -422,7 +733,7 @@ const AdminDashboard = () => {
         </Button>
       </Box>
 
-      <TableContainer sx={{ mt: 1, mb: 3 }}>
+      <TableContainer sx={{ mt: 1, mb: 3 }} className="admin-panel-table-data-div">
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -546,7 +857,7 @@ const AdminDashboard = () => {
         </Grid>
       </Grid>
 
-      <Drawer anchor="right" open={anchorElDrawer}>
+      <Drawer className="admin-panel-record-details-main-div" anchor="right" open={anchorElDrawer}>
         {list()}
       </Drawer>
 
