@@ -15,6 +15,7 @@ const SignupForm = (props) => {
   var yyyy = today.getFullYear() - 18;
 
   today = yyyy + "-" + mm + "-" + dd;
+  const { onClickPrivacy } = props;
 
   return (
     <Paper variant="card" sx={props.sx}>
@@ -136,14 +137,12 @@ const SignupForm = (props) => {
           }}
         >
           I agree to provide my consent to receive my CIR on my behalf.{" "}
-          <a
-            href="https://canopi.in/terms-of-service.html"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: "#0028ff" }}
+          <span
+            onClick={onClickPrivacy}
+            style={{ color: "#0028ff", cursor: "pointer" }}
           >
             Click here
-          </a>{" "}
+          </span>{" "}
           to view the Consent Agreement
         </Typography>
       </Typography>
@@ -168,7 +167,14 @@ const SignupForm = (props) => {
           }}
         >
           By clicking the button below, I agree to be bound by{" "}
-          <Link href="#">Canopi's User Agreement and Privacy Statement.</Link>
+          <a
+            href="https://canopi.in/terms-of-service.html"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#0028ff" }}
+          >
+            Canopi's User Agreement and Privacy Statement.
+          </a>
         </Typography>
       </Typography>
 
