@@ -1,5 +1,14 @@
-import React from "react";
-import { Grid, Paper, Typography, IconButton, Box, Link } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Grid,
+  Paper,
+  Typography,
+  IconButton,
+  Box,
+  Link,
+  MenuItem,
+  Menu,
+} from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -12,6 +21,7 @@ const closeIcon = require("../../assets/icons/close-icons.png");
 // const backgroundImage = require("../../assets/backgrounds/EquipmentFinance.jpg");
 
 const Dashboard = (props) => {
+  // const [walletAnchor, setWalletAnchor] = useState(null);
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -21,6 +31,15 @@ const Dashboard = (props) => {
     borderRadius: "15px",
     color: theme.palette.text.secondary,
   }));
+
+  // const handleWalletMenu = (event) => {
+  //   console.log("handleWalletMenu", event);
+  //   setWalletAnchor(event.currentTarget);
+  // };
+
+  // const handleCloseWalletMenu = () => {
+  //   setWalletAnchor(null);
+  // };
 
   return (
     <Grid container spacing={2}>
@@ -47,9 +66,50 @@ const Dashboard = (props) => {
         )}
         <Item>
           <Box sx={{ position: "absolute", right: "15px", top: "14px" }}>
-            <IconButton sx={{ p: 0.7 }}>
-              <MoreVertIcon />
-            </IconButton>
+            {props?.userData?.cards?.length > 0 && (
+              <IconButton
+                sx={{ p: 0.7 }}
+                // onClick={handleWalletMenu}
+              >
+                <div className="action-icon-div">
+                  <MoreVertIcon />
+                </div>
+              </IconButton>
+            )}
+
+            {/* <Menu
+              id="long-menu"
+              MenuListProps={{
+                "aria-labelledby": "long-button",
+              }}
+              anchorEl={walletAnchor}
+              open={Boolean(walletAnchor)}
+              onClose={handleCloseWalletMenu}
+            >
+              <MenuItem
+                sx={{ pt: 1, pb: 1 }}
+                // onClick={handleViewCardDetails}
+              >
+                <Typography
+                  variant="subtitle1Regular"
+                  sx={{ color: "#2C3E50" }}
+                >
+                  View Card Details
+                </Typography>
+              </MenuItem>
+
+              <MenuItem
+                sx={{ pt: 1, pb: 1 }}
+                // onClick={handleChangePin}
+              >
+                <Typography
+                  variant="subtitle1Regular"
+                  sx={{ color: "#2C3E50" }}
+                >
+                  Change Pin
+                </Typography>
+              </MenuItem>
+            </Menu> */}
           </Box>
 
           <Box display="flex" justifyContent="space-between">
@@ -82,7 +142,6 @@ const Dashboard = (props) => {
               <Image src={walletIcon} height={92} width={92} alt="logo" />
             </div>
           </Box>
-
           <Typography
             color="primary"
             variant="subtitle1"

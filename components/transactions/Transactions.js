@@ -111,7 +111,24 @@ const Transactions = ({ userData }) => {
     window.print();
   });
 
-  const handleDownloadClick = useCallback(async () => {
+  // const handleDownloadClick = useCallback(async () => {
+  //   for (let i = 0; i < tableData?.length; i++) {
+  //     const transactionData = tableData[i];
+  //     sheet.addRow({
+  //       createdOn: transactionData?.createdOn,
+  //       description: transactionData?.description,
+  //       amount: transactionData?.amount,
+  //     });
+  //   }
+  //   const data = await workbook.xlsx.writeBuffer().then(function (data) {
+  //     var blob = new Blob([data], {
+  //       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  //     });
+  //     saveAs(blob, "statement.xlsx");
+  //   });
+  // });
+
+  const handleDownloadClick = async () => {
     for (let i = 0; i < tableData?.length; i++) {
       const transactionData = tableData[i];
       sheet.addRow({
@@ -120,13 +137,13 @@ const Transactions = ({ userData }) => {
         amount: transactionData?.amount,
       });
     }
-    const data = await workbook.xlsx.writeBuffer().then(function (data) {
+    await workbook.xlsx.writeBuffer().then(function (data) {
       var blob = new Blob([data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       saveAs(blob, "statement.xlsx");
     });
-  });
+  };
 
   return (
     <>
@@ -156,6 +173,7 @@ const Transactions = ({ userData }) => {
                       height={25}
                       width={25}
                       alt="image"
+                      onClick={handleDownloadClick}
                     />
                   </IconButton>
                   <IconButton

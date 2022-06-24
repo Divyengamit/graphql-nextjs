@@ -24,7 +24,6 @@ import { useRouter } from "next/router";
 const ProfessionalDetailsForm = (props) => {
   const router = useRouter();
   const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmTitle, setConfirmTitle] = useState();
   const [confirmMessage, setConfirmMessage] = useState();
   const classes = useStyles();
   const { watch, setValue, formState } = props;
@@ -41,8 +40,7 @@ const ProfessionalDetailsForm = (props) => {
           aria-label="close"
           onClick={() => {
             setShowConfirm(true);
-            setConfirmTitle("Confirm");
-            setConfirmMessage("Are you sure you want to exit?");
+            setConfirmMessage("Are you sure you want to go back?");
           }}
           sx={{ mr: 2, p: 0 }}
         >
@@ -134,7 +132,7 @@ const ProfessionalDetailsForm = (props) => {
         />
       </div>
 
-      <div>
+      {/* <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
           <strong>Experience *</strong>
         </Typography>
@@ -151,7 +149,7 @@ const ProfessionalDetailsForm = (props) => {
             fullWidth: true,
           }}
         />
-      </div>
+      </div> */}
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
@@ -197,7 +195,7 @@ const ProfessionalDetailsForm = (props) => {
         </InputField>
       </div>
 
-      <div>
+      {/* <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
           <strong>Business Ownership Status *</strong>
         </Typography>
@@ -225,7 +223,7 @@ const ProfessionalDetailsForm = (props) => {
             { key: "Plc", value: "Public Limited Company" },
           ])}
         </InputField>
-      </div>
+      </div> */}
 
       <div>
         <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
@@ -239,7 +237,6 @@ const ProfessionalDetailsForm = (props) => {
 
       <ConfirmAlert
         show={showConfirm}
-        title={confirmTitle}
         body={confirmMessage}
         buttonConfirmText="Yes"
         buttonCancelText="No"

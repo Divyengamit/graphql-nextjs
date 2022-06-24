@@ -48,7 +48,6 @@ const Myprofile = (props) => {
   const [errorMessage, setErrorMessage] = useState();
 
   const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmTitle, setConfirmTitle] = useState();
   const [confirmMessage, setConfirmMessage] = useState();
 
   const [removeItem, setRemoveItem] = useState();
@@ -137,9 +136,10 @@ const Myprofile = (props) => {
   const handleRemove = (item) => {
     setRemoveItem(item);
     setShowConfirm(true);
-    setConfirmTitle("Confirm");
     setConfirmMessage(
-      `Remove ${item?.emailAddress ? item?.emailAddress : item?.mobileNo} ?`
+      `Remove ${
+        item?.emailAddress ? item?.emailAddress : "+" + item?.mobileNo
+      } ?`
     );
   };
 
@@ -233,7 +233,6 @@ const Myprofile = (props) => {
       />
       <ConfirmAlert
         show={showConfirm}
-        title={confirmTitle}
         body={confirmMessage}
         onClose={() => setShowConfirm(false)}
         onConfirm={() => handleRemoveInfo(removeItem)}

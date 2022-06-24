@@ -57,7 +57,7 @@ const EquipmentFinance = () => {
     },
   });
   const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmTitle, setConfirmTitle] = useState();
+  // const [confirmTitle, setConfirmTitle] = useState();
   const [confirmMessage, setConfirmMessage] = useState();
 
   const { reset, control, watch, formState, handleSubmit, setValue } =
@@ -112,7 +112,7 @@ const EquipmentFinance = () => {
         highestQualification: eligibilityData?.highestQualification,
         annualIncome: eligibilityData?.annualIncome,
         entityId: userID?.state?.userId,
-        experience: equipmentData?.experience,
+        experience: eligibilityData?.experience,
         universityName: equipmentData?.universityName,
         qualificationYear: equipmentData?.qualificationYear,
         registrationNo: equipmentData?.registrationNo,
@@ -133,8 +133,8 @@ const EquipmentFinance = () => {
         if (res.error) {
           if (res.error.message === "Rejected") {
             setShowConfirm(true);
-            setConfirmTitle("Sorry");
-            setConfirmMessage("Not Acceptable, try to next time");
+            // setConfirmTitle("Sorry");
+            setConfirmMessage("Please try again...");
           }
         }
         // if (!res.error) {
@@ -226,7 +226,7 @@ const EquipmentFinance = () => {
         </div>
         <ConfirmAlert
           show={showConfirm}
-          title={confirmTitle}
+          // title={confirmTitle}
           body={confirmMessage}
           buttonConfirmText="Ok"
           buttonCancelText="Cancel"
