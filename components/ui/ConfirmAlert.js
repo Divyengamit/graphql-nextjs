@@ -14,18 +14,25 @@ const ConfirmAlert = (props) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       fullWidth
+      className="info-alert-box"
     >
-      {props?.title && (
-        <DialogTitle id="alert-dialog-title">{props?.title}</DialogTitle>
-      )}
+      <div className="info-alert-title-img">
+        {props?.title && (
+          <DialogTitle id="alert-dialog-title">{props?.title}</DialogTitle>
+        )}
+      </div>
       {props?.body && (
         <DialogContent>
-          <DialogContentText variant="h4" id="alert-dialog-description">
+          <DialogContentText
+            variant="h4"
+            id="alert-dialog-description"
+            className="info-alert-body-text"
+          >
             {props.body}
           </DialogContentText>
         </DialogContent>
       )}
-      <DialogActions>
+      <DialogActions className="info-alert-ok-btn">
         <Button onClick={props.onConfirm} autoFocus>
           {props?.buttonConfirmText || "Remove"}
         </Button>

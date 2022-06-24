@@ -25,6 +25,7 @@ export const applyEquipmentFinance = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
+      console.log("error", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -115,7 +116,7 @@ export const equipmentSlice = createSlice({
       state.loading = false;
     },
     [applyEquipmentFinance.rejected]: (state) => {
-      // state.equipmentData = null;
+      state.equipmentData = null;
       state.loading = false;
     },
   },
