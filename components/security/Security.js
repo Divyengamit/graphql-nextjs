@@ -25,9 +25,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { enable_2FA } from "@/store/Slice/profileSlice";
+import { useRouter } from "next/router";
+import { MYPROFILE } from "@/utils/paths";
 
 const Security = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const userData = useSelector(({ dashboard }) => dashboard.data);
   const profileState = useSelector(({ profile }) => profile);
 
@@ -122,7 +125,9 @@ const Security = () => {
   };
 
   const handleRoute = () => {
-    // navigate(-1);2-step verification
+    router.push({
+      pathname: MYPROFILE,
+    });
   };
 
   return (

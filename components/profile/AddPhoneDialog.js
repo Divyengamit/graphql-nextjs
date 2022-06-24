@@ -52,21 +52,20 @@ const AddPhoneDialog = (props) => {
     props?.onClose();
     dispatch(addPhoneNumber(data)).then((res) => {
       if (!res.error) {
-        dispatch(fetchDashboardDetail(userData?.entityId));
+        onCloseDialog();
         methods.reset({});
+        dispatch(fetchDashboardDetail(userData?.entityId));
         setError(true);
         setErrorTitle("Success");
         setErrorMessage("Phone Number Added Successfully ");
       }
       if (res.error) {
+        onCloseDialog();
+        methods.reset({});
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage(res?.error?.payload?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
       }
-      setTimeout(() => {
-        onCloseDialog();
-        setError(false);
-      }, 1000);
     });
   };
 
