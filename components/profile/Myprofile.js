@@ -116,7 +116,7 @@ const Myprofile = (props) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage("Some thing went wrong!");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
       }
     });
   };

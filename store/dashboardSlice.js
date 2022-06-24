@@ -32,7 +32,6 @@ export const dashboardSlice = createSlice({
   // },
   extraReducers: {
     [fetchDashboardDetail.pending]: (state) => {
-      state.data = null;
       state.loading = true;
     },
     [fetchDashboardDetail.fulfilled]: (state, action) => {

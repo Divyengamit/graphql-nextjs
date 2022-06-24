@@ -18,7 +18,7 @@ const FooterText = styled(Typography)(({ theme }) => ({
 const FooterMain = (props) => {
   return (
     <Box sx={{ mt: "auto", width: "100%", backgroundColor: "white" }}>
-      <Container maxWidth="xl">
+      <Container className="custom-container">
         <Toolbar
           style={{ paddingRight: 0, paddingLeft: 0 }}
           sx={{
