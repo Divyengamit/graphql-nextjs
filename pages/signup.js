@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 import { CREATE_PASSWORD } from "@/utils/paths.js";
+import PrivacyDialog from "@/components/ui/Privacy";
 
 const SignupScreen = () => {
   const router = useRouter();
@@ -28,6 +29,9 @@ const SignupScreen = () => {
     privacy: false,
   });
   const [checkedError, setCheckError] = useState(false);
+  const [isOpenPrivacy, setIsOpenPrivacy] = useState(false);
+  const onClickPrivacy = () => setIsOpenPrivacy(true);
+  const onClosePrivacy = () => setIsOpenPrivacy(false);
 
   const cancelHandler = () => {
     router.push("/");
@@ -97,6 +101,7 @@ const SignupScreen = () => {
             isChecked={isChecked}
             onAgreeHandler={onAgreeHandler}
             checkedError={checkedError}
+            onClickPrivacy={onClickPrivacy}
           />
         </form>
       </FormProvider>
@@ -107,6 +112,9 @@ const SignupScreen = () => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
+      {isOpenPrivacy && (
+        <PrivacyDialog open={isOpenPrivacy} onClose={onClosePrivacy} />
+      )}
     </HeroGrid>
   );
 };
