@@ -65,7 +65,7 @@ const AllAddressDialog = (props) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage("Some thing went wrong!");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
         setRemoveDialog(false);
       }
     });
@@ -91,7 +91,8 @@ const AllAddressDialog = (props) => {
     ).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
       }
       if (!res.error) {
         dispatch(fetchDashboardDetail(userID?.state?.userId));
@@ -277,7 +278,9 @@ const AllAddressDialog = (props) => {
                         sx={{ mr: 0.6, fontSize: "0.8rem", fontWeight: 600 }}
                         variant="contained"
                         color="primary"
-                        onClick={() => handleSetAsPrimary(item)}
+                        onClick={() => {
+                          handleSetAsPrimary(item);
+                        }}
                       >
                         Set as Primary
                       </Button>

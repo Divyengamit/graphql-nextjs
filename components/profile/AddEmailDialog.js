@@ -41,8 +41,8 @@ const AddEmailDialog = (props) => {
   });
 
   const onCloseDialog = () => {
-    props?.onClose();
     methods.reset({});
+    props?.onClose();
   };
 
   const onSubmitHandler = (values) => {
@@ -50,8 +50,9 @@ const AddEmailDialog = (props) => {
       entityId: userData?.entityId,
       emailAddress: values?.emailAddress,
     };
-
+    // props?.onClose();
     dispatch(addEmail({ ...data })).then((res) => {
+      console.log("res", res);
       if (!res.error) {
         onCloseDialog();
         dispatch(fetchDashboardDetail(userData?.entityId));
@@ -63,11 +64,8 @@ const AddEmailDialog = (props) => {
         onCloseDialog();
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage("Some thing went wrong!");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
       }
-      setTimeout(() => {
-        setError(false);
-      }, 1000);
     });
   };
 
