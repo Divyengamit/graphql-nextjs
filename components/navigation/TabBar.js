@@ -3,11 +3,18 @@ import { Grid, Typography, Box, Button } from "@mui/material";
 
 import CircleIcon from "@mui/icons-material/Circle";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { HOME, TRANSACTIONS } from "@/utils/paths";
 
 const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
 const cardImage = require("../../assets/CardLogo.png");
 
 const TabBar = (props) => {
+  const router = useRouter();
+  const pathname = router.pathname;
+  // console.log("pathname", pathname);
+  const isDashboard = ["/home"].includes("/home");
+
   const menuButtonStyle = {
     mr: 2.5,
     fontSize: "1rem",
@@ -32,31 +39,35 @@ const TabBar = (props) => {
     }
   };
 
+  const onDashboardClick = () => {
+    router.push(HOME);
+  };
+
+  const onTransactionClick = () => {
+    router.push(TRANSACTIONS);
+  };
+
   return (
-    <Grid
-      // spacing={2}
-      sx={{ justifyContent: "center" }}
-      className={"dashboard-tabbar"}
-    >
+    <Grid sx={{ justifyContent: "center" }} className={"dashboard-tabbar"}>
       <Grid item xs={12} sm={12} md={7}>
         <Box display="flex" flexWrap="wrap" sx={{ mt: 2.75, mb: 3 }}>
           <Button
-            variant={props?.showDashboard ? "contained" : "text"}
+            variant={isDashboard ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: props?.showDashboard ? "#FFFFFF" : "#2C3E50",
+              color: isDashboard ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={props?.onDashboardClick}
+            onClick={onDashboardClick}
           >
             Dashboard
           </Button>
           <Button
-            variant={props?.showDashboard ? "text" : "contained"}
+            variant={pathname === TRANSACTIONS ? "text" : "contained"}
             sx={{
               ...menuButtonStyle,
-              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+              color: pathname === TRANSACTIONS ? "#2C3E50" : "#FFFFFF",
             }}
-            onClick={props?.onTransactionClick}
+            onClick={onTransactionClick}
           >
             Transactions
           </Button>

@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 a {
@@ -13,7 +13,6 @@ a {
 * {
   box-sizing: border-box;
 }
-
 
 /* Left Side image */
 /* .image-container {
@@ -52,8 +51,6 @@ a {
   width: 100%;
 }
 
-
-
 /* dashboard css */
 .dashboard-canopi-logo {
   width: 100%;
@@ -69,8 +66,8 @@ a {
   width: auto !important;
   margin-right: 65px !important;
 }
-.dashboard-tabbar{
-  display: flex !important; 
+.dashboard-tabbar {
+  display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
 }
@@ -80,7 +77,7 @@ a {
   top: 5px;
 }
 .dashboard-equipment-finance-img {
-  background-image: url('../assets/backgrounds/EquipmentFinance.jpg');
+  background-image: url("../assets/backgrounds/EquipmentFinance.jpg");
 }
 .MuiStepLabel-label {
   font-weight: 600 !important;
@@ -91,12 +88,12 @@ a {
 
 .overlay-modal {
   position: absolute;
-    width: 100%;
-    height: 100%;
-    /* min-height: calc(100vh - 83px); */
-    background-color: #0000009e;
-    z-index: 9;
-    top: 0px;
+  width: 100%;
+  height: 100%;
+  /* min-height: calc(100vh - 83px); */
+  background-color: #0000009e;
+  z-index: 9;
+  top: 0px;
 }
 .highlight-text {
   font-size: 18px;
@@ -127,7 +124,7 @@ a {
   text-align: center;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   padding-top: 35px;
   padding-bottom: 35px;
   padding-left: 20px;
@@ -157,11 +154,11 @@ a {
 }
 .texts-div {
   font-size: 18px !important;
-    color: #2C3E50;
-    font-weight: 400 !important;
-    line-height: 28px;
-    padding-right: 20%;
-    margin-left: 10px !important;
+  color: #2c3e50;
+  font-weight: 400 !important;
+  line-height: 28px;
+  padding-right: 20%;
+  margin-left: 10px !important;
 }
 .color-text {
   color: #1ab393;
@@ -172,47 +169,45 @@ a {
   top: 15px;
 }
 .custom-container {
-  max-width: 1200px !important; 
+  max-width: 1200px !important;
 }
-
 
 /* Info Alert CSS */
-.info-alert-box{
+.info-alert-box {
   max-width: 500px !important;
-    margin: 0 auto !important;
+  margin: 0 auto !important;
 }
 
-.info-alert-title-img{
+.info-alert-title-img {
   text-align: center !important;
-  padding: 15px 15px 0 15px!important;
+  padding: 15px 15px 0 15px !important;
 }
 .info-alert-title-img span img {
   width: 80px !important;
   height: 80px !important;
 }
-.info-alert-body-text{
+.info-alert-body-text {
   font-size: 16px !important;
-    font-weight: 600 !important;
-    color: black !important;
-    text-align: center !important;
+  font-weight: 600 !important;
+  color: black !important;
+  text-align: center !important;
 }
-.info-alert-ok-btn{
+.info-alert-ok-btn {
   justify-content: center !important;
   padding-bottom: 15px !important;
 }
-.info-alert-ok-btn button{
-  background-color: #19BC9C !important;
+.info-alert-ok-btn button {
+  background-color: #19bc9c !important;
   color: #ffffff !important;
 }
-.info-alert-ok-btn button:hover{
-  background-color: #19BC9C !important;
+.info-alert-ok-btn button:hover {
+  background-color: #19bc9c !important;
   color: #ffffff !important;
-
 }
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   .dashboard-canopi-logo img {
-      max-width: 85px !important;
+    max-width: 85px !important;
   }
   .dashboard-docmode-img img {
     max-width: 100px !important;
@@ -223,8 +218,8 @@ a {
   }
   .notification-icon svg {
     position: relative;
-      left: 10px;
-      width: 22px;
+    left: 10px;
+    width: 22px;
   }
   .avtar-name-hide-mob {
     display: none;
@@ -238,8 +233,8 @@ a {
   }
   .MuiDivider-vertical {
     margin-right: 12px !important;
-      margin-left: 15px !important;
-      height: 26px !important;
+    margin-left: 15px !important;
+    height: 26px !important;
   }
   .mob-user-details-div .MuiBox-root {
     flex-wrap: wrap;
@@ -256,16 +251,12 @@ a {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1440px) {
-
 }
 @media only screen and (min-width: 1441px) and (max-width: 1660px) {
-  
 }

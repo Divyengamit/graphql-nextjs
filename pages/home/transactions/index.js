@@ -1,13 +1,10 @@
-import Layout from "@/components/layout/layout";
+import { getLayout } from "@/components/layout/DashboardLayout";
 import TransactionsComponent from "@/components/transactions/Transactions";
-import { useSelector } from "react-redux";
 
 const Transactions = () => {
-  // const userData = useSelector(({ dashboard }) => dashboard?.data);
-  return (
-    <Layout>
-      <TransactionsComponent />
-    </Layout>
-  );
+  return <TransactionsComponent />;
 };
+
+Transactions.getLayout = getLayout;
+
 export default Transactions;

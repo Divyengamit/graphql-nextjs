@@ -13,6 +13,8 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 const MyApp = ({ Component, pageProps }) => {
+  const getLayout = Component.getLayout;
+
   const [showing, setShowing] = useState(false);
   useEffect(() => {
     setShowing(true);
@@ -38,7 +40,11 @@ const MyApp = ({ Component, pageProps }) => {
                 <ThemeProvider theme={theme}>
                   <CssBaseline />
                   <RouteGuard>
-                    <Component {...pageProps} />
+                    {getLayout ? (
+                      getLayout(<Component {...pageProps} />)
+                    ) : (
+                      <Component {...pageProps} />
+                    )}
                   </RouteGuard>
                 </ThemeProvider>
               </APIProvider>

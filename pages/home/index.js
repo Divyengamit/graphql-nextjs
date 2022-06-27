@@ -1,31 +1,21 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
-import { Container } from "@mui/material";
-// import { useNavigate } from "react-router";
+import React, { useState, useContext, useCallback } from "react";
 import { useRouter } from "next/router";
-import { Decryption, Encryption } from "../../utils/EncryptDecrypt";
-import { getLocal, setLocal } from "../../utils/storage";
+import { Encryption } from "../../utils/EncryptDecrypt";
+import { setLocal } from "../../utils/storage";
 
-import { useQuery, useMutation } from "react-query";
-import { APIContext } from "../../services/api-provider";
-import { connect, useDispatch, useSelector, useStore } from "react-redux";
-// import { GetServerSideProps } from "next";
+// import { useMutation } from "react-query";
+// import { APIContext } from "../../services/api-provider";
+import { useDispatch, useSelector } from "react-redux";
 
-import MainAppBar from "../../components/navigation/MainAppBar";
 import OtpDialog from "../../components/dashboard/OtpDialog";
 import SuccessDialog from "../../components/dashboard/SuccessDialog";
 import ProgressIndicator from "../../components/ui/ProgressIndicator";
 import ApplyDialog from "../../components/dashboard/ApplyDialog";
-import Transactions from "../../components/transactions/Transactions";
-import FooterMain from "../../components/navigation/FooterMain";
-import InfoAlert from "../../components/ui/InfoAlert";
-import FlexBox from "../../components/ui/FlexBox";
-import Dashboard from "../../components/dashboard/Dashboard";
-import TabBar from "../../components/navigation/TabBar";
-// import { wrapper } from "../../store/store";
-// import { fetchDashboardDetails } from "../../services/service";
-import { fetchDashboardDetail } from "../../store/dashboardSlice";
 
-// import { getLocal } from "../../utils/storage";
+import InfoAlert from "../../components/ui/InfoAlert";
+
+import { getLayout } from "@/components/layout/DashboardLayout";
+import Dashboard from "@/components/dashboard/Dashboard";
 
 // const user = getLocal("root");
 // let store = useStore();
@@ -40,30 +30,9 @@ import { fetchDashboardDetail } from "../../store/dashboardSlice";
 // }
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
-  //   const navigate = useNavigate();
-  const router = useRouter();
-  const { enable_2FA } = useContext(APIContext);
-  // const { user } = useSelector((state) => state.auth);
+  // const { enable_2FA } = useContext(APIContext);
+  const userData = useSelector(({ dashboard }) => dashboard.data);
   const dashboardState = useSelector((state) => state.dashboard);
-  // const { data, isLoading } = useQuery(["dashboard", user], () =>
-  //   fetchDashboardDetails(user)
-  // );
-  const userId = getLocal("userId");
-  const userID = JSON.parse(
-    Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-  );
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    if (userID?.state?.userId) {
-      dispatch(fetchDashboardDetail(userID?.state?.userId)).then((res) => {
-        if (!res.error) {
-          setData(res.payload);
-        }
-      });
-    }
-  }, [userID?.state?.userId]);
 
   const [open, setOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -71,24 +40,23 @@ const HomeScreen = () => {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openApplyDialog, setApplyDialog] = useState(false);
 
-  const [showDashboard, setShowDashboard] = useState(true);
   const [is2FA, set2fA] = useState(false);
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
 
-  const enable2FaMutation = useMutation((data) => enable_2FA(data), {
-    onSuccess: (data) => {
-      setOpen(true);
-      setTimeout(() => {
-        setShowSuccess(true);
-        setSuccessMessage(data?.data?.message);
-      }, 1000);
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorMessage(error?.response?.data?.message || error?.message);
-    },
-  });
+  // const enable2FaMutation = useMutation((data) => enable_2FA(data), {
+  //   onSuccess: (data) => {
+  //     setOpen(true);
+  //     setTimeout(() => {
+  //       setShowSuccess(true);
+  //       setSuccessMessage(data?.data?.message);
+  //     }, 1000);
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //   },
+  // });
 
   //otp dialog
   const handleClickOpen = () => {
@@ -117,87 +85,44 @@ const HomeScreen = () => {
     setApplyDialog(false);
   };
 
-  const handleTransactionsClick = () => setShowDashboard(false);
-
-  const handleDashboardClick = () => setShowDashboard(true);
-
-  const onEnable2faHandler = useCallback(
-    (data) => {
-      set2fA(true);
-      enable2FaMutation.mutate({
-        entityId: data?.entityId,
-        mobileNo: data?.mobileNo,
-      });
-    },
-    [is2FA]
-  );
-
-  const handleExploreFinancing = useCallback(() => {
-    // router.push("home/finance", { state: { userData: data?.data } });
-    router.push({ pathname: "home/eligibility" });
-    setLocal(
-      "tempData",
-      Encryption(
-        JSON.stringify({
-          state: {
-            userData: data,
-          },
-        }),
-        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
-      )
-    );
-  });
+  // const onEnable2faHandler = useCallback(
+  //   (data) => {
+  //     set2fA(true);
+  //     enable2FaMutation.mutate({
+  //       entityId: data?.entityId,
+  //       mobileNo: data?.mobileNo,
+  //     });
+  //   },
+  //   [is2FA]
+  // );
 
   return (
     <>
-      <FlexBox sx={{ minHeight: "100vh" }}>
-        <MainAppBar userData={data} />
+      <Dashboard userData={userData} />
+      <InfoAlert
+        show={showError || showSuccess}
+        title={!showSuccess ? "Error" : "Success"}
+        body={!showSuccess ? errorMessage : successMessage}
+        onClose={() => setError(false)}
+      />
 
-        <Container maxWidth="xl" className="custom-container">
-          <TabBar
-            userData={data}
-            showDashboard={showDashboard}
-            onDashboardClick={handleDashboardClick}
-            onTransactionClick={handleTransactionsClick}
-            onApplyClick={handleApplyClick}
-          />
+      <OtpDialog
+        state={open}
+        onClose={handleClose}
+        userData={userData}
+        handleSuccessDialog={handleClickOpenSuccess}
+        requestType={is2FA && "Auth_2FA"}
+      />
+      <SuccessDialog state={openSuccess} onClose={handleCloseSuccess} />
+      <ApplyDialog
+        state={openApplyDialog}
+        onClose={handleApplyClose}
+        userData={userData}
+        handleOtpDialog={handleClickOpen}
+        handleSuccessDialog={handleClickOpenSuccess}
+      />
 
-          {showDashboard ? (
-            <Dashboard
-              userData={data}
-              onExploreFinancingClick={handleExploreFinancing}
-            />
-          ) : (
-            <Transactions userData={data} />
-          )}
-          <InfoAlert
-            show={showError || showSuccess}
-            title={!showSuccess ? "Error" : "Success"}
-            body={!showSuccess ? errorMessage : successMessage}
-            onClose={() => setError(false)}
-          />
-
-          <OtpDialog
-            state={open}
-            onClose={handleClose}
-            userData={data}
-            handleSuccessDialog={handleClickOpenSuccess}
-            requestType={is2FA && "Auth_2FA"}
-          />
-          <SuccessDialog state={openSuccess} onClose={handleCloseSuccess} />
-          <ApplyDialog
-            state={openApplyDialog}
-            onClose={handleApplyClose}
-            userData={data}
-            handleOtpDialog={handleClickOpen}
-            handleSuccessDialog={handleClickOpenSuccess}
-          />
-
-          {dashboardState?.loading && <ProgressIndicator />}
-        </Container>
-
-        <FooterMain />
-      </FlexBox>
+      {dashboardState?.loading && <ProgressIndicator />}
     </>
   );
 };
@@ -230,5 +155,7 @@ const HomeScreen = () => {
 //     };
 //   }
 // );
+
+HomeScreen.getLayout = getLayout;
 
 export default HomeScreen;

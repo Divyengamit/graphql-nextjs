@@ -22,7 +22,7 @@ const printIcon = require("../../assets/icons/cil_print.png");
 
 const Transactions = () => {
   const userData = useSelector(({ dashboard }) => dashboard?.data);
-  const tableData = userData?.transactions;
+  const tableData = userData?.transactions || [];
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Transactions Records");
   sheet.properties.defaultRowHeight = 80;

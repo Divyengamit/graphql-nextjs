@@ -33,9 +33,7 @@ const ProfileMenu = (props) => {
         process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
       )
     );
-    router.push({
-      pathname: MYPROFILE,
-    });
+    router.push(MYPROFILE);
     props?.onClose();
   };
 

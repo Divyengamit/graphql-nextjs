@@ -4,14 +4,18 @@ import { Grid, Paper, Typography, IconButton, Box, Link } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { setLocal } from "@/utils/storage";
+import { Encryption } from "@/utils/EncryptDecrypt";
+import { ELIGIBILITY } from "@/utils/paths";
 
 const walletIcon = require("../../assets/icons/wallet.png");
 const infoIcon = require("../../assets/icons/infoIcon.png");
 const closeIcon = require("../../assets/icons/close-icons.png");
 
-// const backgroundImage = require("../../assets/backgrounds/EquipmentFinance.jpg");
-
 const Dashboard = (props) => {
+  const router = useRouter();
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -22,10 +26,25 @@ const Dashboard = (props) => {
     color: theme.palette.text.secondary,
   }));
 
+  const onExploreFinancingClick = () => {
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            userData: props?.userData,
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
+    router.push({ pathname: ELIGIBILITY });
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12} md={7}>
-        {props?.userData?.cards[0]?.status === "INACTIVE" ? (
+        {props?.userData?.cards[0]?.status === "INACTIVE" && (
           <Item>
             <Box className="information-box-div">
               <div className={"icon-div"}>
@@ -42,8 +61,6 @@ const Dashboard = (props) => {
               </div>
             </Box>
           </Item>
-        ) : (
-          ""
         )}
         <Item>
           <Box sx={{ position: "absolute", right: "15px", top: "14px" }}>
@@ -95,7 +112,7 @@ const Dashboard = (props) => {
           </Typography>
         </Item>
         <Link
-          onClick={props?.onExploreFinancingClick}
+          onClick={onExploreFinancingClick}
           underline="none"
           sx={{
             "&:hover": {

@@ -24,15 +24,13 @@ import style from "../../../styles/EquipmentForm.module.css";
 import Alert from "../../../components/ui/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { checkEquipmentFinanceEligibility } from "@/store/Slice/equipmentSlice";
+import { getLayout } from "@/components/layout/SiteLayout";
 
 const FinanceScreen = () => {
   const dispatch = useDispatch();
   const equipmentState = useSelector(({ equipment }) => equipment);
   const router = useRouter();
-  const routerParams = getLocal("tempData");
-  const urlParamsData = JSON.parse(
-    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-  );
+
   const userId = getLocal("userId");
   const userID = JSON.parse(
     Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
@@ -121,56 +119,53 @@ const FinanceScreen = () => {
 
   return (
     <>
-      <MainAppBar userData={urlParamsData?.state?.userData} />
-
       {/* Not Eligible Dialog */}
       {isOpen && <Alert isError={true} onClose={onClose} />}
 
-      <Container>
+      <Grid
+        container
+        spacing={2}
+        className={style.Equipment_finance_form_main_div}
+      >
         <Grid
-          container
-          spacing={2}
-          className={style.Equipment_finance_form_main_div}
+          item
+          xs={12}
+          md={6}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          className={style.Equipment_finance_left_div}
         >
-          <Grid
-            item
-            xs={12}
-            md={6}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            className={style.Equipment_finance_left_div}
-          >
-            <EquipmentContent />
-          </Grid>
-          <Grid item xs={12} md={6} className="align-item-div">
-            <Item>
-              <FormProvider {...methods}>
-                <form
-                  // onSubmit={onSubmitHandler}
-                  onSubmit={methods.handleSubmit(onSubmitHandler)}
-                >
-                  <EquipmentForm
-                    sx={{ mt: 2, mb: 2, mr: "auto", ml: "auto" }}
-                    onBack={() => router.push("/home")}
-                    // onNext={() => router.push("/finance")}
-                  />
-                </form>
-              </FormProvider>
-            </Item>
-          </Grid>
+          <EquipmentContent />
         </Grid>
-        {equipmentState?.loading && <ProgressIndicator />}
-        <InfoAlert
-          show={showError || showSuccess}
-          title={!showSuccess ? "Error" : "Success"}
-          body={!showSuccess ? errorMessage : successMessage}
-          onClose={() => setError(false)}
-        />
-      </Container>
-
-      <FooterMain />
+        <Grid item xs={12} md={6} className="align-item-div">
+          <Item>
+            <FormProvider {...methods}>
+              <form
+                // onSubmit={onSubmitHandler}
+                onSubmit={methods.handleSubmit(onSubmitHandler)}
+              >
+                <EquipmentForm
+                  sx={{ mt: 2, mb: 2, mr: "auto", ml: "auto" }}
+                  onBack={() => router.push("/home")}
+                  // onNext={() => router.push("/finance")}
+                />
+              </form>
+            </FormProvider>
+          </Item>
+        </Grid>
+      </Grid>
+      {equipmentState?.loading && <ProgressIndicator />}
+      <InfoAlert
+        show={showError || showSuccess}
+        title={!showSuccess ? "Error" : "Success"}
+        body={!showSuccess ? errorMessage : successMessage}
+        onClose={() => setError(false)}
+      />
     </>
   );
 };
+
+FinanceScreen.getLayout = getLayout;
+
 export default FinanceScreen;
