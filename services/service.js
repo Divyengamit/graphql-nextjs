@@ -170,6 +170,20 @@ export const updateProfileService = (data) => {
   );
 };
 
+export const getCardDetails = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/get-card-details-url",
+    body
+  );
+};
+
+export const getCardPinChangeUrl = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/get-card-pin-change-url",
+    body
+  );
+};
+
 export const addAddressService = (body) => {
   return axiosInstance.post(
     "canopi-payments/portal/dashboard/save-address",

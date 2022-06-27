@@ -89,7 +89,7 @@ const EquipmentFinance = () => {
         experience: data?.experience,
         hospitalName: data?.hospitalName,
         hospitalVintage: data?.hospitalVintage,
-        businessStatus: data?.businessStatus,
+        // businessStatus: data?.businessStatus,
         degreeCertificateFile: data?.degreeCertificateFile,
       })
     );

@@ -24,6 +24,7 @@ import TabBar from "../../components/navigation/TabBar";
 // import { wrapper } from "../../store/store";
 // import { fetchDashboardDetails } from "../../services/service";
 import { fetchDashboardDetail } from "../../store/dashboardSlice";
+import Activity from "@/components/activity/Activity";
 
 // import { getLocal } from "../../utils/storage";
 
@@ -121,6 +122,8 @@ const HomeScreen = () => {
 
   const handleDashboardClick = () => setShowDashboard(true);
 
+  const handleActivityClick = () => setShowDashboard(false);
+
   const onEnable2faHandler = useCallback(
     (data) => {
       set2fA(true);
@@ -159,6 +162,7 @@ const HomeScreen = () => {
             showDashboard={showDashboard}
             onDashboardClick={handleDashboardClick}
             onTransactionClick={handleTransactionsClick}
+            onActivityClick={handleActivityClick}
             onApplyClick={handleApplyClick}
           />
 
@@ -168,7 +172,8 @@ const HomeScreen = () => {
               onExploreFinancingClick={handleExploreFinancing}
             />
           ) : (
-            <Transactions userData={data} />
+            // <Transactions userData={data} />
+            <Activity userData={data} />
           )}
           <InfoAlert
             show={showError || showSuccess}

@@ -25,7 +25,6 @@ export const applyEquipmentFinance = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      console.log("error", error);
       return rejectWithValue(error?.response);
     }
   }
@@ -63,33 +62,6 @@ export const equipmentSlice = createSlice({
   initialState: initialState,
   reducers: {
     setEquipmentDetails: (state, action) => {
-      // state.equipmentData.entityId = state.eligibilityData.entityId;
-      // state.equipmentData.profileType = state.eligibilityData.profileType;
-      // state.equipmentData.highestQualification =
-      //   state.eligibilityData.highestQualification;
-      // state.equipmentData.experience = action.payload.experience || "";
-      // state.equipmentData.annualIncome = action.payload.annualIncome || "";
-      // state.equipmentData.universityName = action.payload.universityName || "";
-      // state.equipmentData.qualificationYear =
-      //   action.payload.qualificationYear || null;
-      // state.equipmentData.registrationNo = action.payload.registrationNo || "";
-      // state.equipmentData.stateMedicalCouncil =
-      //   action.payload.stateMedicalCouncil || "";
-      // state.equipmentData.hospitalName = action.payload.hospitalName || "";
-      // state.equipmentData.hospitalVintage =
-      //   action.payload.hospitalVintage || "";
-      // state.equipmentData.loanAmount = action.payload.loanAmount || "";
-      // state.equipmentData.businessStatus = action.payload.businessStatus || "";
-      // state.equipmentData.addressProof = action.payload.addressProof || null;
-      // state.equipmentData.bankStmtFile = action.payload.bankStmtFile || null;
-      // state.equipmentData.itrFile = action.payload.itrFile || null;
-      // state.equipmentData.degreeCertificateFile =
-      //   action.payload.degreeCertificateFile || null;
-      // state.equipmentData.performaInvoiceFile =
-      //   action.payload.performaInvoiceFile || null;
-      // state.equipmentData.ownershipProofFile =
-      //   action.payload.ownershipProofFile || null;
-
       state.equipmentData = action.payload;
     },
   },

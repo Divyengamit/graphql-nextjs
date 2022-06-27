@@ -52,7 +52,6 @@ const AddEmailDialog = (props) => {
     };
     // props?.onClose();
     dispatch(addEmail({ ...data })).then((res) => {
-      console.log("res", res);
       if (!res.error) {
         onCloseDialog();
         dispatch(fetchDashboardDetail(userData?.entityId));

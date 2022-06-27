@@ -50,7 +50,7 @@ const TabBar = (props) => {
           >
             Dashboard
           </Button>
-          <Button
+          {/* <Button
             variant={props?.showDashboard ? "text" : "contained"}
             sx={{
               ...menuButtonStyle,
@@ -59,8 +59,15 @@ const TabBar = (props) => {
             onClick={props?.onTransactionClick}
           >
             Transactions
-          </Button>
-          <Button variant="text" color="secondary" sx={menuButtonStyle}>
+          </Button> */}
+          <Button
+            variant={props?.showDashboard ? "text" : "contained"}
+            sx={{
+              ...menuButtonStyle,
+              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+            }}
+            onClick={props?.onActivityClick}
+          >
             Activity
           </Button>
           <Button variant="text" color="secondary" sx={menuButtonStyle}>

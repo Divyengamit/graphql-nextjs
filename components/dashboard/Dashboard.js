@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Grid,
   Paper,
@@ -13,6 +13,11 @@ import {
 import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCardPin, fetchCardDetails } from "@/store/dashboardSlice";
+import CardDialog from "./CardDialog";
+import InfoAlert from "../ui/InfoAlert";
+import ProgressIndicator from "../ui/ProgressIndicator";
 
 const walletIcon = require("../../assets/icons/wallet.png");
 const infoIcon = require("../../assets/icons/infoIcon.png");
@@ -21,7 +26,16 @@ const closeIcon = require("../../assets/icons/close-icons.png");
 // const backgroundImage = require("../../assets/backgrounds/EquipmentFinance.jpg");
 
 const Dashboard = (props) => {
-  // const [walletAnchor, setWalletAnchor] = useState(null);
+  const dispatch = useDispatch();
+  const cardDetailsState = useSelector(({ dashboard }) => dashboard);
+  const [walletAnchor, setWalletAnchor] = useState(null);
+  const [dimensions, setDimensions] = useState({ top: "0px", left: "0px" });
+  const [activeCard, setActiveCard] = useState();
+  const [iframe, setIframe] = useState();
+  const [pinDialog, setPinDialog] = useState(false);
+  const [showError, setError] = useState(false);
+  const [errorTitle, setErrorTitle] = useState();
+  const [errorMessage, setErrorMessage] = useState();
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -31,15 +45,78 @@ const Dashboard = (props) => {
     borderRadius: "15px",
     color: theme.palette.text.secondary,
   }));
+  useEffect(() => {
+    const activeCardList = props.userData?.cards.find(
+      (item) => item?.status === "ACTIVE"
+    );
+    setActiveCard(activeCardList);
+  }, [props.userData?.cards]);
 
-  // const handleWalletMenu = (event) => {
-  //   console.log("handleWalletMenu", event);
-  //   setWalletAnchor(event.currentTarget);
-  // };
+  const refContainer = useRef();
+  const handleWalletMenu = (event) => {
+    if (refContainer.current) {
+      setDimensions({
+        top: event.clientX,
+        left: event.clientY,
+      });
+    }
+    setWalletAnchor(event.currentTarget);
+  };
+  const handleClosePinClick = () => setPinDialog(false);
+  const handleChangePinClick = () => setPinDialog(true);
 
-  // const handleCloseWalletMenu = () => {
-  //   setWalletAnchor(null);
-  // };
+  const handleCloseWalletMenu = () => {
+    setWalletAnchor(null);
+  };
+
+  const handleViewCardDetails = () => {
+    dispatch(
+      fetchCardDetails({
+        entityId: props?.userData?.entityId,
+        cardId: activeCard?.id,
+      })
+    ).then((res) => {
+      if (res?.payload?.data) {
+        setIframe(res?.payload?.data);
+        handleChangePinClick();
+      }
+      // if (!res.error) {
+      //   dispatch(fetchDashboardDetail(userID?.state?.userId));
+      //   setError(true);
+      //   setErrorTitle("Success");
+      //   setErrorMessage("Uploaded Successfully ");
+      // }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+      }
+    });
+  };
+  const handleChangePin = () => {
+    dispatch(
+      changeCardPin({
+        entityId: props?.userData?.entityId,
+        cardId: activeCard?.id,
+      })
+    ).then((res) => {
+      if (res?.payload?.data) {
+        setIframe(res?.payload?.data);
+        handleChangePinClick();
+      }
+      // if (!res.error) {
+      //   dispatch(fetchDashboardDetail(userID?.state?.userId));
+      //   setError(true);
+      //   setErrorTitle("Success");
+      //   setErrorMessage("Uploaded Successfully ");
+      // }
+      if (res.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+      }
+    });
+  };
 
   return (
     <Grid container spacing={2}>
@@ -69,7 +146,8 @@ const Dashboard = (props) => {
             {props?.userData?.cards?.length > 0 && (
               <IconButton
                 sx={{ p: 0.7 }}
-                // onClick={handleWalletMenu}
+                ref={refContainer}
+                onClick={handleWalletMenu}
               >
                 <div className="action-icon-div">
                   <MoreVertIcon />
@@ -77,7 +155,12 @@ const Dashboard = (props) => {
               </IconButton>
             )}
 
-            {/* <Menu
+            <Menu
+              style={{
+                left: dimensions.top + "px",
+                top: dimensions.left + "px",
+              }}
+              className={"ifram-menu-style"}
               id="long-menu"
               MenuListProps={{
                 "aria-labelledby": "long-button",
@@ -86,10 +169,7 @@ const Dashboard = (props) => {
               open={Boolean(walletAnchor)}
               onClose={handleCloseWalletMenu}
             >
-              <MenuItem
-                sx={{ pt: 1, pb: 1 }}
-                // onClick={handleViewCardDetails}
-              >
+              <MenuItem sx={{ pt: 1, pb: 1 }} onClick={handleViewCardDetails}>
                 <Typography
                   variant="subtitle1Regular"
                   sx={{ color: "#2C3E50" }}
@@ -98,10 +178,7 @@ const Dashboard = (props) => {
                 </Typography>
               </MenuItem>
 
-              <MenuItem
-                sx={{ pt: 1, pb: 1 }}
-                // onClick={handleChangePin}
-              >
+              <MenuItem sx={{ pt: 1, pb: 1 }} onClick={handleChangePin}>
                 <Typography
                   variant="subtitle1Regular"
                   sx={{ color: "#2C3E50" }}
@@ -109,7 +186,7 @@ const Dashboard = (props) => {
                   Change Pin
                 </Typography>
               </MenuItem>
-            </Menu> */}
+            </Menu>
           </Box>
 
           <Box display="flex" justifyContent="space-between">
@@ -153,6 +230,7 @@ const Dashboard = (props) => {
             issued, withdrawals are allowed from an ATM.
           </Typography>
         </Item>
+
         <Link
           onClick={props?.onExploreFinancingClick}
           underline="none"
@@ -206,6 +284,18 @@ const Dashboard = (props) => {
         </Link>
       </Grid>
       <Grid item xs={12} sm={12} md={5}></Grid>
+      <CardDialog
+        iframeinfo={iframe}
+        state={pinDialog}
+        onClose={handleClosePinClick}
+      />
+      <InfoAlert
+        show={showError}
+        title={errorTitle}
+        body={errorMessage}
+        onClose={() => setError(false)}
+      />
+      {cardDetailsState.loading && <ProgressIndicator />}
     </Grid>
   );
 };
