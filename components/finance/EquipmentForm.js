@@ -46,16 +46,16 @@ const EquipmentForm = (props) => {
       >
         {OptionsTypes([
           { value: "Salaried", key: "SAL" },
-          { value: "Self Employed Professional", key: "SEP" },
-          { value: "Self Employed Non Professional", key: "SENP" },
-          { value: "Public Ltd ", key: "PUB" },
-          { value: "Pvt Ltd", key: "PVT" },
-          { value: "Partnership Firm ", key: "P1" },
-          { value: "Hindu Undivided Family", key: "HUF" },
-          { value: "Proprietorship ", key: "SP" },
-          { value: "Trust ", key: "T" },
-          { value: "Society ", key: "SOCIETY" },
-          { value: "Limited Liability Partnership ", key: "LLP" },
+          { value: "Self Employed", key: "SE" },
+          // { value: "Self Employed Non Professional", key: "SENP" },
+          // { value: "Public Ltd ", key: "PUB" },
+          // { value: "Pvt Ltd", key: "PVT" },
+          // { value: "Partnership Firm ", key: "P1" },
+          // { value: "Hindu Undivided Family", key: "HUF" },
+          // { value: "Proprietorship ", key: "SP" },
+          // { value: "Trust ", key: "T" },
+          // { value: "Society ", key: "SOCIETY" },
+          // { value: "Limited Liability Partnership ", key: "LLP" },
         ])}
       </InputField>
 
