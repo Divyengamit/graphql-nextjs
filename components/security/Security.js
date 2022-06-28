@@ -44,7 +44,7 @@ const Security = () => {
 
   useEffect(() => {
     setChecked(userData?.twoFAenabled);
-  }, [userData]);
+  }, [userData?.twoFAenabled]);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -206,7 +206,7 @@ const Security = () => {
               <Switch
                 size="medium"
                 checked={checked}
-                style={{ color: "#2C3E50" }}
+                style={{ color: checked ? "#18BC9C" : "#2C3E50" }}
                 onChange={() => handle2Step(!checked)}
               />
             </Box>

@@ -5,7 +5,7 @@ import Security from "@/components/security/Security";
 import FlexBox from "@/components/ui/FlexBox";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
 import { Decryption } from "@/utils/EncryptDecrypt";
-import { HOME } from "@/utils/paths";
+import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
 import { getLocal } from "@/utils/storage";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 const SecurityPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = router.pathname;
   const userId = getLocal("userId");
   const userID = JSON.parse(
     Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
@@ -31,15 +32,25 @@ const SecurityPage = () => {
     }
   }, [userID?.state?.userId]);
 
-  const [showDashboard, setShowDashboard] = useState(true);
+  const [currentTab, setCurrentTab] = useState(HOME);
   const handleTransactionsClick = () => {
+    setCurrentTab(TRANSACTIONS);
     router.push({
       pathname: HOME,
     });
-    setShowDashboard(false);
   };
+
   const handleDashboardClick = () => {
-    setShowDashboard(true);
+    setCurrentTab(HOME);
+    if (pathname !== HOME) {
+      router.push({
+        pathname: HOME,
+      });
+    }
+  };
+
+  const handleActivityClick = () => {
+    setCurrentTab(ACTIVITY);
     router.push({
       pathname: HOME,
     });
@@ -53,9 +64,10 @@ const SecurityPage = () => {
           <TabBar
             userData={data}
             onApplyClick={() => {}}
-            showDashboard={showDashboard}
+            currentTab={currentTab}
             onDashboardClick={handleDashboardClick}
             onTransactionClick={handleTransactionsClick}
+            onActivityClick={handleActivityClick}
           />
           <Security />
         </Container>

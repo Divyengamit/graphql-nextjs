@@ -14,9 +14,14 @@ import ApplyDialog from "@/components/dashboard/ApplyDialog";
 import SuccessDialog from "@/components/dashboard/SuccessDialog";
 import OtpDialog from "@/components/dashboard/OtpDialog";
 import Transactions from "@/components/transactions/Transactions";
+import { useRouter } from "next/router";
+import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
+import Activity from "@/components/activity/Activity";
 
 const MyProfile = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = router.pathname;
   const { role } = useSelector(({ auth }) => auth);
 
   const [data, setData] = useState(null);
@@ -64,9 +69,29 @@ const MyProfile = () => {
     setApplyDialog(false);
   };
 
-  const [showDashboard, setShowDashboard] = useState(true);
-  const handleTransactionsClick = () => setShowDashboard(false);
-  const handleDashboardClick = () => setShowDashboard(true);
+  const [currentTab, setCurrentTab] = useState(HOME);
+  const handleTransactionsClick = () => {
+    setCurrentTab(TRANSACTIONS);
+    router.push({
+      pathname: HOME,
+    });
+  };
+
+  const handleDashboardClick = () => {
+    setCurrentTab(HOME);
+    if (pathname !== HOME) {
+      router.push({
+        pathname: HOME,
+      });
+    }
+  };
+
+  const handleActivityClick = () => {
+    setCurrentTab(ACTIVITY);
+    router.push({
+      pathname: HOME,
+    });
+  };
 
   return (
     <FlexBox sx={{ minHeight: "100vh" }}>
@@ -76,18 +101,19 @@ const MyProfile = () => {
           <TabBar
             userData={data}
             onApplyClick={handleApplyClick}
-            showDashboard={showDashboard}
+            currentTab={currentTab}
             onDashboardClick={handleDashboardClick}
             onTransactionClick={handleTransactionsClick}
+            onActivityClick={handleActivityClick}
           />
         ) : (
           <AdminTabBar />
         )}
-        {showDashboard ? (
-          <Myprofile userData={data} />
-        ) : (
-          <Transactions userData={data} />
-        )}
+        {currentTab === HOME && <Myprofile userData={data} />}
+
+        {currentTab === TRANSACTIONS && <Transactions userData={data} />}
+
+        {currentTab === ACTIVITY && <Activity userData={data} />}
 
         <OtpDialog
           state={open}
