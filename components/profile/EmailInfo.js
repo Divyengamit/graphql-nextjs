@@ -50,47 +50,14 @@ const EmailInfo = (props) => {
           <MoreVert />
         </IconButton>
       </Box>
-      {/* {emailList?.map((item) => {
-        return (
-          <>
-            <Divider />
-            <Chip
-              label="Secondary"
-              sx={{
-                mt: 2.5,
-                fontSize: "14px",
-                color: "#2C3E50",
-                fontWeight: "400",
-                borderRadius: 0,
-              }}
-            />
-            <Box
-              display="flex"
-              alignItems="flex-start"
-              justifyContent="space-between"
-            >
-              <Typography
-                variant="h6"
-                sx={{ color: "#000000", lineHeight: "24.5px", mt: 1.2 }}
-              >
-                {item?.emailAddress}
-              </Typography>
 
-              <IconButton onClick={() => onremoveEmail(item)}>
-                <RemoveCircleOutlineIcon style={{ color: "#FF4141" }} />
-              </IconButton>
-            </Box>
-          </>
-        );
-      })} */}
-
-      {/* <Typography
+      <Typography
         variant="h6"
         sx={{ color: "#8F8F8F", lineHeight: "21.43px", mt: 1.875 }}
       >
         To update an email address, you must have at least two email address on
         file.
-      </Typography> */}
+      </Typography>
     </Box>
   );
 };

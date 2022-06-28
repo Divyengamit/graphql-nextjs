@@ -20,7 +20,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import RemoveDialog from "./RemoveDialog";
-import { removeAddress, setPrimaryAddress } from "@/store/Slice/profileSlice";
+import { removeAddress, removeInfo } from "@/store/Slice/profileSlice";
 import { getLocal } from "@/utils/storage";
 import { Decryption } from "@/utils/EncryptDecrypt";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
@@ -35,7 +35,6 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
   const emailList = userData?.aditionalContacts?.filter(
     (item) => item.emailAddress
   );
-  console.log("emailList", emailList);
 
   const profileState = useSelector(({ profile }) => profile);
 
@@ -52,7 +51,7 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
 
   const handleConfirmRemove = () => {
     dispatch(
-      removeAddress({
+      removeInfo({
         entityId: userData?.entityId,
         id: detail?.id,
       })
@@ -112,6 +111,7 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
 
   const handleAddEmail = () => {
     onClose();
+    setDetail({ emailAddress: "" });
     setEditDialog(true);
     setRequestType("ADD");
   };
@@ -130,7 +130,6 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
     userData?.aditionalContacts?.filter((a) => a?.emailAddress) || [];
 
   const listEmail = [...primaryEmailList, ...secondaryEmailList];
-  console.log("listEmail", listEmail);
 
   return (
     <>
@@ -205,46 +204,48 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
                     </Typography>
 
                     {!item?.primary && (
-                      <Button
-                        disableElevation
-                        sx={{ mr: 0.6, fontSize: "0.8rem", fontWeight: 600 }}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                          handleSetAsPrimary(item);
-                        }}
-                      >
-                        Set as Primary
-                      </Button>
-                    )}
+                      <>
+                        <Button
+                          disableElevation
+                          sx={{ mr: 0.6, fontSize: "0.8rem", fontWeight: 600 }}
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            handleSetAsPrimary(item);
+                          }}
+                        >
+                          Set as Primary
+                        </Button>
 
-                    <Button
-                      disableElevation
-                      variant="contained"
-                      color="secondary"
-                      sx={{ mr: 0.8, fontSize: "0.8rem", fontWeight: 600 }}
-                      onClick={() => handleEditEmail(item)}
-                    >
-                      Edit
-                      <EditIcon
-                        sx={{ ml: 1.2, width: "18px", height: "18px" }}
-                      />
-                    </Button>
-                    <Button
-                      disableElevation
-                      style={{
-                        backgroundColor: "#F5F5F5",
-                        color: "#FF4141",
-                        fontSize: "0.8rem",
-                      }}
-                      variant="contained"
-                      onClick={() => handleRemoveEmail(item)}
-                    >
-                      Remove
-                      <RemoveIcon
-                        sx={{ ml: 1.2, width: "18px", height: "18px" }}
-                      />
-                    </Button>
+                        <Button
+                          disableElevation
+                          variant="contained"
+                          color="secondary"
+                          sx={{ mr: 0.8, fontSize: "0.8rem", fontWeight: 600 }}
+                          onClick={() => handleEditEmail(item)}
+                        >
+                          Edit
+                          <EditIcon
+                            sx={{ ml: 1.2, width: "18px", height: "18px" }}
+                          />
+                        </Button>
+                        <Button
+                          disableElevation
+                          style={{
+                            backgroundColor: "#F5F5F5",
+                            color: "#FF4141",
+                            fontSize: "0.8rem",
+                          }}
+                          variant="contained"
+                          onClick={() => handleRemoveEmail(item)}
+                        >
+                          Remove
+                          <RemoveIcon
+                            sx={{ ml: 1.2, width: "18px", height: "18px" }}
+                          />
+                        </Button>
+                      </>
+                    )}
                   </Box>
 
                   {index < listEmail.length - 1 && (
