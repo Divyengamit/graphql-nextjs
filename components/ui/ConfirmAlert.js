@@ -36,9 +36,11 @@ const ConfirmAlert = (props) => {
         <Button onClick={props.onConfirm} autoFocus>
           {props?.buttonConfirmText || "Remove"}
         </Button>
-        <Button onClick={props.onClose} autoFocus>
-          {props?.buttonCancelText || "Cancel"}
-        </Button>
+        {props?.hideCancel !== true && (
+          <Button onClick={props.onClose} autoFocus>
+            {props?.buttonCancelText || "Cancel"}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
