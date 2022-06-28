@@ -25,6 +25,7 @@ import TabBar from "../../components/navigation/TabBar";
 // import { fetchDashboardDetails } from "../../services/service";
 import { fetchDashboardDetail } from "../../store/dashboardSlice";
 import Activity from "@/components/activity/Activity";
+import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
 
 // import { getLocal } from "../../utils/storage";
 
@@ -44,6 +45,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   //   const navigate = useNavigate();
   const router = useRouter();
+  const pathname = router.pathname;
   const { enable_2FA } = useContext(APIContext);
   // const { user } = useSelector((state) => state.auth);
   const dashboardState = useSelector((state) => state.dashboard);
@@ -72,7 +74,7 @@ const HomeScreen = () => {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openApplyDialog, setApplyDialog] = useState(false);
 
-  const [showDashboard, setShowDashboard] = useState(true);
+  const [currentTab, setCurrentTab] = useState(HOME);
   const [is2FA, set2fA] = useState(false);
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -118,11 +120,22 @@ const HomeScreen = () => {
     setApplyDialog(false);
   };
 
-  const handleTransactionsClick = () => setShowDashboard(false);
+  const handleTransactionsClick = () => {
+    setCurrentTab(TRANSACTIONS);
+  };
 
-  const handleDashboardClick = () => setShowDashboard(true);
+  const handleDashboardClick = () => {
+    setCurrentTab(HOME);
+    if (pathname !== HOME) {
+      router.push({
+        pathname: HOME,
+      });
+    }
+  };
 
-  const handleActivityClick = () => setShowDashboard(false);
+  const handleActivityClick = () => {
+    setCurrentTab(ACTIVITY);
+  };
 
   const onEnable2faHandler = useCallback(
     (data) => {
@@ -159,22 +172,24 @@ const HomeScreen = () => {
         <Container maxWidth="xl" className="custom-container">
           <TabBar
             userData={data}
-            showDashboard={showDashboard}
+            currentTab={currentTab}
             onDashboardClick={handleDashboardClick}
             onTransactionClick={handleTransactionsClick}
             onActivityClick={handleActivityClick}
             onApplyClick={handleApplyClick}
           />
 
-          {showDashboard ? (
+          {currentTab === HOME && (
             <Dashboard
               userData={data}
               onExploreFinancingClick={handleExploreFinancing}
             />
-          ) : (
-            // <Transactions userData={data} />
-            <Activity userData={data} />
           )}
+
+          {currentTab === TRANSACTIONS && <Transactions userData={data} />}
+
+          {currentTab === ACTIVITY && <Activity userData={data} />}
+
           <InfoAlert
             show={showError || showSuccess}
             title={!showSuccess ? "Error" : "Success"}

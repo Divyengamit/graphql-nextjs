@@ -3,11 +3,13 @@ import { Grid, Typography, Box, Button } from "@mui/material";
 
 import CircleIcon from "@mui/icons-material/Circle";
 import Image from "next/image";
+import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
 
 const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
 const cardImage = require("../../assets/CardLogo.png");
 
 const TabBar = (props) => {
+  const { currentTab } = props;
   const menuButtonStyle = {
     mr: 2.5,
     fontSize: "1rem",
@@ -41,30 +43,30 @@ const TabBar = (props) => {
       <Grid item xs={12} sm={12} md={7}>
         <Box display="flex" flexWrap="wrap" sx={{ mt: 2.75, mb: 3 }}>
           <Button
-            variant={props?.showDashboard ? "contained" : "text"}
+            variant={currentTab === HOME ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: props?.showDashboard ? "#FFFFFF" : "#2C3E50",
+              color: currentTab === HOME ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={props?.onDashboardClick}
           >
             Dashboard
           </Button>
-          {/* <Button
-            variant={props?.showDashboard ? "text" : "contained"}
+          <Button
+            variant={currentTab === TRANSACTIONS ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+              color: currentTab === TRANSACTIONS ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={props?.onTransactionClick}
           >
             Transactions
-          </Button> */}
+          </Button>
           <Button
-            variant={props?.showDashboard ? "text" : "contained"}
+            variant={props?.currentTab === ACTIVITY ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+              color: props?.currentTab === ACTIVITY ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={props?.onActivityClick}
           >
