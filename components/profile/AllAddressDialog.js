@@ -44,7 +44,6 @@ const AllAddressDialog = (props) => {
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [addressDetail, setAddressDetail] = useState();
-  console.log("addressDetail", addressDetail);
   const [requestType, setRequestType] = useState();
 
   const { onClose } = props;

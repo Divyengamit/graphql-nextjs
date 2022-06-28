@@ -194,6 +194,11 @@ const ProfessionalSchema = yup.object().shape({
     .required("Qualification year required"),
   // .test("len", "Enter Valid Year", (val) => val?.length === 4),
   registrationNo: yup.string().trim().required("Registration number required"),
+  // .test(
+  //   "len",
+  //   "Enter Valid Registration number",
+  //   (val) => val?.length === 10
+  // ),
   stateMedicalCouncil: yup
     .string()
     .trim()

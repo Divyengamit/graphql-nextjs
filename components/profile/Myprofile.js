@@ -8,7 +8,7 @@ import AllAddressDialog from "./AllAddressDialog";
 import InfoAlert from "../ui/InfoAlert";
 import ProgressIndicator from "../ui/ProgressIndicator";
 import EmailDialog from "./EmailDialog";
-import AddPhoneDialog from "./AddPhoneDialog";
+import PhoneDialog from "./PhoneDialog";
 
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 
@@ -17,14 +17,14 @@ import AccountOptions from "./AccountOptions";
 import Address from "./Address";
 import EmailInfo from "./EmailInfo";
 import PhoneNumberInfo from "./PhoneNumberInfo";
-import ConfirmAlert from "../ui/ConfirmAlert";
 import { useRouter } from "next/router";
-import { removeInfo, updateProfile } from "@/store/Slice/profileSlice";
+import { updateProfile } from "@/store/Slice/profileSlice";
 import { SECURITY } from "@/utils/paths";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
 import { getLocal } from "@/utils/storage";
 import { Decryption } from "@/utils/EncryptDecrypt";
 import AllEmailDialog from "./AllEmailDialog";
+import AllPhoneDialog from "./AllPhoneDialog";
 
 const Myprofile = () => {
   const userId = getLocal("userId");
@@ -43,6 +43,7 @@ const Myprofile = () => {
   const [emailDialog, setEmailDialog] = useState(false);
 
   const [phoneDialog, setPhoneDialog] = useState(false);
+  const [allPhoneDialog, setAllPhoneDialog] = useState(false);
 
   const [primaryAddress, setPrimaryAddress] = useState();
   const [requestType, setRequestType] = useState();
@@ -50,34 +51,6 @@ const Myprofile = () => {
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
-
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmMessage, setConfirmMessage] = useState();
-
-  const [removeItem, setRemoveItem] = useState();
-
-  const handleRemoveInfo = ({ id }) => {
-    dispatch(
-      removeInfo({
-        entityId: userData?.entityId,
-        id,
-      })
-    ).then((res) => {
-      if (!res.error) {
-        dispatch(fetchDashboardDetail(userID?.state?.userId));
-        setShowConfirm(false);
-        setError(true);
-        setErrorTitle("Success");
-        setErrorMessage("Removed Successfully ");
-      }
-      if (res.error) {
-        setShowConfirm(false);
-        setError(true);
-        setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
-      }
-    });
-  };
 
   const StyledText = styled(Typography)(({ theme }) => ({
     color: theme.palette.primary.main,
@@ -91,6 +64,7 @@ const Myprofile = () => {
   const handleEmailAllEmail = () => setAllEmailDialog(false);
 
   const handlePhoneClose = () => setPhoneDialog(false);
+  const handleAllPhoneClose = () => setAllPhoneDialog(false);
 
   useEffect(() => {
     const primary = userData?.addresses.find(
@@ -129,19 +103,7 @@ const Myprofile = () => {
     setEmailDialog(true);
   };
 
-  const phoneNumberList = userData?.aditionalContacts?.filter(
-    (item) => item.mobileNo
-  );
-
-  const handleRemove = (item) => {
-    setRemoveItem(item);
-    setShowConfirm(true);
-    setConfirmMessage(
-      `Remove ${
-        item?.emailAddress ? item?.emailAddress : "+" + item?.mobileNo
-      } ?`
-    );
-  };
+  if (!userData) return null;
 
   return (
     <Box>
@@ -199,10 +161,9 @@ const Myprofile = () => {
 
           <Paper variant="item">
             <PhoneNumberInfo
-              phoneList={phoneNumberList}
               userData={userData}
               onAddNew={() => setPhoneDialog(true)}
-              onremove={handleRemove}
+              onListPhoneNo={() => setAllPhoneDialog(true)}
             />
           </Paper>
         </Grid>
@@ -223,24 +184,22 @@ const Myprofile = () => {
         onClose={handleEmailAllEmail}
         userData={userData}
       />
-
       <EmailDialog
         requestType={requestType}
         state={emailDialog}
         onClose={handleEmailClose}
       />
-      <AddPhoneDialog state={phoneDialog} onClose={handlePhoneClose} />
+      <PhoneDialog state={phoneDialog} onClose={handlePhoneClose} />
+      <AllPhoneDialog
+        isOpen={allPhoneDialog}
+        onClose={handleAllPhoneClose}
+        userData={userData}
+      />
       <InfoAlert
         show={showError}
         title={errorTitle}
         body={errorMessage}
         onClose={() => setError(false)}
-      />
-      <ConfirmAlert
-        show={showConfirm}
-        body={confirmMessage}
-        onClose={() => setShowConfirm(false)}
-        onConfirm={() => handleRemoveInfo(removeItem)}
       />
       {profileState?.loading && <ProgressIndicator />}
     </Box>

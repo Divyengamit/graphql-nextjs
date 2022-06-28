@@ -58,7 +58,6 @@ const EmailDialog = (props) => {
     }
 
     dispatch(addEmail({ ...data })).then((res) => {
-      console.log("res", res);
       if (!res.error) {
         dispatch(fetchDashboardDetail(userData?.entityId));
         setError(true);
@@ -74,7 +73,6 @@ const EmailDialog = (props) => {
         }, 1000);
       }
       if (res.error) {
-        onCloseDialog();
         setError(true);
         setErrorTitle("Error");
         setErrorMessage(res?.payload?.data?.message || "Something went wrong!");

@@ -33,7 +33,7 @@ const DropZone = (props) => {
         Drag & Drop your Files here
       </Typography>
       <Typography variant="small" sx={{ mb: 2 }}>
-        JPG, PNG, PDF | Upto 5MB per file
+        JPG, PNG, PDF | Upto 1.5MB per file
       </Typography>
     </FlexBox>
   );
