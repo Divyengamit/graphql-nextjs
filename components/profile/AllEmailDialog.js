@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -19,41 +19,42 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
-import RemoveAddressDialog from "./RemoveDialog";
-import AddressDialog from "./AddressDialog";
+import RemoveDialog from "./RemoveDialog";
 import { removeAddress, setPrimaryAddress } from "@/store/Slice/profileSlice";
 import { getLocal } from "@/utils/storage";
 import { Decryption } from "@/utils/EncryptDecrypt";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
+import EmailDialog from "./EmailDialog";
 
-// const cardIcon = require("../../assets/icons/card.png");
-// const infoIcon = require("../../assets/icons/info.png");
-const AllAddressDialog = (props) => {
+const AllEmailDialog = ({ isOpen, onClose, userData }) => {
   const dispatch = useDispatch();
   const userId = getLocal("userId");
   const userID = JSON.parse(
     Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+  const emailList = userData?.aditionalContacts?.filter(
+    (item) => item.emailAddress
+  );
+  console.log("emailList", emailList);
 
-  const userData = useSelector(({ dashboard }) => dashboard.data);
   const profileState = useSelector(({ profile }) => profile);
 
   const [removeDialog, setRemoveDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
+
   const [showError, setError] = useState(false);
+
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
-  const [addressDetail, setAddressDetail] = useState();
-  console.log("addressDetail", addressDetail);
-  const [requestType, setRequestType] = useState();
 
-  const { onClose } = props;
+  const [detail, setDetail] = useState();
+  const [requestType, setRequestType] = useState();
 
   const handleConfirmRemove = () => {
     dispatch(
       removeAddress({
         entityId: userData?.entityId,
-        id: addressDetail?.id,
+        id: detail?.id,
       })
     ).then((res) => {
       if (!res.error) {
@@ -72,73 +73,70 @@ const AllAddressDialog = (props) => {
     });
   };
 
-  const handleRemoveAddress = useCallback(
-    (address) => {
-      setAddressDetail(address);
-      onClose();
-      setTimeout(() => {
-        setRemoveDialog(true);
-      });
-    },
-    [onClose]
-  );
+  const handleRemoveEmail = (email) => {
+    setDetail(email);
+    onClose();
+    setRemoveDialog(true);
+  };
 
   const handleSetAsPrimary = ({ id }) => {
-    dispatch(
-      setPrimaryAddress({
-        entityId: userID?.state?.userId,
-        id,
-      })
-    ).then((res) => {
-      if (res.error) {
-        setError(true);
-        setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
-      }
-      if (!res.error) {
-        dispatch(fetchDashboardDetail(userID?.state?.userId));
-        onClose();
-        setError(true);
-        setErrorTitle("Success");
-        setErrorMessage(" Address set to Primary ");
-      }
+    // dispatch(
+    //   setPrimaryAddress({
+    //     entityId: userID?.state?.userId,
+    //     id,
+    //   })
+    // ).then((res) => {
+    //   if (res.error) {
+    //     setError(true);
+    //     setErrorTitle("Error");
+    //     setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+    //   }
+    //   if (!res.error) {
+    //     dispatch(fetchDashboardDetail(userID?.state?.userId));
+    //     onClose();
+    //     setError(true);
+    //     setErrorTitle("Success");
+    //     setErrorMessage(" Address set to Primary ");
+    //   }
+    // });
+  };
+
+  const handleEditEmail = (email) => {
+    onClose();
+    setDetail(email);
+    setRequestType("UPDATE");
+    setTimeout(() => {
+      setEditDialog(true);
     });
   };
 
-  const handleEditAddress = useCallback(
-    (address) => {
-      onClose();
-      setAddressDetail(address);
-      setRequestType("UPDATE");
-      setTimeout(() => {
-        setEditDialog(true);
-      });
-    },
-    [onClose]
-  );
-
-  const handleAddAddress = useCallback(() => {
+  const handleAddEmail = () => {
     onClose();
     setEditDialog(true);
     setRequestType("ADD");
-  }, [onClose]);
+  };
 
   const handleRemoveDialogClose = () => setRemoveDialog(false);
   const handleEditDialogClose = () => setEditDialog(false);
 
   //List of Addresses
-  const primaryAddressList =
-    userData?.addresses?.filter((a) => a?.primaryAddress === true) || [];
-  const secondaryAddressList =
-    userData?.addresses?.filter((a) => a?.primaryAddress !== true) || [];
+  const primaryEmailList = [
+    {
+      emailAddress: userData?.emailAddress,
+      primary: true,
+    },
+  ];
+  const secondaryEmailList =
+    userData?.aditionalContacts?.filter((a) => a?.emailAddress) || [];
 
-  const listAddress = [...primaryAddressList, ...secondaryAddressList];
+  const listEmail = [...primaryEmailList, ...secondaryEmailList];
+  console.log("listEmail", listEmail);
 
   return (
     <>
       <Dialog
-        open={props?.state}
-        onClose={props?.onClose}
+        open={isOpen}
+        onClose={onClose}
         fullWidth
         maxWidth={"xs"}
         PaperProps={{
@@ -147,7 +145,7 @@ const AllAddressDialog = (props) => {
       >
         <IconButton
           aria-label="close"
-          onClick={props?.onClose}
+          onClick={onClose}
           sx={{
             position: "absolute",
             right: 20,
@@ -161,94 +159,29 @@ const AllAddressDialog = (props) => {
           color="secondary"
           sx={{ pb: 1.1, px: 5, pt: 3.25 }}
         >
-          All Address
+          All Email
         </DialogTitle>
 
         <DialogContent sx={{ px: 5, py: 4.125, my: 1 }}>
           <DialogContentText variant="h5Regular" sx={{ color: "#2C3E50" }}>
-            Add a new address, make quick edits, or remove an old address
+            Add a new email, make quick edits, or remove an old email
           </DialogContentText>
           <Button
             variant="text"
             color="secondary"
             sx={{ my: 1.3, fontSize: "0.8rem", ml: -1 }}
-            onClick={handleAddAddress}
+            onClick={handleAddEmail}
           >
             Add New <AddIcon sx={{ ml: 1, width: "20px", height: "20px" }} />
           </Button>
           <Divider />
           <Box sx={{ maxHeight: 400 }}>
-            {/* <Box sx={{ pt: 2.75, pb: 3.25 }}>             
-              <Box
-                sx={{
-                  py: 1.8,
-                  mt: 1.25,
-                  mb: 2,
-                  background: "#F5F5F5",
-                  borderRadius: "3px",
-                }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <img
-                  src={cardIcon}
-                  style={{
-                    marginLeft: "20px",
-                    marginRight: "12px",
-                    width: "23px",
-                    height: "23px",
-                  }}
-                />
-                <Typography variant="h5Regular" sx={{ color: "#2C3E50" }}>
-                  You’re using this address for 1 card
-                </Typography>
-                <img
-                  src={infoIcon}
-                  style={{
-                    marginLeft: "auto",
-                    marginRight: "15px",
-                    width: "22px",
-                    height: "22px",
-                  }}
-                />
-              </Box>
-
-              <Button
-                disableElevation
-                variant="contained"
-                color="secondary"
-                sx={{ mr: 0.8, fontSize: "0.8rem" }}
-                onClick={() => setEditDialog(true)}
-              >
-                Edit
-                <EditIcon sx={{ ml: 1.2, width: "18px", height: "18px" }} />
-              </Button>
-              <Button
-                disableElevation
-                style={{
-                  backgroundColor: "#F5F5F5",
-                  color: "#FF4141",
-                  boxShadow: "none",
-                  textTransform: "capitalize",
-                  fontSize: "0.8rem",
-                }}
-                variant="contained"
-                onClick={handleRemoveAddress}
-              >
-                Remove
-                <RemoveIcon sx={{ ml: 1.2, width: "18px", height: "18px" }} />
-              </Button>
-            </Box>
-            <Divider /> */}
-
-            {listAddress.map((item, index) => {
+            {listEmail.map((item, index) => {
               return (
                 <>
                   <Box key={item?.id}>
                     <Chip
-                      label={item?.primaryAddress ? "Primary" : "Secondary"}
+                      label={item?.primary === true ? "Primary" : "Secondary"}
                       sx={{
                         borderRadius: 0,
                         color: "#2C3E50",
@@ -268,12 +201,10 @@ const AllAddressDialog = (props) => {
                       sx={{ lineHeight: 1.5, mb: 1.125 }}
                       color="#000000"
                     >
-                      {item?.address1} {item?.address1}
-                      <br /> {item?.city}, <br /> {item?.state} -{" "}
-                      {item?.pincode}
+                      {item?.emailAddress}
                     </Typography>
 
-                    {!item?.primaryAddress && (
+                    {!item?.primary && (
                       <Button
                         disableElevation
                         sx={{ mr: 0.6, fontSize: "0.8rem", fontWeight: 600 }}
@@ -292,7 +223,7 @@ const AllAddressDialog = (props) => {
                       variant="contained"
                       color="secondary"
                       sx={{ mr: 0.8, fontSize: "0.8rem", fontWeight: 600 }}
-                      onClick={() => handleEditAddress(item)}
+                      onClick={() => handleEditEmail(item)}
                     >
                       Edit
                       <EditIcon
@@ -307,7 +238,7 @@ const AllAddressDialog = (props) => {
                         fontSize: "0.8rem",
                       }}
                       variant="contained"
-                      onClick={() => handleRemoveAddress(item)}
+                      onClick={() => handleRemoveEmail(item)}
                     >
                       Remove
                       <RemoveIcon
@@ -316,7 +247,7 @@ const AllAddressDialog = (props) => {
                     </Button>
                   </Box>
 
-                  {index < listAddress.length - 1 && (
+                  {index < listEmail.length - 1 && (
                     <Divider sx={{ mt: 3.25 }} />
                   )}
                 </>
@@ -331,30 +262,28 @@ const AllAddressDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {removeDialog && addressDetail && (
-        <RemoveAddressDialog
-          item="address"
+      {removeDialog && detail && (
+        <RemoveDialog
+          item="email"
           state={removeDialog}
           onClose={handleRemoveDialogClose}
           onRemoveClick={handleConfirmRemove}
         >
-          <div>
-            {addressDetail?.address1} {addressDetail?.address1}
-            <br /> {addressDetail?.city}, <br /> {addressDetail?.state} -{" "}
-            {addressDetail?.pincode}
-          </div>
-        </RemoveAddressDialog>
+          <span>{detail?.emailAddress}</span>
+        </RemoveDialog>
       )}
-      <AddressDialog
-        state={editDialog}
-        onClose={handleEditDialogClose}
-        requestType={requestType}
-        userData={userData}
-        address={addressDetail}
-      />
+
+      {editDialog && detail && (
+        <EmailDialog
+          onClose={handleEditDialogClose}
+          state={editDialog}
+          requestType={requestType}
+          detail={detail}
+        />
+      )}
       {profileState?.loading && <ProgressIndicator />}
     </>
   );
 };
 
-export default AllAddressDialog;
+export default AllEmailDialog;

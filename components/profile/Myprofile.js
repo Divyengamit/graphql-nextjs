@@ -7,7 +7,7 @@ import theme from "styles/theme";
 import AllAddressDialog from "./AllAddressDialog";
 import InfoAlert from "../ui/InfoAlert";
 import ProgressIndicator from "../ui/ProgressIndicator";
-import AddEmailDialog from "./AddEmailDialog";
+import EmailDialog from "./EmailDialog";
 import AddPhoneDialog from "./AddPhoneDialog";
 
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
@@ -24,8 +24,9 @@ import { SECURITY } from "@/utils/paths";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
 import { getLocal } from "@/utils/storage";
 import { Decryption } from "@/utils/EncryptDecrypt";
+import AllEmailDialog from "./AllEmailDialog";
 
-const Myprofile = (props) => {
+const Myprofile = () => {
   const userId = getLocal("userId");
   const userID = JSON.parse(
     Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
@@ -37,7 +38,10 @@ const Myprofile = (props) => {
 
   const [addressDialog, setAddressDialog] = useState(false);
   const [allAddressDialog, setAllAddressDialog] = useState(false);
+
+  const [allEmailDialog, setAllEmailDialog] = useState(false);
   const [emailDialog, setEmailDialog] = useState(false);
+
   const [phoneDialog, setPhoneDialog] = useState(false);
 
   const [primaryAddress, setPrimaryAddress] = useState();
@@ -81,10 +85,10 @@ const Myprofile = (props) => {
   }));
 
   const handleAddressClose = () => setAddressDialog(false);
-
   const handleAllAddressClose = () => setAllAddressDialog(false);
 
   const handleEmailClose = () => setEmailDialog(false);
+  const handleEmailAllEmail = () => setAllEmailDialog(false);
 
   const handlePhoneClose = () => setPhoneDialog(false);
 
@@ -124,10 +128,6 @@ const Myprofile = (props) => {
     setRequestType("ADD");
     setEmailDialog(true);
   };
-
-  const emailList = userData?.aditionalContacts?.filter(
-    (item) => item.emailAddress
-  );
 
   const phoneNumberList = userData?.aditionalContacts?.filter(
     (item) => item.mobileNo
@@ -192,10 +192,8 @@ const Myprofile = (props) => {
           <Paper variant="item">
             <EmailInfo
               userData={userData}
-              emailList={emailList}
               onAddEmail={handleAddEmail}
-              // onremoveEmail={(item) => handleRemoveInfo(item)}
-              onremoveEmail={handleRemove}
+              onListEmail={() => setAllEmailDialog(true)}
             />
           </Paper>
 
@@ -219,7 +217,14 @@ const Myprofile = (props) => {
         state={allAddressDialog}
         onClose={handleAllAddressClose}
       />
-      <AddEmailDialog
+
+      <AllEmailDialog
+        isOpen={allEmailDialog}
+        onClose={handleEmailAllEmail}
+        userData={userData}
+      />
+
+      <EmailDialog
         requestType={requestType}
         state={emailDialog}
         onClose={handleEmailClose}

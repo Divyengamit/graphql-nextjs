@@ -1,18 +1,11 @@
 import React from "react";
-import {
-  Typography,
-  IconButton,
-  Box,
-  Button,
-  Chip,
-  Divider,
-} from "@mui/material";
+import { Typography, IconButton, Box, Button, Chip } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import MoreVert from "@mui/icons-material/MoreVert";
 
 const EmailInfo = (props) => {
-  const { onAddEmail, userData, emailList, onremoveEmail } = props;
+  const { onAddEmail, userData, onListEmail } = props;
 
   return (
     <Box>
@@ -30,6 +23,7 @@ const EmailInfo = (props) => {
           Add New <AddIcon sx={{ ml: 0.9 }} />
         </Button>
       </Box>
+
       <Chip
         label="Primary"
         sx={{
@@ -52,8 +46,11 @@ const EmailInfo = (props) => {
         >
           {userData?.emailAddress}
         </Typography>
+        <IconButton onClick={onListEmail}>
+          <MoreVert />
+        </IconButton>
       </Box>
-      {emailList?.map((item) => {
+      {/* {emailList?.map((item) => {
         return (
           <>
             <Divider />
@@ -85,15 +82,15 @@ const EmailInfo = (props) => {
             </Box>
           </>
         );
-      })}
+      })} */}
 
-      <Typography
+      {/* <Typography
         variant="h6"
         sx={{ color: "#8F8F8F", lineHeight: "21.43px", mt: 1.875 }}
       >
         To update an email address, you must have at least two email address on
         file.
-      </Typography>
+      </Typography> */}
     </Box>
   );
 };
