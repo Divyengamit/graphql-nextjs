@@ -52,7 +52,7 @@ const ApplyDialog = (props) => {
       }
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
         props?.onClose();
         props?.handleSuccessDialog();
       }

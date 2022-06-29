@@ -83,7 +83,7 @@ const SignupScreen = () => {
         nextHandler(res?.payload?.data);
       }
       if (res?.error) {
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
         setError(true);
       }
     });

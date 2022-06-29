@@ -74,7 +74,7 @@ const CreateProfileScreen = () => {
     dispatch(registerUserInfo(tempForm)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
         nextHandler();

@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -32,7 +32,7 @@ export const createUserPassword = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -45,7 +45,7 @@ export const registerUserInfo = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -59,7 +59,7 @@ export const uploadDoc = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -73,7 +73,7 @@ export const verifyOTP = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -86,7 +86,7 @@ export const verifyEmailOtp = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -99,7 +99,7 @@ export const resendOTP = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -112,7 +112,7 @@ export const forgetPassword = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -125,7 +125,7 @@ export const resetPassword = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );

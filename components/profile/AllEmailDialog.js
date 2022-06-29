@@ -66,7 +66,7 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
         setRemoveDialog(false);
       }
     });
@@ -88,7 +88,7 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
     //   if (res.error) {
     //     setError(true);
     //     setErrorTitle("Error");
-    //     setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
     //   }
     //   if (!res.error) {
     //     dispatch(fetchDashboardDetail(userID?.state?.userId));

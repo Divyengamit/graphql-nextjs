@@ -90,7 +90,7 @@ const Dashboard = (props) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };
@@ -114,7 +114,7 @@ const Dashboard = (props) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };
@@ -144,7 +144,7 @@ const Dashboard = (props) => {
         )}
         <Item>
           <Box sx={{ position: "absolute", right: "15px", top: "14px" }}>
-            {props?.userData?.cards?.length > 0 && (
+            {props?.userData?.cards?.length > 0 && activeCard && (
               <IconButton
                 sx={{ p: 0.7 }}
                 ref={refContainer}

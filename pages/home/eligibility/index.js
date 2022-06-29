@@ -104,7 +104,7 @@ const FinanceScreen = () => {
     dispatch(checkEquipmentFinanceEligibility(tempForm)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
         // router.push({ pathname: "/home" });
         // setTimeout(() => {
         //   router.push({ pathname: "/home" });

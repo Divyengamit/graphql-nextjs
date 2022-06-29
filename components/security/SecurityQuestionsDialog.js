@@ -61,7 +61,7 @@ const SecurityQuestionsDialog = (props) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };

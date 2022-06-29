@@ -24,7 +24,7 @@ export const updateProfile = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -36,7 +36,7 @@ export const addAddress = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -49,7 +49,7 @@ export const setPrimaryAddress = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -88,7 +88,7 @@ export const removeInfo = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -114,7 +114,7 @@ export const applyCardConfirm = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -127,7 +127,7 @@ export const changePassword = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -140,7 +140,7 @@ export const verify_2FA = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -153,7 +153,7 @@ export const enable_2FA = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -166,7 +166,7 @@ export const auth_2FA = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -180,7 +180,7 @@ export const applyCard = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -193,7 +193,7 @@ export const securityQuestions = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
