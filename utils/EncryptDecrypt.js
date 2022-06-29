@@ -25,11 +25,15 @@ export const Encryption = (data) => {
 
 export const getUserID = () => {
   const userId = getLocal("userId");
-  const bytes = CryptoJS.AES.decrypt(
-    userId,
-    process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
-  );
-  let tempData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-  tempData = JSON.parse(tempData);
-  return tempData?.state?.userId;
+  if (userId) {
+    const bytes = CryptoJS.AES.decrypt(
+      userId,
+      process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+    );
+    let tempData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    tempData = JSON.parse(tempData);
+    return tempData?.state?.userId;
+  } else {
+    return null;
+  }
 };
