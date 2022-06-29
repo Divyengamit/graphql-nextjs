@@ -60,7 +60,7 @@ const RemoveAddressDialog = (props) => {
           color="secondary"
           sx={{ pb: 1.1, px: 5, pt: 3.25, textAlign: "center" }}
         >
-          Remove this Address
+          Remove this {props?.item}
         </DialogTitle>
 
         <DialogContent sx={{ px: 5, py: 4.125 }}>
@@ -90,7 +90,7 @@ const RemoveAddressDialog = (props) => {
                 textAlign: "center",
               }}
             >
-              Are you sure to remove this address ?
+              Are you sure to remove this {props?.item}?
             </Typography>
 
             <Typography
@@ -102,9 +102,7 @@ const RemoveAddressDialog = (props) => {
                 lineHeight: "20.5px",
               }}
             >
-              {props?.addressData?.address1} {props?.addressData?.address1}
-              <br /> {props?.addressData?.city}, <br />{" "}
-              {props?.addressData?.state} - {props?.addressData?.pincode}
+              {props?.children}
             </Typography>
           </Box>
           <Button

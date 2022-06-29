@@ -1,18 +1,11 @@
 import React from "react";
-import {
-  Typography,
-  IconButton,
-  Box,
-  Button,
-  Chip,
-  Divider,
-} from "@mui/material";
+import { Typography, IconButton, Box, Button, Chip } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import MoreVert from "@mui/icons-material/MoreVert";
 
 const EmailInfo = (props) => {
-  const { onAddEmail, userData, emailList, onremoveEmail } = props;
+  const { onAddEmail, userData, onListEmail } = props;
 
   return (
     <Box>
@@ -30,6 +23,7 @@ const EmailInfo = (props) => {
           Add New <AddIcon sx={{ ml: 0.9 }} />
         </Button>
       </Box>
+
       <Chip
         label="Primary"
         sx={{
@@ -52,40 +46,10 @@ const EmailInfo = (props) => {
         >
           {userData?.emailAddress}
         </Typography>
+        <IconButton onClick={onListEmail}>
+          <MoreVert />
+        </IconButton>
       </Box>
-      {emailList?.map((item) => {
-        return (
-          <>
-            <Divider />
-            <Chip
-              label="Secondary"
-              sx={{
-                mt: 2.5,
-                fontSize: "14px",
-                color: "#2C3E50",
-                fontWeight: "400",
-                borderRadius: 0,
-              }}
-            />
-            <Box
-              display="flex"
-              alignItems="flex-start"
-              justifyContent="space-between"
-            >
-              <Typography
-                variant="h6"
-                sx={{ color: "#000000", lineHeight: "24.5px", mt: 1.2 }}
-              >
-                {item?.emailAddress}
-              </Typography>
-
-              <IconButton onClick={() => onremoveEmail(item)}>
-                <RemoveCircleOutlineIcon style={{ color: "#FF4141" }} />
-              </IconButton>
-            </Box>
-          </>
-        );
-      })}
 
       <Typography
         variant="h6"

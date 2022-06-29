@@ -43,7 +43,7 @@ const FileUpload = (props) => {
             name="file"
             types={fileTypes}
             multiple={false}
-            maxSize={5}
+            maxSize={1.5}
           >
             <DropZone title={props?.title} />
           </FileUploader>

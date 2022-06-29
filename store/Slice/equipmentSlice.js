@@ -44,7 +44,7 @@ const initialState = {
     hospitalName: "",
     hospitalVintage: "",
     loanAmount: "",
-    businessStatus: "",
+    // businessStatus: "",
     addressProof: null,
     bankStmtFile: null,
     itrFile: null,
