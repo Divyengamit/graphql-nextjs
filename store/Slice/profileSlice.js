@@ -62,7 +62,7 @@ export const removeAddress = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -75,7 +75,7 @@ export const addEmail = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
@@ -101,7 +101,7 @@ export const addPhoneNumber = createAsyncThunk(
       const data = await response;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
