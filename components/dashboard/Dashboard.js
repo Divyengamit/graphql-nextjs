@@ -8,6 +8,7 @@ import {
   Link,
   MenuItem,
   Menu,
+  Divider,
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
@@ -230,39 +231,42 @@ const Dashboard = (props) => {
             issued, withdrawals are allowed from an ATM.
           </Typography>
         </Item>
+        {props?.userData?.loanRequestId ? (
+          <Item>
+            <Box display="flex" justifyContent="space-between">
+              <Box>
+                <Typography color="secondary" variant="h6Bold">
+                  Loan Request Status
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" sx={{ my: 2.875 }}>
+              <Typography variant="h4Bold" sx={{ color: "#2C3E50", flex: 1 }}>
+                Loan Request Id
+              </Typography>
+              <Typography
+                variant="h2Regular"
+                sx={{ color: "#2C3E50", flex: 1 }}
+              >
+                {props?.userData?.loanRequestId}
+              </Typography>
+            </Box>
+            <Divider />
+            <Box display="flex" sx={{ my: 2.875 }}>
+              <Typography variant="h4Bold" sx={{ color: "#2C3E50", flex: 1 }}>
+                Loan Status
+              </Typography>
+              <Typography
+                variant="h2Regular"
+                sx={{ color: "#2C3E50", flex: 1 }}
+              >
+                {props?.userData?.loanStatus
+                  ? props?.userData?.loanStatus
+                  : "-"}
+              </Typography>
+            </Box>
 
-        <Link
-          onClick={props?.onExploreFinancingClick}
-          underline="none"
-          sx={{
-            "&:hover": {
-              cursor: "pointer",
-            },
-          }}
-        >
-          <Item
-            sx={{ p: 0 }}
-            className={"dashboard-equipment-finance-img"}
-            style={{
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              height: "306px",
-              width: "100%",
-            }}
-          >
-            <Typography
-              variant="h6Bold"
-              sx={{
-                color: "#2C3E50",
-                pl: 3.3,
-                pt: 3.3,
-              }}
-            >
-              Equipment Finance at 8.75% p.a
-            </Typography>
-
-            <Paper
+            {/* <Paper
               sx={{
                 pl: 3.3,
                 pt: 2,
@@ -275,13 +279,61 @@ const Dashboard = (props) => {
                 borderBottomLeftRadius: "15px",
                 borderBottomRightRadius: "15px",
               }}
-            >
-              <Typography color="primary" variant="subtitle1SemiBold">
-                Explore financing options
-              </Typography>
-            </Paper>
+            ></Paper> */}
           </Item>
-        </Link>
+        ) : (
+          <Link
+            onClick={props?.onExploreFinancingClick}
+            underline="none"
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
+          >
+            <Item
+              sx={{ p: 0 }}
+              className={"dashboard-equipment-finance-img"}
+              style={{
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                height: "306px",
+                width: "100%",
+              }}
+            >
+              <Typography
+                variant="h6Bold"
+                sx={{
+                  color: "#2C3E50",
+                  pl: 3.3,
+                  pt: 3.3,
+                }}
+              >
+                Equipment Finance at 8.75% p.a
+              </Typography>
+
+              <Paper
+                sx={{
+                  pl: 3.3,
+                  pt: 2,
+                  pb: 2,
+                  position: "absolute",
+                  bottom: 0,
+                }}
+                style={{
+                  width: "100%",
+                  borderBottomLeftRadius: "15px",
+                  borderBottomRightRadius: "15px",
+                }}
+              >
+                <Typography color="primary" variant="subtitle1SemiBold">
+                  Explore financing options
+                </Typography>
+              </Paper>
+            </Item>
+          </Link>
+        )}
       </Grid>
       <Grid item xs={12} sm={12} md={5}></Grid>
       <CardDialog
