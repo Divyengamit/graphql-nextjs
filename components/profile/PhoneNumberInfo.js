@@ -1,20 +1,13 @@
 import React from "react";
-import {
-  Typography,
-  IconButton,
-  Box,
-  Button,
-  Chip,
-  Divider,
-} from "@mui/material";
+import { Typography, Box, Button, Chip, IconButton } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import { formatPhoneNumber } from "@/utils/format";
+import MoreVert from "@mui/icons-material/MoreVert";
 
 const PhoneNumberInfo = (props) => {
-  const { userData, phoneList, onAddNew, onremove } = props;
+  const { userData, onAddNew, onListPhoneNo } = props;
 
   return (
     <Box>
@@ -50,9 +43,12 @@ const PhoneNumberInfo = (props) => {
         >
           +{formatPhoneNumber(userData?.mobileNo)}
         </Typography>
+        <IconButton onClick={onListPhoneNo}>
+          <MoreVert />
+        </IconButton>
       </Box>
 
-      {phoneList?.map((item) => {
+      {/* {phoneList?.map((item) => {
         return (
           <>
             <Divider />
@@ -86,7 +82,7 @@ const PhoneNumberInfo = (props) => {
             </Box>
           </>
         );
-      })}
+      })} */}
     </Box>
   );
 };

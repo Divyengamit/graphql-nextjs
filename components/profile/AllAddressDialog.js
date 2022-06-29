@@ -19,7 +19,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
-import RemoveAddressDialog from "./RemoveAddressDialog";
+import RemoveAddressDialog from "./RemoveDialog";
 import AddressDialog from "./AddressDialog";
 import { removeAddress, setPrimaryAddress } from "@/store/Slice/profileSlice";
 import { getLocal } from "@/utils/storage";
@@ -330,12 +330,20 @@ const AllAddressDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      <RemoveAddressDialog
-        addressData={addressDetail}
-        state={removeDialog}
-        onClose={handleRemoveDialogClose}
-        onRemoveClick={handleConfirmRemove}
-      />
+      {removeDialog && addressDetail && (
+        <RemoveAddressDialog
+          item="address"
+          state={removeDialog}
+          onClose={handleRemoveDialogClose}
+          onRemoveClick={handleConfirmRemove}
+        >
+          <div>
+            {addressDetail?.address1} {addressDetail?.address1}
+            <br /> {addressDetail?.city}, <br /> {addressDetail?.state} -{" "}
+            {addressDetail?.pincode}
+          </div>
+        </RemoveAddressDialog>
+      )}
       <AddressDialog
         state={editDialog}
         onClose={handleEditDialogClose}

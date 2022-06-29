@@ -7,7 +7,9 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+
 import { useDispatch, useSelector } from "react-redux";
+
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -15,17 +17,16 @@ import InputField from "../ui/InputField";
 import ProgressIndicator from "../ui/ProgressIndicator";
 import InfoAlert from "../ui/InfoAlert";
 
-import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-import { addPhoneNumberSchema } from "../../utils/validation";
-import { addPhoneNumber } from "@/store/Slice/profileSlice";
+import { addEmailSchema } from "@/utils/validation";
+import { addEmail } from "@/store/Slice/profileSlice";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
-import { useStyles } from "@/utils/removeEncrCss";
-const AddPhoneDialog = (props) => {
-  const classes = useStyles();
+
+const EmailDialog = (props) => {
+  const { requestType, detail } = props;
   const dispatch = useDispatch();
   const userData = useSelector(({ dashboard }) => dashboard.data);
   const profileState = useSelector(({ profile }) => profile);
@@ -35,33 +36,43 @@ const AddPhoneDialog = (props) => {
   const [errorMessage, setErrorMessage] = useState();
 
   const methods = useForm({
-    resolver: yupResolver(addPhoneNumberSchema),
+    resolver: yupResolver(addEmailSchema),
     mode: "onSubmit",
+    defaultValues: {
+      emailAddress: detail?.emailAddress || "",
+    },
   });
 
   const onCloseDialog = () => {
-    props?.onClose();
     methods.reset({});
+    props?.onClose();
   };
 
   const onSubmitHandler = (values) => {
     const data = {
       entityId: userData?.entityId,
-      mobileNo: "91" + values?.mobileNo,
+      emailAddress: values?.emailAddress,
     };
-    props?.onClose();
-    dispatch(addPhoneNumber(data)).then((res) => {
+    if (requestType === "UPDATE") {
+      data["id"] = detail?.id;
+    }
+
+    dispatch(addEmail({ ...data })).then((res) => {
       if (!res.error) {
-        onCloseDialog();
-        methods.reset({});
         dispatch(fetchDashboardDetail(userData?.entityId));
         setError(true);
         setErrorTitle("Success");
-        setErrorMessage("Phone Number Added Successfully ");
+        setErrorMessage(
+          requestType === "UPDATE"
+            ? "Email Updated Successfully "
+            : "Email Added Successfully "
+        );
+        setTimeout(() => {
+          onCloseDialog();
+          setError(false);
+        }, 1000);
       }
       if (res.error) {
-        onCloseDialog();
-        methods.reset({});
         setError(true);
         setErrorTitle("Error");
         setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
@@ -113,20 +124,19 @@ const AddPhoneDialog = (props) => {
           color="secondary"
           sx={{ pb: 1.1, px: 5, pt: 3.25, textAlign: "center" }}
         >
-          Add Phone Number
+          {requestType === "ADD" ? "Add" : "Update"} email
         </DialogTitle>
         <DialogContent sx={{ px: 5, py: 3.75, mt: 1 }}>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
               <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-                New Phone Number
+                {requestType === "ADD" ? "Add" : "Update"} Email
               </Typography>
 
               <InputField
-                className={classes.input}
-                type="number"
-                name="mobileNo"
-                placeholder="Enter New Phone Number"
+                type="email"
+                name="emailAddress"
+                placeholder="Enter Email"
                 settings={{
                   variant: "outlined",
                   sx: { mt: 1.2 },
@@ -140,7 +150,7 @@ const AddPhoneDialog = (props) => {
                 color="secondary"
                 sx={{ mt: 3 }}
               >
-                <AddIcon /> Add Phone Number
+                {requestType === "ADD" ? "Add" : "Update"} Email
               </Button>
             </form>
           </FormProvider>
@@ -157,4 +167,4 @@ const AddPhoneDialog = (props) => {
   );
 };
 
-export default AddPhoneDialog;
+export default EmailDialog;

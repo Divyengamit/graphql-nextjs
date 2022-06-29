@@ -54,7 +54,7 @@ const ProfileInfo = (props) => {
             variant="subtitle1"
             sx={{ color: "#2C3E50", lineHeight: "27.2px", ml: 5.5 }}
           >
-            Joined in 2016
+            Joined in {props?.userData?.registeredOn.split("-").pop()}
           </Typography>
         </Box>
 
