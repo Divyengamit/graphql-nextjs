@@ -21,6 +21,9 @@ import {
 } from "@/store/Slice/equipmentSlice";
 import ConfirmAlert from "@/components/ui/ConfirmAlert";
 import { getLayout } from "@/components/layout/SiteLayout";
+import ConfirmAlertConform from "@/components/ui/ConfirmAlert";
+import { HOME } from "@/utils/paths";
+import ProgressIndicator from "@/components/ui/ProgressIndicator";
 const steps = ["Professional Details", "Loan Details", "Upload Documents"];
 
 const EquipmentFinance = () => {
@@ -28,6 +31,7 @@ const EquipmentFinance = () => {
   const dispatch = useDispatch();
   const [activeStep, setActivestep] = useState(0);
   const equipmentData = useSelector(({ equipment }) => equipment.equipmentData);
+  const loading = useSelector(({ equipment }) => equipment.loading);
   const eligibilityData = useSelector(
     ({ equipment }) => equipment.eligibilityData
   );
@@ -43,8 +47,12 @@ const EquipmentFinance = () => {
       ...equipmentData,
     },
   });
+
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState();
+
   const [showConfirm, setShowConfirm] = useState(false);
-  const [confirmTitle, setConfirmTitle] = useState();
+  // const [confirmTitle, setConfirmTitle] = useState();
   const [confirmMessage, setConfirmMessage] = useState();
 
   const { reset, control, watch, formState, handleSubmit, setValue } =
@@ -76,7 +84,7 @@ const EquipmentFinance = () => {
         experience: data?.experience,
         hospitalName: data?.hospitalName,
         hospitalVintage: data?.hospitalVintage,
-        businessStatus: data?.businessStatus,
+        // businessStatus: data?.businessStatus,
         degreeCertificateFile: data?.degreeCertificateFile,
       })
     );
@@ -99,7 +107,7 @@ const EquipmentFinance = () => {
         highestQualification: eligibilityData?.highestQualification,
         annualIncome: eligibilityData?.annualIncome,
         entityId: userID?.state?.userId,
-        experience: equipmentData?.experience,
+        experience: eligibilityData?.experience,
         universityName: equipmentData?.universityName,
         qualificationYear: equipmentData?.qualificationYear,
         registrationNo: equipmentData?.registrationNo,
@@ -107,7 +115,7 @@ const EquipmentFinance = () => {
         hospitalName: equipmentData?.hospitalName,
         hospitalVintage: equipmentData?.hospitalVintage,
         loanAmount: equipmentData?.loanAmount,
-        businessStatus: equipmentData?.businessStatus,
+        // businessStatus: equipmentData?.businessStatus,
         degreeCertificateFile: equipmentData?.degreeCertificateFile,
         performaInvoiceFile: equipmentData?.performaInvoiceFile,
         addressProof: data?.addressProof,
@@ -120,20 +128,26 @@ const EquipmentFinance = () => {
         if (res.error) {
           if (res.error.message === "Rejected") {
             setShowConfirm(true);
-            setConfirmTitle("Sorry");
-            setConfirmMessage("Not Acceptable, try to next time");
+            // setConfirmTitle("Sorry");
+            setConfirmMessage("Please try again...");
           }
         }
-        // if (!res.error) {
-        //   console.log("res", res.error);
-        // }
+        if (!res.error) {
+          setShow(true);
+          setMessage(res?.payload?.message);
+        }
       });
     }
   };
+
+  const onClickOKConfirm = () => {
+    router.push({ pathname: HOME });
+  };
+
   const onClickNext = () => {
     setActivestep(activeStep + 1);
     if (activeStep === 2) {
-      router.push({ pathname: "/home" });
+      router.push({ pathname: HOME });
     }
   };
   const onBack = () => {
@@ -142,7 +156,7 @@ const EquipmentFinance = () => {
   const onBackConfirm = () => {
     if (activeStep === 2) {
       setShowConfirm(false);
-      router.push({ pathname: "/home" });
+      router.push({ pathname: HOME });
     }
   };
   return (
@@ -211,13 +225,34 @@ const EquipmentFinance = () => {
       </div>
       <ConfirmAlert
         show={showConfirm}
-        title={confirmTitle}
+        // title={confirmTitle}
         body={confirmMessage}
         buttonConfirmText="Ok"
         buttonCancelText="Cancel"
         onClose={() => setShowConfirm(false)}
         onConfirm={onBackConfirm}
       />
+
+      <ConfirmAlert
+        show={showConfirm}
+        // title={confirmTitle}
+        body={confirmMessage}
+        buttonConfirmText="Ok"
+        buttonCancelText="Cancel"
+        onClose={() => setShowConfirm(false)}
+        onConfirm={onBackConfirm}
+      />
+
+      <ConfirmAlertConform
+        show={show}
+        body={message}
+        buttonConfirmText="Ok"
+        hideCancel={true}
+        buttonCancelText="Cancel"
+        onClose={onClickOKConfirm}
+        onConfirm={onClickOKConfirm}
+      />
+      {loading && <ProgressIndicator />}
     </>
   );
 };

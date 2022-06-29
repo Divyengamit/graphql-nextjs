@@ -194,15 +194,20 @@ const ProfessionalSchema = yup.object().shape({
     .required("Qualification year required"),
   // .test("len", "Enter Valid Year", (val) => val?.length === 4),
   registrationNo: yup.string().trim().required("Registration number required"),
+  // .test(
+  //   "len",
+  //   "Enter Valid Registration number",
+  //   (val) => val?.length === 10
+  // ),
   stateMedicalCouncil: yup
     .string()
     .trim()
     .required(" State medical council required"),
-  experience: yup
-    .string()
-    .trim()
-    .required(" Years of experience required")
-    .min(0, "Min value 0."),
+  // experience: yup
+  //   .string()
+  //   .trim()
+  //   .required(" Years of experience required")
+  //   .min(0, "Min value 0."),
   hospitalName: yup
     .string()
     .trim()
@@ -211,10 +216,10 @@ const ProfessionalSchema = yup.object().shape({
     .string()
     .trim()
     .required("Hospital/Diagnostic/Clinic Centre Vintage required"),
-  businessStatus: yup
-    .string()
-    .trim()
-    .required("Business ownership status  is required"),
+  // businessStatus: yup
+  //   .string()
+  //   .trim()
+  //   .required("Business ownership status  is required"),
   degreeCertificateFile: yup.mixed().required("Degree Certificate required"),
 });
 

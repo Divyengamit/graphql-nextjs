@@ -17,7 +17,6 @@ import InputField from "../ui/InputField";
 import ProgressIndicator from "../ui/ProgressIndicator";
 import InfoAlert from "../ui/InfoAlert";
 
-import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -26,7 +25,8 @@ import { addEmailSchema } from "@/utils/validation";
 import { addEmail } from "@/store/Slice/profileSlice";
 import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
-const AddEmailDialog = (props) => {
+const EmailDialog = (props) => {
+  const { requestType, detail } = props;
   const dispatch = useDispatch();
   const userData = useSelector(({ dashboard }) => dashboard.data);
   const profileState = useSelector(({ profile }) => profile);
@@ -38,11 +38,14 @@ const AddEmailDialog = (props) => {
   const methods = useForm({
     resolver: yupResolver(addEmailSchema),
     mode: "onSubmit",
+    defaultValues: {
+      emailAddress: detail?.emailAddress || "",
+    },
   });
 
   const onCloseDialog = () => {
-    props?.onClose();
     methods.reset({});
+    props?.onClose();
   };
 
   const onSubmitHandler = (values) => {
@@ -50,24 +53,30 @@ const AddEmailDialog = (props) => {
       entityId: userData?.entityId,
       emailAddress: values?.emailAddress,
     };
+    if (requestType === "UPDATE") {
+      data["id"] = detail?.id;
+    }
 
     dispatch(addEmail({ ...data })).then((res) => {
       if (!res.error) {
-        onCloseDialog();
         dispatch(fetchDashboardDetail(userData?.entityId));
         setError(true);
         setErrorTitle("Success");
-        setErrorMessage("Email Added Successfully ");
+        setErrorMessage(
+          requestType === "UPDATE"
+            ? "Email Updated Successfully "
+            : "Email Added Successfully "
+        );
+        setTimeout(() => {
+          onCloseDialog();
+          setError(false);
+        }, 1000);
       }
       if (res.error) {
-        onCloseDialog();
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage("Some thing went wrong!");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
       }
-      setTimeout(() => {
-        setError(false);
-      }, 1000);
     });
   };
 
@@ -115,19 +124,19 @@ const AddEmailDialog = (props) => {
           color="secondary"
           sx={{ pb: 1.1, px: 5, pt: 3.25, textAlign: "center" }}
         >
-          Add Email
+          {requestType === "ADD" ? "Add" : "Update"} email
         </DialogTitle>
         <DialogContent sx={{ px: 5, py: 3.75, mt: 1 }}>
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
               <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-                New Email
+                {requestType === "ADD" ? "Add" : "Update"} Email
               </Typography>
 
               <InputField
                 type="email"
                 name="emailAddress"
-                placeholder="Enter New Email"
+                placeholder="Enter Email"
                 settings={{
                   variant: "outlined",
                   sx: { mt: 1.2 },
@@ -141,7 +150,7 @@ const AddEmailDialog = (props) => {
                 color="secondary"
                 sx={{ mt: 3 }}
               >
-                <AddIcon /> Add Email
+                {requestType === "ADD" ? "Add" : "Update"} Email
               </Button>
             </form>
           </FormProvider>
@@ -158,4 +167,4 @@ const AddEmailDialog = (props) => {
   );
 };
 
-export default AddEmailDialog;
+export default EmailDialog;

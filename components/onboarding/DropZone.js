@@ -16,6 +16,7 @@ const DropZone = (props) => {
         borderRadius: 2,
         justifyContent: "center",
         alignItems: "center",
+        cursor: "pointer",
       }}
     >
       <Typography variant="h5SemiBold" sx={{ mt: 2, mb: 1.2 }}>
@@ -32,7 +33,7 @@ const DropZone = (props) => {
         Drag & Drop your Files here
       </Typography>
       <Typography variant="small" sx={{ mb: 2 }}>
-        JPG, PNG, PDF | Upto 5MB per file
+        JPG, PNG, PDF | Upto 1.5MB per file
       </Typography>
     </FlexBox>
   );

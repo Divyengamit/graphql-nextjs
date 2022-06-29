@@ -10,4 +10,8 @@ export const MYPROFILE = "/home/myprofile";
 export const USERS = "/home/users";
 export const TRANSACTIONS = "/home/transactions";
 export const SECURITY = "/home/security";
+<<<<<<< HEAD
 export const ELIGIBILITY = "home/eligibility";
+=======
+export const ACTIVITY = "/home/activity";
+>>>>>>> d27162712804f0a34a5ffe2d2c934f48c7c3ff52

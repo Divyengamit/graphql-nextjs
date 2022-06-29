@@ -4,7 +4,7 @@ import { Grid, Typography, Box, Button } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { HOME, TRANSACTIONS } from "@/utils/paths";
+import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
 
 const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
 const cardImage = require("../../assets/CardLogo.png");
@@ -15,6 +15,7 @@ const TabBar = (props) => {
   // console.log("pathname", pathname);
   const isDashboard = ["/home"].includes("/home");
 
+  const { currentTab } = props;
   const menuButtonStyle = {
     mr: 2.5,
     fontSize: "1rem",
@@ -52,26 +53,33 @@ const TabBar = (props) => {
       <Grid item xs={12} sm={12} md={7}>
         <Box display="flex" flexWrap="wrap" sx={{ mt: 2.75, mb: 3 }}>
           <Button
-            variant={isDashboard ? "contained" : "text"}
+            variant={currentTab === HOME ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: isDashboard ? "#FFFFFF" : "#2C3E50",
+              color: currentTab === HOME ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={onDashboardClick}
           >
             Dashboard
           </Button>
           <Button
-            variant={pathname === TRANSACTIONS ? "text" : "contained"}
+            variant={currentTab === TRANSACTIONS ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: pathname === TRANSACTIONS ? "#2C3E50" : "#FFFFFF",
+              color: currentTab === TRANSACTIONS ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={onTransactionClick}
           >
             Transactions
           </Button>
-          <Button variant="text" color="secondary" sx={menuButtonStyle}>
+          <Button
+            variant={props?.currentTab === ACTIVITY ? "contained" : "text"}
+            sx={{
+              ...menuButtonStyle,
+              color: props?.currentTab === ACTIVITY ? "#FFFFFF" : "#2C3E50",
+            }}
+            onClick={props?.onActivityClick}
+          >
             Activity
           </Button>
           <Button variant="text" color="secondary" sx={menuButtonStyle}>

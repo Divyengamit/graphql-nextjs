@@ -12,7 +12,7 @@ export const userLogin = createAsyncThunk(
         password: formData.password,
       };
       const response = await login(tempData);
-      const data = await response;
+      const data = await response.data;
       setLocal("access_token", data?.access_token);
       setLocal(
         "userId",

@@ -3,11 +3,10 @@ import axiosInstance from "./axiosConfig";
 
 // Auth Services
 export const login = async (data) => {
-  const response = await axiosInstance.post(
+  return axiosInstance.post(
     "canopi-payments/registration/v1/authenticate",
     data
   );
-  return response.data;
 };
 
 export const uploadDocService = (data) => {
@@ -166,6 +165,20 @@ export const updateProfileService = (data) => {
 
   return axiosInstance.post(
     "canopi-payments/portal/dashboard/update-profile",
+    body
+  );
+};
+
+export const getCardDetails = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/get-card-details-url",
+    body
+  );
+};
+
+export const getCardPinChangeUrl = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/get-card-pin-change-url",
     body
   );
 };

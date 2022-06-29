@@ -19,7 +19,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
-import RemoveAddressDialog from "./RemoveAddressDialog";
+import RemoveAddressDialog from "./RemoveDialog";
 import AddressDialog from "./AddressDialog";
 import { removeAddress, setPrimaryAddress } from "@/store/Slice/profileSlice";
 import { getLocal } from "@/utils/storage";
@@ -65,7 +65,7 @@ const AllAddressDialog = (props) => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage("Some thing went wrong!");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
         setRemoveDialog(false);
       }
     });
@@ -91,7 +91,8 @@ const AllAddressDialog = (props) => {
     ).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
       }
       if (!res.error) {
         dispatch(fetchDashboardDetail(userID?.state?.userId));
@@ -277,7 +278,9 @@ const AllAddressDialog = (props) => {
                         sx={{ mr: 0.6, fontSize: "0.8rem", fontWeight: 600 }}
                         variant="contained"
                         color="primary"
-                        onClick={() => handleSetAsPrimary(item)}
+                        onClick={() => {
+                          handleSetAsPrimary(item);
+                        }}
                       >
                         Set as Primary
                       </Button>
@@ -327,12 +330,20 @@ const AllAddressDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      <RemoveAddressDialog
-        addressData={addressDetail}
-        state={removeDialog}
-        onClose={handleRemoveDialogClose}
-        onRemoveClick={handleConfirmRemove}
-      />
+      {removeDialog && addressDetail && (
+        <RemoveAddressDialog
+          item="address"
+          state={removeDialog}
+          onClose={handleRemoveDialogClose}
+          onRemoveClick={handleConfirmRemove}
+        >
+          <div>
+            {addressDetail?.address1} {addressDetail?.address1}
+            <br /> {addressDetail?.city}, <br /> {addressDetail?.state} -{" "}
+            {addressDetail?.pincode}
+          </div>
+        </RemoveAddressDialog>
+      )}
       <AddressDialog
         state={editDialog}
         onClose={handleEditDialogClose}

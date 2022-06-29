@@ -11,11 +11,19 @@ import OtpDialog from "../../components/dashboard/OtpDialog";
 import SuccessDialog from "../../components/dashboard/SuccessDialog";
 import ProgressIndicator from "../../components/ui/ProgressIndicator";
 import ApplyDialog from "../../components/dashboard/ApplyDialog";
-
+import Transactions from "../../components/transactions/Transactions";
+import FooterMain from "../../components/navigation/FooterMain";
 import InfoAlert from "../../components/ui/InfoAlert";
+import FlexBox from "../../components/ui/FlexBox";
+import Dashboard from "../../components/dashboard/Dashboard";
+import TabBar from "../../components/navigation/TabBar";
+// import { wrapper } from "../../store/store";
+// import { fetchDashboardDetails } from "../../services/service";
+import { fetchDashboardDetail } from "../../store/dashboardSlice";
+import Activity from "@/components/activity/Activity";
+import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
 
 import { getLayout } from "@/components/layout/DashboardLayout";
-import Dashboard from "@/components/dashboard/Dashboard";
 
 // const user = getLocal("root");
 // let store = useStore();
@@ -32,17 +40,24 @@ import Dashboard from "@/components/dashboard/Dashboard";
 const HomeScreen = () => {
   // const { enable_2FA } = useContext(APIContext);
   const userData = useSelector(({ dashboard }) => dashboard.data);
-  const dashboardState = useSelector((state) => state.dashboard);
+  // const dispatch = useDispatch();
+  // //   const navigate = useNavigate();
+  // const router = useRouter();
+  // const pathname = router.pathname;
+  // // const { enable_2FA } = useContext(APIContext);
+  // // const { user } = useSelector((state) => state.auth);
+  // const dashboardState = useSelector((state) => state.dashboard);
 
-  const [open, setOpen] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState();
-  const [openSuccess, setOpenSuccess] = useState(false);
-  const [openApplyDialog, setApplyDialog] = useState(false);
+  // const [open, setOpen] = useState(false);
+  // const [showSuccess, setShowSuccess] = useState(false);
+  // const [successMessage, setSuccessMessage] = useState();
+  // const [openSuccess, setOpenSuccess] = useState(false);
+  // const [openApplyDialog, setApplyDialog] = useState(false);
 
-  const [is2FA, set2fA] = useState(false);
-  const [showError, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
+  // const [currentTab, setCurrentTab] = useState(HOME);
+  // const [is2FA, set2fA] = useState(false);
+  // const [showError, setError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState();
 
   // const enable2FaMutation = useMutation((data) => enable_2FA(data), {
   //   onSuccess: (data) => {
@@ -59,31 +74,48 @@ const HomeScreen = () => {
   // });
 
   //otp dialog
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
-  //Success Dialog
-  const handleClickOpenSuccess = () => {
-    setOpenSuccess(true);
-  };
+  // //Success Dialog
+  // const handleClickOpenSuccess = () => {
+  //   setOpenSuccess(true);
+  // };
 
-  const handleCloseSuccess = () => {
-    setOpenSuccess(false);
-  };
+  // const handleCloseSuccess = () => {
+  //   setOpenSuccess(false);
+  // };
 
-  // Apply Dialog
-  const handleApplyClick = () => {
-    setApplyDialog(true);
-  };
+  // // Apply Dialog
+  // const handleApplyClick = () => {
+  //   setApplyDialog(true);
+  // };
 
-  const handleApplyClose = () => {
-    setApplyDialog(false);
-  };
+  // const handleApplyClose = () => {
+  //   setApplyDialog(false);
+  // };
+
+  // const handleTransactionsClick = () => {
+  //   setCurrentTab(TRANSACTIONS);
+  // };
+
+  // const handleDashboardClick = () => {
+  //   setCurrentTab(HOME);
+  //   if (pathname !== HOME) {
+  //     router.push({
+  //       pathname: HOME,
+  //     });
+  //   }
+  // };
+
+  // const handleActivityClick = () => {
+  //   setCurrentTab(ACTIVITY);
+  // };
 
   // const onEnable2faHandler = useCallback(
   //   (data) => {
@@ -96,10 +128,26 @@ const HomeScreen = () => {
   //   [is2FA]
   // );
 
+  // const handleExploreFinancing = useCallback(() => {
+  //   // router.push("home/finance", { state: { userData: data?.data } });
+  //   router.push({ pathname: "home/eligibility" });
+  //   setLocal(
+  //     "tempData",
+  //     Encryption(
+  //       JSON.stringify({
+  //         state: {
+  //           userData: data,
+  //         },
+  //       }),
+  //       process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+  //     )
+  //   );
+  // });
+
   return (
     <>
       <Dashboard userData={userData} />
-      <InfoAlert
+      {/* <InfoAlert
         show={showError || showSuccess}
         title={!showSuccess ? "Error" : "Success"}
         body={!showSuccess ? errorMessage : successMessage}
@@ -122,7 +170,7 @@ const HomeScreen = () => {
         handleSuccessDialog={handleClickOpenSuccess}
       />
 
-      {dashboardState?.loading && <ProgressIndicator />}
+      {dashboardState?.loading && <ProgressIndicator />} */}
     </>
   );
 };

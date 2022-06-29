@@ -25,9 +25,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { enable_2FA } from "@/store/Slice/profileSlice";
+import { useRouter } from "next/router";
+import { MYPROFILE } from "@/utils/paths";
 
 const Security = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const userData = useSelector(({ dashboard }) => dashboard.data);
   const profileState = useSelector(({ profile }) => profile);
 
@@ -41,7 +44,7 @@ const Security = () => {
 
   useEffect(() => {
     setChecked(userData?.twoFAenabled);
-  }, [userData]);
+  }, [userData?.twoFAenabled]);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -122,7 +125,9 @@ const Security = () => {
   };
 
   const handleRoute = () => {
-    // navigate(-1);2-step verification
+    router.push({
+      pathname: MYPROFILE,
+    });
   };
 
   return (
@@ -201,7 +206,7 @@ const Security = () => {
               <Switch
                 size="medium"
                 checked={checked}
-                style={{ color: "#2C3E50" }}
+                style={{ color: checked ? "#18BC9C" : "#2C3E50" }}
                 onChange={() => handle2Step(!checked)}
               />
             </Box>
