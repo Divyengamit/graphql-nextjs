@@ -95,26 +95,10 @@ export const fetchDashboardDetailService = async (entityId) => {
 };
 
 export const equipmentFinanceEligibility = (data) => {
-  return new Promise((resolve, reject) => {
-    // const body = new FormData();
-    // for (let key in data) {
-    //   body.append(key, data[key]);
-    // }
-
-    axiosInstance
-      .post(
-        "canopi-payments/portal/dashboard/equipment-finance-eligibility",
-        data
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response);
-        }
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/equipment-finance-eligibility",
+    data
+  );
 };
 
 export const equipmentFinance = (data) => {
