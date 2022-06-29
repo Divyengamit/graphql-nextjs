@@ -104,7 +104,7 @@ const LoginScreen = () => {
       }
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || res?.error?.message);
       }
     });
   };

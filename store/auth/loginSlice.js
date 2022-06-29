@@ -30,11 +30,10 @@ export const userLogin = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );
-
 const initialState = {
   token: null,
   refreshToken: null,
@@ -42,7 +41,6 @@ const initialState = {
   role: null,
   token_type: null,
 };
-
 export const loginSlice = createSlice({
   name: "auth",
   initialState: initialState,
