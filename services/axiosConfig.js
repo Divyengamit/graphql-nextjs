@@ -1,72 +1,49 @@
 /* eslint-disable no-undef */
 import axios from "axios";
 import { getLocal } from "../utils/storage";
-import { useRouter } from "next/router";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
 });
+
 axiosInstance.interceptors.request.use(function (config) {
   const token = getLocal("access_token");
   config.headers = {
     "Content-Type": "application/json",
   };
-  // if (token) {r
-  //   config.headers["Authorization"] = `Bearer ${token}`;
-  // }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
-  //  else {
-  //   localStorage.clear();
-  // }
-
   return config;
 });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    const {
-      // config,
-      response: { status },
-    } = error;
-    // const originalRequest = config;
-    if (status === 401) {
+    const { response } = error;
+    if (response?.status === 401) {
       localStorage.clear();
-      const router = useRouter();
-      router.push({ pathname: "/" });
+      return Promise.reject(response);
     } else {
-      return Promise.reject(error);
+      return Promise.reject(error?.response);
     }
   }
 );
-
 export default axiosInstance;
 
 // import axios from "axios";
-// import { getLocal } from "../utils/storage";
-// const API_BASE_URL = "https://ppi-test.canopi.in/";
+// // import { API_BASE_URL } from "config";
+// // import { showToast } from "./function/function";
+// // import { getLocal, removeLocal, setLocal } from "./function/storage";
+// import { getLocal, removeLocal, setLocal } from "../utils/storage";
 
-// const token = getLocal("access_token");
-// const instance = axios.create({
-//   baseURL: API_BASE_URL,
+// // export const axiosInstance = axios.create({
+// //   baseURL: API_BASE_URL,
+// // });
+
+// const axiosInstance = axios.create({
+//   baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
 // });
-// instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-// export default instance;
-
-// import { toast } from "react-toastify";
-// import axios from "axios";
-// // import { API_BASE_URL } from "../config";
-
-// // import "react-toastify/dist/ReactToastify.min.css";
-// // import { ErrorToast } from "../components/Toast/Toast";
-// const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-// export const axiosInstance = axios.create({
-//   baseURL: API_BASE_URL,
-// });
-
 // // For Refreshing Token
 // let isAlreadyFetchingAccessToken = false;
 
@@ -75,8 +52,7 @@ export default axiosInstance;
 
 // // Add a request interceptor
 // axiosInstance.interceptors.request.use(function (config) {
-//   const token = localStorage.getItem("access_token");
-//   // localStorage.getItem("set_old_access_token")
+//   const token = getLocal("access_token");
 //   config.headers = {
 //     "Content-Type": "application/json",
 //   };
@@ -94,7 +70,7 @@ export default axiosInstance;
 //     } = error;
 //     const originalRequest = config;
 //     if (status === 401) {
-//       const refresh_token = localStorage.getItem("refresh_token");
+//       const refresh_token = getLocal("refresh_token");
 //       if (refresh_token) {
 //         // Refresh Token Promise
 //         if (!isAlreadyFetchingAccessToken) {
@@ -104,29 +80,21 @@ export default axiosInstance;
 //             .then((response) => {
 //               isAlreadyFetchingAccessToken = false;
 //               // Replacing Tokens
-//               localStorage.removeItem("access_token");
-//               localStorage.removeItem("refresh_token");
-//               localStorage.setItem(
-//                 "access_token",
-//                 response.data.data.access_token
-//               );
-//               localStorage.setItem(
-//                 "refresh_token",
-//                 response.data.data.refresh_token
-//               );
+//               removeLocal("access_token");
+//               removeLocal("refresh_token");
+//               setLocal("access_token", response.data.data.access_token);
+//               setLocal("refresh_token", response.data.data.refresh_token);
+
 //               onAccessTokenFetched(response.data.data.access_token);
 //             })
-//             .catch(() => {
+//             .catch((error) => {
+//
 //               isAlreadyFetchingAccessToken = false;
 //               // Removing User State
-//               localStorage.removeItem("access_token");
-//               localStorage.removeItem("refresh_token");
+//               removeLocal("access_token");
+//               removeLocal("refresh_token");
 
 //               // showToast("Error !", error.response.data.message, "error");
-//               // toast.error(ErrorToast(error.response.data.message), {
-//               //   hideProgressBar: true,
-//               //   autoClose: "100",
-//               // });
 //               setTimeout(() => {
 //                 window.location.reload();
 //               }, 500);

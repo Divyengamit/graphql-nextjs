@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import axiosInstance from "./axiosConfig";
-
 // Auth Services
 export const login = async (data) => {
   return axiosInstance.post(
