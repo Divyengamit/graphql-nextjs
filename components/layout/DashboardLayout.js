@@ -24,20 +24,17 @@ const DashboardLayout = ({ children }) => {
   }, [UserID]);
 
   const userData = useSelector(({ dashboard }) => dashboard.data);
-  // const handleDashboardClick = () => {
-  //   router.push({
-  //     pathname: HOME,
-  //   });
-  // };
+
   if (!userData) return null;
+  if (!role) return null;
 
   return (
     <FlexBox sx={{ minHeight: "100vh" }}>
       <MainAppBar userData={userData} />
 
       <Container maxWidth="xl" className="custom-container">
-        {role.toUpperCase() === "CUSTOMER" && <TabBar userData={userData} />}
-        {role.toUpperCase() === "SUPERADMIN" && <AdminTabBar />}
+        {role?.toUpperCase() === "CUSTOMER" && <TabBar userData={userData} />}
+        {role?.toUpperCase() === "SUPERADMIN" && <AdminTabBar />}
         {children}
       </Container>
       <FooterMain />

@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import { Container, Grid, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 
 import { Decryption } from "../../../utils/EncryptDecrypt";
 import { getLocal } from "../../../utils/storage";
 import { useRouter } from "next/router";
 
-// import { useMutation } from "react-query";
-// import { APIContext } from "../../../services/api-provider";
-
 import EquipmentForm from "../../../components/finance/EquipmentForm";
-import FooterMain from "../../../components/navigation/FooterMain";
-import MainAppBar from "../../../components/navigation/MainAppBar";
 import InfoAlert from "../../../components/ui/InfoAlert";
 import ProgressIndicator from "../../../components/ui/ProgressIndicator";
 import EquipmentContent from "../../../components/finance/EquipmentContent";
@@ -63,34 +58,6 @@ const FinanceScreen = () => {
     router.push({ pathname: "/home/finance" });
   };
 
-  // const applyEquipmentFinanceMutation = useMutation(
-  //   (data) => applyEquipmentFinance(data),
-  //   {
-  //     onSuccess: (data) => {
-  //       setShowSuccess(true);
-  //       setSuccessMessage(data?.data?.message);
-  //       setTimeout(() => {
-  //         router.push({ pathname: "/home" });
-  //       }, 2000);
-  //     },
-  //     onError: (error) => {
-  //       setErrorMessage(error?.response?.data?.message || error?.message);
-  //       setError(true);
-  //     },
-  //   }
-  // );
-
-  // const onSubmitHandler = useCallback(
-  //   (data) => {
-
-  //     applyEquipmentFinanceMutation.mutate({
-  //       entityId: urlParamsData?.state?.userData?.entityId,
-  //       ...data,
-  //     });
-  //   },
-  //   [urlParamsData, applyEquipmentFinanceMutation]
-  // );
-
   const onSubmitHandler = (data) => {
     let tempForm = {
       entityId: userID?.state?.userId,
@@ -103,10 +70,6 @@ const FinanceScreen = () => {
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
-        // router.push({ pathname: "/home" });
-        // setTimeout(() => {
-        //   router.push({ pathname: "/home" });
-        // }, 4000);
       }
       if (!res.error) {
         nextHandler();
