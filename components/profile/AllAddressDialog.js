@@ -244,8 +244,8 @@ const AllAddressDialog = (props) => {
 
             {listAddress.map((item, index) => {
               return (
-                <>
-                  <Box key={item?.id}>
+                <div key={`Address${index}`}>
+                  <Box>
                     <Chip
                       label={item?.primaryAddress ? "Primary" : "Secondary"}
                       sx={{
@@ -318,7 +318,7 @@ const AllAddressDialog = (props) => {
                   {index < listAddress.length - 1 && (
                     <Divider sx={{ mt: 3.25 }} />
                   )}
-                </>
+                </div>
               );
             })}
           </Box>
