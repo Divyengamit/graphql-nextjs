@@ -82,6 +82,16 @@ const TabBar = (props) => {
             }}
             onClick={onTransactionClick}
           >
+            Users
+          </Button>
+          <Button
+            variant={props?.showDashboard ? "text" : "contained"}
+            sx={{
+              ...menuButtonStyle,
+              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+            }}
+            onClick={props?.onTransactionClick}
+          >
             Transactions
           </Button>
           <Button
