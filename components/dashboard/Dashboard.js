@@ -285,7 +285,7 @@ const Dashboard = (props) => {
           </Item>
         ) : (
           <Link
-            onClick={props?.onExploreFinancingClick}
+            onClick={onExploreFinancingClick}
             underline="none"
             sx={{
               "&:hover": {
