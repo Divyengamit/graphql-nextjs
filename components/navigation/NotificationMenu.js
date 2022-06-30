@@ -4,9 +4,9 @@ import { Typography, Menu, List, ListItem, Divider } from "@mui/material";
 const NotificationMenu = (props) => {
   const notificationList = () => {
     if (props?.userData?.notifications?.length > 0) {
-      const list = props?.userData?.notifications.map((item) => {
+      const list = props?.userData?.notifications.map((item, index) => {
         return (
-          <>
+          <div key={`notifications${index}`}>
             <ListItem alignItems="flex-start">
               <Typography
                 sx={{ display: "inline", mt: 1, mb: 1 }}
@@ -17,7 +17,7 @@ const NotificationMenu = (props) => {
               </Typography>
             </ListItem>
             <Divider />
-          </>
+          </div>
         );
       });
       return list;

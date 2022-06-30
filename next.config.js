@@ -4,7 +4,7 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     domains: ["ppi-test.canopi.in"],
   },

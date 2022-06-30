@@ -1,19 +1,8 @@
 import { useState } from "react";
-import {
-  // Button,
-  // IconButton,
-  // Paper,
-  Step,
-  StepLabel,
-  Stepper,
-  // Typography,
-} from "@mui/material";
+import { Step, StepLabel, Stepper } from "@mui/material";
 import style from "../../../styles/EquipmentForm.module.css";
-import { Container } from "@mui/material";
-import MainAppBar from "../../../components/navigation/MainAppBar";
 import { getLocal } from "../../../utils/storage";
 import { Decryption } from "../../../utils/EncryptDecrypt";
-import FooterMain from "../../../components/navigation/FooterMain";
 import { FormProvider, useForm } from "react-hook-form";
 import ProfessionalDetailsForm from "../../../components/finance/ProfessionalDetails";
 import LoanDetailsForm from "../../../components/finance/LoanDetails";
@@ -31,6 +20,7 @@ import {
   setEquipmentDetails,
 } from "@/store/Slice/equipmentSlice";
 import ConfirmAlert from "@/components/ui/ConfirmAlert";
+import { getLayout } from "@/components/layout/SiteLayout";
 import ConfirmAlertConform from "@/components/ui/ConfirmAlert";
 import { HOME } from "@/utils/paths";
 import ProgressIndicator from "@/components/ui/ProgressIndicator";
@@ -45,10 +35,7 @@ const EquipmentFinance = () => {
   const eligibilityData = useSelector(
     ({ equipment }) => equipment.eligibilityData
   );
-  const routerParams = getLocal("tempData");
-  const urlParamsData = JSON.parse(
-    Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
-  );
+
   const userId = getLocal("userId");
   const userID = JSON.parse(
     Decryption(userId, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
@@ -173,94 +160,102 @@ const EquipmentFinance = () => {
     }
   };
   return (
-    <div>
-      <MainAppBar userData={urlParamsData?.state?.userData} />
-      <Container>
-        <div className={style.Finance_Form_main_box}>
-          <div className={style.Form_Stepper_div}>
-            <Stepper
-              activeStep={activeStep}
-              alternativeLabel
-              className={style.abcd}
-            >
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          </div>
-
-          {activeStep === 0 && (
-            <div className={style.form_main_div}>
-              <FormProvider {...methodsProfessional}>
-                <form
-                  onSubmit={methodsProfessional.handleSubmit(
-                    onSubmitProfessionalHandler
-                  )}
-                >
-                  <ProfessionalDetailsForm
-                    watch={watch}
-                    setValue={setValue}
-                    formState={formState}
-                  />
-                </form>
-              </FormProvider>
-            </div>
-          )}
-          {activeStep === 1 && (
-            <div className={style.form_main_div}>
-              <FormProvider {...methodsLoanDetails}>
-                <form
-                  onSubmit={methodsLoanDetails.handleSubmit(
-                    onSubmitLoanDetailsHandler
-                  )}
-                >
-                  <LoanDetailsForm onBack={onBack} />
-                </form>
-              </FormProvider>
-            </div>
-          )}
-          {activeStep === 2 && (
-            <div className={style.form_main_div}>
-              <FormProvider {...methodsFinancialDocuments}>
-                <form
-                  onSubmit={methodsFinancialDocuments.handleSubmit(
-                    onSubmitFinancialDocumentsHandler
-                  )}
-                >
-                  <FinancialDocumentsForm
-                    // onClickNext={onClickNext}
-                    onBack={onBack}
-                  />
-                </form>
-              </FormProvider>
-            </div>
-          )}
+    <>
+      <div className={style.Finance_Form_main_box}>
+        <div className={style.Form_Stepper_div}>
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
+            className={style.abcd}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
         </div>
-        <ConfirmAlert
-          show={showConfirm}
-          // title={confirmTitle}
-          body={confirmMessage}
-          buttonConfirmText="Ok"
-          buttonCancelText="Cancel"
-          onClose={() => setShowConfirm(false)}
-          onConfirm={onBackConfirm}
-        />
 
-        <ConfirmAlertConform
-          show={show}
-          body={message}
-          buttonConfirmText="Ok"
-          hideCancel={true}
-          buttonCancelText="Cancel"
-          onClose={onClickOKConfirm}
-          onConfirm={onClickOKConfirm}
-        />
-        {loading && <ProgressIndicator />}
-      </Container>
-      <FooterMain />
-    </div>
+        {activeStep === 0 && (
+          <div className={style.form_main_div}>
+            <FormProvider {...methodsProfessional}>
+              <form
+                onSubmit={methodsProfessional.handleSubmit(
+                  onSubmitProfessionalHandler
+                )}
+              >
+                <ProfessionalDetailsForm
+                  watch={watch}
+                  setValue={setValue}
+                  formState={formState}
+                />
+              </form>
+            </FormProvider>
+          </div>
+        )}
+        {activeStep === 1 && (
+          <div className={style.form_main_div}>
+            <FormProvider {...methodsLoanDetails}>
+              <form
+                onSubmit={methodsLoanDetails.handleSubmit(
+                  onSubmitLoanDetailsHandler
+                )}
+              >
+                <LoanDetailsForm onBack={onBack} />
+              </form>
+            </FormProvider>
+          </div>
+        )}
+        {activeStep === 2 && (
+          <div className={style.form_main_div}>
+            <FormProvider {...methodsFinancialDocuments}>
+              <form
+                onSubmit={methodsFinancialDocuments.handleSubmit(
+                  onSubmitFinancialDocumentsHandler
+                )}
+              >
+                <FinancialDocumentsForm
+                  // onClickNext={onClickNext}
+                  onBack={onBack}
+                />
+              </form>
+            </FormProvider>
+          </div>
+        )}
+      </div>
+      <ConfirmAlert
+        show={showConfirm}
+        // title={confirmTitle}
+        body={confirmMessage}
+        buttonConfirmText="Ok"
+        buttonCancelText="Cancel"
+        onClose={() => setShowConfirm(false)}
+        onConfirm={onBackConfirm}
+      />
+
+      <ConfirmAlert
+        show={showConfirm}
+        // title={confirmTitle}
+        body={confirmMessage}
+        buttonConfirmText="Ok"
+        buttonCancelText="Cancel"
+        onClose={() => setShowConfirm(false)}
+        onConfirm={onBackConfirm}
+      />
+
+      <ConfirmAlertConform
+        show={show}
+        body={message}
+        buttonConfirmText="Ok"
+        hideCancel={true}
+        buttonCancelText="Cancel"
+        onClose={onClickOKConfirm}
+        onConfirm={onClickOKConfirm}
+      />
+      {loading && <ProgressIndicator />}
+    </>
   );
 };
+
+EquipmentFinance.getLayout = getLayout;
 export default EquipmentFinance;

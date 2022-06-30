@@ -175,8 +175,8 @@ const AllPhoneDialog = ({ isOpen, onClose, userData }) => {
           <Box sx={{ maxHeight: 400 }}>
             {listPhone.map((item, index) => {
               return (
-                <>
-                  <Box key={item?.id}>
+                <div key={`phone${index}`}>
+                  <Box>
                     <Chip
                       label={item?.primary === true ? "Primary" : "Secondary"}
                       sx={{
@@ -249,7 +249,7 @@ const AllPhoneDialog = ({ isOpen, onClose, userData }) => {
                   {index < listPhone.length - 1 && (
                     <Divider sx={{ mt: 3.25 }} />
                   )}
-                </>
+                </div>
               );
             })}
           </Box>

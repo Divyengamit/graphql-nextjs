@@ -3,13 +3,22 @@ import { Grid, Typography, Box, Button } from "@mui/material";
 
 import CircleIcon from "@mui/icons-material/Circle";
 import Image from "next/image";
-import { ACTIVITY, HOME, TRANSACTIONS } from "@/utils/paths";
+import { useRouter } from "next/router";
+import {
+  ACTIVITY,
+  HOME,
+  MYPROFILE,
+  SECURITY,
+  TRANSACTIONS,
+} from "@/utils/paths";
 
-const arrowIcon = require("../../assets/icons/mini_left_arrow.png");
 const cardImage = require("../../assets/CardLogo.png");
 
 const TabBar = (props) => {
-  const { currentTab } = props;
+  const router = useRouter();
+  const pathname = router.pathname;
+  const isDashboard = [HOME, MYPROFILE, SECURITY].includes(pathname);
+
   const menuButtonStyle = {
     mr: 2.5,
     fontSize: "1rem",
@@ -34,41 +43,54 @@ const TabBar = (props) => {
     }
   };
 
+  const onDashboardClick = () => {
+    if (pathname !== HOME) {
+      router.push(HOME);
+    }
+  };
+
+  const onTransactionClick = () => {
+    if (pathname !== TRANSACTIONS) {
+      router.push(TRANSACTIONS);
+    }
+  };
+  const onActivityClick = () => {
+    if (pathname !== ACTIVITY) {
+      router.push(ACTIVITY);
+    }
+  };
+
   return (
-    <Grid
-      // spacing={2}
-      sx={{ justifyContent: "center" }}
-      className={"dashboard-tabbar"}
-    >
+    <Grid sx={{ justifyContent: "center" }} className={"dashboard-tabbar"}>
       <Grid item xs={12} sm={12} md={7}>
         <Box display="flex" flexWrap="wrap" sx={{ mt: 2.75, mb: 3 }}>
           <Button
-            variant={currentTab === HOME ? "contained" : "text"}
+            variant={isDashboard ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: currentTab === HOME ? "#FFFFFF" : "#2C3E50",
+              color: isDashboard ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={props?.onDashboardClick}
+            onClick={onDashboardClick}
           >
             Dashboard
           </Button>
           <Button
-            variant={currentTab === TRANSACTIONS ? "contained" : "text"}
+            variant={pathname === TRANSACTIONS ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: currentTab === TRANSACTIONS ? "#FFFFFF" : "#2C3E50",
+              color: pathname === TRANSACTIONS ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={props?.onTransactionClick}
+            onClick={onTransactionClick}
           >
             Transactions
           </Button>
           <Button
-            variant={props?.currentTab === ACTIVITY ? "contained" : "text"}
+            variant={pathname === ACTIVITY ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: props?.currentTab === ACTIVITY ? "#FFFFFF" : "#2C3E50",
+              color: pathname === ACTIVITY ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={props?.onActivityClick}
+            onClick={onActivityClick}
           >
             Activity
           </Button>

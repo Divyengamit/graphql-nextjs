@@ -46,8 +46,8 @@ const PasswordTooltip = () => {
     return (
       <Box sx={{ pl: 1, pr: 1, pt: 2, pb: 2 }}>
         <Typography variant="body2Regular">Password should be</Typography>
-        {rules.map((r) => (
-          <ListItem sx={{ pl: 1, pt: 0, pb: 0 }}>
+        {rules.map((r, index) => (
+          <ListItem key={`rules${index}`} sx={{ pl: 1, pt: 0, pb: 0 }}>
             <ListItemIcon sx={{ minWidth: 16 }}>
               <CircleIcon sx={{ width: 8, height: 8 }} color="#000" />
             </ListItemIcon>

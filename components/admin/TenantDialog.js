@@ -6,7 +6,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { useMutation, useQueryClient } from "react-query";
+// import { useMutation, useQueryClient } from "react-query";
 import { APIContext } from "../../services/api-provider";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,8 +23,8 @@ const TenantDialog = (props) => {
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
-  const { addTenant } = useContext(APIContext);
-  const queryClient = useQueryClient();
+  // const { addTenant } = useContext(APIContext);
+  // const queryClient = useQueryClient();
 
   const methods = useForm({
     resolver: yupResolver(addTenantSchema),
@@ -55,32 +55,32 @@ const TenantDialog = (props) => {
     );
   }, [methods, props]);
 
-  const addTenantMutation = useMutation((data) => addTenant(data), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("dashboard");
-      setError(true);
-      setErrorTitle("Success");
-      setErrorMessage(
-        props?.requestType === "UPDATE"
-          ? "Tenant updated Successfully "
-          : "Tenant Added Successfully "
-      );
-      setTimeout(() => {
-        props?.onClose();
-      }, 1000);
-      methods.reset({
-        state: "AP",
-      });
-    },
-    onError: (error) => {
-      setError(true);
-      setErrorTitle("Error");
-      setErrorMessage(error?.response?.data?.message || error?.message);
-      methods.reset({
-        state: "AP",
-      });
-    },
-  });
+  // const addTenantMutation = useMutation((data) => addTenant(data), {
+  //   onSuccess: (data) => {
+  //     queryClient.invalidateQueries("dashboard");
+  //     setError(true);
+  //     setErrorTitle("Success");
+  //     setErrorMessage(
+  //       props?.requestType === "UPDATE"
+  //         ? "Tenant updated Successfully "
+  //         : "Tenant Added Successfully "
+  //     );
+  //     setTimeout(() => {
+  //       props?.onClose();
+  //     }, 1000);
+  //     methods.reset({
+  //       state: "AP",
+  //     });
+  //   },
+  //   onError: (error) => {
+  //     setError(true);
+  //     setErrorTitle("Error");
+  //     setErrorMessage(error?.response?.data?.message || error?.message);
+  //     methods.reset({
+  //       state: "AP",
+  //     });
+  //   },
+  // });
 
   const onSubmitHandler = (values) => {
     const data = {
@@ -91,7 +91,7 @@ const TenantDialog = (props) => {
       data["id"] = props?.formData?.id;
     }
 
-    addTenantMutation.mutate(data);
+    // addTenantMutation.mutate(data);
   };
 
   return (
@@ -154,7 +154,7 @@ const TenantDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {addTenantMutation.isLoading && <ProgressIndicator />}
+      {/* {addTenantMutation.isLoading && <ProgressIndicator />} */}
     </>
   );
 };

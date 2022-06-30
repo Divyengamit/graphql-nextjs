@@ -11,8 +11,10 @@ import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import ExcelJS from "exceljs";
+import { useSelector } from "react-redux";
 
-const Activity = ({ userData }) => {
+const Activity = () => {
+  const userData = useSelector(({ dashboard }) => dashboard?.data);
   const tableData = userData?.readNotifications || [];
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Activity Records");

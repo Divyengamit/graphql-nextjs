@@ -1,4 +1,5 @@
 import CryptoJS from "crypto-js";
+import { getLocal } from "./storage";
 
 export const Decryption = (data) => {
   try {
@@ -20,4 +21,19 @@ export const Encryption = (data) => {
       process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
     ).toString();
   else return data;
+};
+
+export const getUserID = () => {
+  const userId = getLocal("userId");
+  if (userId) {
+    const bytes = CryptoJS.AES.decrypt(
+      userId,
+      process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+    );
+    let tempData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    tempData = JSON.parse(tempData);
+    return tempData?.state?.userId;
+  } else {
+    return null;
+  }
 };

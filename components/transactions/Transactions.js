@@ -15,11 +15,13 @@ import { saveAs } from "file-saver";
 
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 const successIcon = require("../../assets/success.png");
 const downloadIcon = require("../../assets/icons/download_icon.png");
 const printIcon = require("../../assets/icons/cil_print.png");
 
-const Transactions = ({ userData }) => {
+const Transactions = () => {
+  const userData = useSelector(({ dashboard }) => dashboard?.data);
   const tableData = userData?.transactions || [];
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Transactions Records");
