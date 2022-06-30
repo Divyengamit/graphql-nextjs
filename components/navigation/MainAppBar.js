@@ -10,6 +10,7 @@ import {
   Avatar,
   Tooltip,
   Link,
+  Badge,
 } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -56,6 +57,8 @@ const MainAppBar = ({ userData }) => {
     router.push("/login");
   };
 
+  const noOfUnreadNotification = userData?.unreadNotifications?.length;
+
   return (
     <AppBar position="static">
       <Container
@@ -89,9 +92,15 @@ const MainAppBar = ({ userData }) => {
                 className="notification-icon"
                 onClick={handleOpenNotification}
               >
-                <NotificationsIcon
-                  sx={{ color: "#FFFFFF", width: 27, height: 30 }}
-                />
+                <Badge
+                  color="secondary"
+                  badgeContent={noOfUnreadNotification}
+                  max={9}
+                >
+                  <NotificationsIcon
+                    sx={{ color: "#FFFFFF", width: 27, height: 30 }}
+                  />
+                </Badge>
               </IconButton>
               <NotificationMenu
                 userData={userData}

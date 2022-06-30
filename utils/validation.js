@@ -6,15 +6,12 @@ const loginSchema = yup.object().shape({
     .trim()
     .email("Invalid Email")
     .required("Email is required"),
-  password: yup
-    .string()
-    .matches(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=.*[a-zA-Z]).{8,}$/g,
-      "Password must contain upper case, lower case and special character"
-    )
-    .required("Password is required")
-    .trim(),
+  password: yup.string().required("Password is required").trim(),
 });
+// .matches(
+//   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=.*[a-zA-Z]).{8,}$/g,
+//   "Password must contain upper case, lower case and special character"
+// )
 
 const SignUpSchema = yup.object().shape({
   firstName: yup
