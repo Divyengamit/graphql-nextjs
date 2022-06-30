@@ -26,6 +26,10 @@ import { stringAvatar } from "../../utils/Avatar";
 import NotificationMenu from "./NotificationMenu";
 import Image from "next/image";
 import { logout } from "@/store/auth/loginSlice";
+import {
+  fetchDashboardDetail,
+  readNotificationStatus,
+} from "@/store/dashboardSlice";
 const logo = require("../../assets/logo.png");
 const docModeLogo = require("../../assets/Docmode-logo.png");
 
@@ -49,6 +53,15 @@ const MainAppBar = ({ userData }) => {
 
   const handleCloseNotification = () => {
     setNotification(null);
+    if (userData?.unreadNotifications?.length !== 0) {
+      dispatch(
+        readNotificationStatus({
+          entityId: userData?.entityId,
+        })
+      ).then(() => {
+        dispatch(fetchDashboardDetail(userData?.entityId));
+      });
+    }
   };
 
   const onLogoutClickHandler = () => {
