@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Grid, Box, Button } from "@mui/material";
 
-// import { useLocation, useNavigate } from "react-router";
-
 import AddIcon from "@mui/icons-material/Add";
 import TenantDialog from "./TenantDialog";
 import { useRouter } from "next/router";
-import { HOME, USERS } from "@/utils/paths";
+import { HOME, MYPROFILE, SECURITY, USERS } from "@/utils/paths";
 
 const AdminTabBar = () => {
   const router = useRouter();
   const pathname = router.pathname;
+
+  const isDashboard = [HOME, MYPROFILE, SECURITY].includes(pathname);
 
   const [addTenantDialog, setAddTenantDialog] = useState(false);
 
@@ -31,37 +31,28 @@ const AdminTabBar = () => {
       <Grid item xs={12} sm={12} md={7}>
         <Box display="flex" flexWrap="wrap" sx={{ mt: 2.75, mb: 3 }}>
           <Button
-            variant={
-              pathname === "/home" ||
-              pathname === "/home/myprofile" ||
-              pathname === "/home/security"
-                ? "contained"
-                : "text"
-            }
+            variant={isDashboard ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color:
-                pathname === "/home" ||
-                pathname === "/home/myprofile" ||
-                pathname === "/home/security"
-                  ? "#FFFFFF"
-                  : "#2C3E50",
+              color: isDashboard ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={() => {
-              router.push(HOME);
+              if (pathname !== HOME) {
+                router.push(HOME);
+              }
             }}
           >
             Dashboard
           </Button>
           <Button
-            variant={pathname === "/home/users" ? "contained" : "text"}
+            variant={pathname === USERS ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
-              color: pathname === "/home/users" ? "#FFFFFF" : "#2C3E50",
+              color: pathname === USERS ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={() => {
-              router.push(USERS);
-            }}
+            // onClick={() => {
+            //   router.push(USERS);
+            // }}
           >
             Users
           </Button>
