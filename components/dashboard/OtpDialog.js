@@ -20,6 +20,9 @@ import {
 } from "@/store/Slice/profileSlice";
 import { setUser } from "@/store/auth/loginSlice";
 import { HOME } from "@/utils/paths";
+import { setLocal } from "@/utils/storage";
+import { Encryption } from "@/utils/EncryptDecrypt";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
 const OtpDialog = (props) => {
   const router = useRouter();
@@ -45,10 +48,12 @@ const OtpDialog = (props) => {
   const onApplyCardConfirm = (data) => {
     dispatch(applyCardConfirm(data)).then((res) => {
       if (!res.error) {
+        dispatch(fetchDashboardDetail(props?.userData?.entityId));
         props?.onClose();
         props?.handleSuccessDialog();
       }
       if (res.error) {
+        dispatch(fetchDashboardDetail(props?.userData?.entityId));
         props?.onClose();
         props?.handleSuccessDialog();
         setError(true);
@@ -60,13 +65,25 @@ const OtpDialog = (props) => {
   const onAuth_2FA = (data) => {
     dispatch(auth_2FA(data)).then((res) => {
       if (!res.error) {
-        const userData = res?.payload;
+        const userData = res?.payload?.data;
         dispatch(
           setUser({
             token: userData?.access_token,
             refreshToken: userData?.expires_in,
             role: userData?.role,
           })
+        );
+        setLocal("access_token", userData?.access_token);
+        setLocal(
+          "userId",
+          Encryption(
+            JSON.stringify({
+              state: {
+                userId: userData?.entityId,
+              },
+            }),
+            process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+          )
         );
         setError(true);
         setErrorMessage("Login Successfully");
@@ -82,11 +99,13 @@ const OtpDialog = (props) => {
   const onVerify2Fa = (data) => {
     dispatch(verify_2FA(data)).then((res) => {
       if (!res.error) {
+        dispatch(fetchDashboardDetail(props?.userData?.entityId));
         props?.onClose();
         setError(true);
         setErrorMessage("2FA AUTHENTICATION ENABLED");
       }
       if (res.error) {
+        dispatch(fetchDashboardDetail(props?.userData?.entityId));
         setError(true);
         setErrorMessage(res?.payload?.data?.message || res?.error?.message);
       }
