@@ -22,10 +22,10 @@ const AccountOptions = (props) => {
       <Divider />
       <Box display="flex" sx={{ my: 2.875 }}>
         <Typography variant="h4Bold" sx={{ color: "#2C3E50", flex: 1 }}>
-          {props?.userData?.documents[0]?.docType || "Document"} Number
+          {props?.userData?.documents?.[0]?.docType || "Document"} Number
         </Typography>
         <Typography variant="h2Regular" sx={{ color: "#2C3E50", flex: 1 }}>
-          {props?.userData?.documents[0]?.docNumber || "-"}
+          {props?.userData?.documents?.[0]?.docNumber || "-"}
         </Typography>
       </Box>
       <Divider />
