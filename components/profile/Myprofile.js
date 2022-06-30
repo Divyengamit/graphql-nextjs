@@ -67,7 +67,7 @@ const Myprofile = () => {
   const handleAllPhoneClose = () => setAllPhoneDialog(false);
 
   useEffect(() => {
-    const primary = userData?.addresses.find(
+    const primary = userData?.addresses?.find(
       (item) => item.primaryAddress === true
     );
     setPrimaryAddress(primary);

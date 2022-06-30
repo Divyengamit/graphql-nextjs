@@ -13,7 +13,7 @@ import React from "react";
 import ExcelJS from "exceljs";
 
 const Activity = ({ userData }) => {
-  const tableData = userData?.readNotifications;
+  const tableData = userData?.readNotifications || [];
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Activity Records");
   sheet.properties.defaultRowHeight = 10;

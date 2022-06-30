@@ -27,6 +27,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { enable_2FA } from "@/store/Slice/profileSlice";
 import { useRouter } from "next/router";
 import { MYPROFILE } from "@/utils/paths";
+import { fetchDashboardDetail } from "@/store/dashboardSlice";
 
 const Security = () => {
   const dispatch = useDispatch();
@@ -106,6 +107,7 @@ const Security = () => {
       })
     ).then((res) => {
       if (!res.error) {
+        dispatch(fetchDashboardDetail(userData?.entityId));
         setTimeout(() => {
           setError(false);
           if (!checked) {
@@ -116,7 +118,7 @@ const Security = () => {
         }, 1000);
       }
       if (res.error) {
-        setChecked(userData?.twoFAenabled);
+        dispatch(fetchDashboardDetail(userData?.entityId));
         setError(true);
         setErrorTitle("Error");
         setErrorMessage(res?.payload?.message || "Something went wrong!");

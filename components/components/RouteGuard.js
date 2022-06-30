@@ -1,12 +1,30 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { getLocal } from "../../utils/storage";
+import { getLocal, removeLocal } from "../../utils/storage";
+import { decode } from "jsonwebtoken";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/auth/loginSlice";
 
 export { RouteGuard };
 
 function RouteGuard({ children }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [authorized, setAuthorized] = useState(false);
+
+  function isAuthenticated() {
+    const token = getLocal("access_token");
+    try {
+      const { exp } = decode(token);
+      console.log("exp", exp);
+      if (Date.now() >= exp * 1000) {
+        return false;
+      }
+    } catch (err) {
+      return false;
+    }
+    return true;
+  }
 
   useEffect(() => {
     if (router.isReady) {
@@ -46,8 +64,13 @@ function RouteGuard({ children }) {
       setAuthorized(true);
       return;
     }
-    if (!getLocal("access_token") && !publicPaths.includes(path)) {
+
+    if (!isAuthenticated() && !publicPaths.includes(path)) {
       setAuthorized(false);
+      removeLocal("access_token");
+      removeLocal("userId");
+      removeLocal("tempData");
+      dispatch(logout());
 
       return router.push({
         pathname: "/login",
