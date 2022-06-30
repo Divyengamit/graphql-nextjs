@@ -3,6 +3,7 @@ import {
   fetchDashboardDetailService,
   getCardDetails,
   getCardPinChangeUrl,
+  readNotificationStatusService,
 } from "../services/service";
 
 export const fetchDashboardDetail = createAsyncThunk(
@@ -44,6 +45,19 @@ export const changeCardPin = createAsyncThunk(
   }
 );
 
+export const readNotificationStatus = createAsyncThunk(
+  "dashboard/readNotificationStatus",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await readNotificationStatusService(formData);
+      const data = await response;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.data);
+    }
+  }
+);
+
 const initialState = {
   data: null,
   loading: false,
@@ -74,15 +88,15 @@ export const dashboardSlice = createSlice({
       state.loading = false;
     },
     // fetchCardDetails
-    [fetchCardDetails.pending]: (state) => {
-      state.loading = true;
-    },
-    [fetchCardDetails.fulfilled]: (state) => {
-      state.loading = false;
-    },
-    [fetchCardDetails.rejected]: (state) => {
-      state.loading = false;
-    },
+    // [fetchCardDetails.pending]: (state) => {
+    //   state.loading = true;
+    // },
+    // [fetchCardDetails.fulfilled]: (state) => {
+    //   state.loading = false;
+    // },
+    // [fetchCardDetails.rejected]: (state) => {
+    //   state.loading = false;
+    // },
     // changeCardPin
     [changeCardPin.pending]: (state) => {
       state.loading = true;

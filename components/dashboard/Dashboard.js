@@ -14,6 +14,10 @@ import {
 import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { setLocal } from "@/utils/storage";
+import { Encryption } from "@/utils/EncryptDecrypt";
+import { ELIGIBILITY } from "@/utils/paths";
 import { useDispatch, useSelector } from "react-redux";
 import { changeCardPin, fetchCardDetails } from "@/store/dashboardSlice";
 import CardDialog from "./CardDialog";
@@ -24,9 +28,9 @@ const walletIcon = require("../../assets/icons/wallet.png");
 const infoIcon = require("../../assets/icons/infoIcon.png");
 const closeIcon = require("../../assets/icons/close-icons.png");
 
-// const backgroundImage = require("../../assets/backgrounds/EquipmentFinance.jpg");
-
 const Dashboard = (props) => {
+  const router = useRouter();
+
   const dispatch = useDispatch();
   const cardDetailsState = useSelector(({ dashboard }) => dashboard);
   const [walletAnchor, setWalletAnchor] = useState(null);
@@ -119,10 +123,25 @@ const Dashboard = (props) => {
     });
   };
 
+  const onExploreFinancingClick = () => {
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            userData: props?.userData,
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
+    router.push({ pathname: ELIGIBILITY });
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12} md={7}>
-        {props?.userData?.cards[0]?.status === "INACTIVE" ? (
+        {props?.userData?.cards[0]?.status === "INACTIVE" && (
           <Item>
             <Box className="information-box-div">
               <div className={"icon-div"}>
@@ -139,8 +158,6 @@ const Dashboard = (props) => {
               </div>
             </Box>
           </Item>
-        ) : (
-          ""
         )}
         <Item>
           <Box sx={{ position: "absolute", right: "15px", top: "14px" }}>
@@ -265,25 +282,10 @@ const Dashboard = (props) => {
                   : "-"}
               </Typography>
             </Box>
-
-            {/* <Paper
-              sx={{
-                pl: 3.3,
-                pt: 2,
-                pb: 2,
-                position: "absolute",
-                bottom: 0,
-              }}
-              style={{
-                width: "100%",
-                borderBottomLeftRadius: "15px",
-                borderBottomRightRadius: "15px",
-              }}
-            ></Paper> */}
           </Item>
         ) : (
           <Link
-            onClick={props?.onExploreFinancingClick}
+            onClick={onExploreFinancingClick}
             underline="none"
             sx={{
               "&:hover": {

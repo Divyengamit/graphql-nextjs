@@ -177,8 +177,8 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
           <Box sx={{ maxHeight: 400 }}>
             {listEmail.map((item, index) => {
               return (
-                <>
-                  <Box key={item?.id}>
+                <div key={`Email${index}`}>
+                  <Box>
                     <Chip
                       label={item?.primary === true ? "Primary" : "Secondary"}
                       sx={{
@@ -251,7 +251,7 @@ const AllEmailDialog = ({ isOpen, onClose, userData }) => {
                   {index < listEmail.length - 1 && (
                     <Divider sx={{ mt: 3.25 }} />
                   )}
-                </>
+                </div>
               );
             })}
           </Box>

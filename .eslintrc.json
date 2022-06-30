@@ -2,11 +2,8 @@
   // "plugins": [
   //     "next"
   // ],
-  "extends": [
-      "eslint:recommended",
-      "next/core-web-vitals"
-  ]
-  // "rules": {
-  //    "next/no-set-state": "off"
-  // }
+  "extends": ["eslint:recommended", "next/core-web-vitals"],
+  "rules": {
+    "no-unused-vars": "off"
+  }
 }

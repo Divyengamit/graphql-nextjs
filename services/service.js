@@ -256,3 +256,10 @@ export const securityQuestionsService = (body) => {
     body
   );
 };
+
+export const readNotificationStatusService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/dashboard/update-notification-read-status",
+    body
+  );
+};
