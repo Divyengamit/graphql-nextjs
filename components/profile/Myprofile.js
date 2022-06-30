@@ -93,7 +93,7 @@ const Myprofile = () => {
       if (res.error) {
         setError(true);
         setErrorTitle("Error");
-        setErrorMessage(res?.payload?.data?.message || "Something went wrong!");
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };

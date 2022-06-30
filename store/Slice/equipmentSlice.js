@@ -25,7 +25,7 @@ export const applyEquipmentFinance = createAsyncThunk(
       const data = await response.data;
       return data;
     } catch (error) {
-      return rejectWithValue(error?.response);
+      return rejectWithValue(error?.data);
     }
   }
 );

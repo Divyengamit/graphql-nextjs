@@ -65,7 +65,7 @@ const PasswordScreen = () => {
     dispatch(createUserPassword(tempForm)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
         nextHandler();
@@ -76,7 +76,7 @@ const PasswordScreen = () => {
     dispatch(resetPassword(data)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
         setShowSuccess(true);

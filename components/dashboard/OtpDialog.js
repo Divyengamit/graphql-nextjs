@@ -52,7 +52,7 @@ const OtpDialog = (props) => {
         props?.onClose();
         props?.handleSuccessDialog();
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };
@@ -74,7 +74,7 @@ const OtpDialog = (props) => {
       }
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };
@@ -88,7 +88,7 @@ const OtpDialog = (props) => {
       }
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
     });
   };

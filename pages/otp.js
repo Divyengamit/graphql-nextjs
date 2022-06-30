@@ -72,12 +72,12 @@ const OTPScreen = () => {
       otp,
     };
     dispatch(verifyOTP(temp)).then((res) => {
-      if (res?.payload?.data?.message === "Min KYC could not be completed.") {
+      if (res?.payload?.message === "Min KYC could not be completed.") {
         setShowProgress(true);
         setProgressMessage("Please wait the minimum KYC is under progress.");
       } else {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       // if (res.error) {
 
@@ -105,7 +105,7 @@ const OTPScreen = () => {
     dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
         setShowSuccess(true);
@@ -123,7 +123,7 @@ const OTPScreen = () => {
     dispatch(verifyEmailOtp(temp)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
         setShowSuccess(true);
@@ -137,7 +137,7 @@ const OTPScreen = () => {
     dispatch(forgetPassword(data)).then((res) => {
       if (res.error) {
         setError(true);
-        setErrorMessage(res?.payload?.data?.message || res?.error?.message);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
         setShowSuccess(true);

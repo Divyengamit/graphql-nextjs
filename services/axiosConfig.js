@@ -21,7 +21,13 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const { response } = error;
+    console.log("error response", error?.response);
     if (response?.status === 401) {
+      if (error?.response?.data?.error !== "Unauthorized") {
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      }
       localStorage.clear();
       return Promise.reject(response);
     } else {
