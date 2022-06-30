@@ -14,6 +14,12 @@ const loginSchema = yup.object().shape({
 // )
 
 const SignUpSchema = yup.object().shape({
+  companyName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid company name")
+    .trim()
+    .required("Company name is required"),
+
   firstName: yup
     .string()
     .matches(/^[a-zA-Z ]+$/, "Invalid first name")
@@ -33,9 +39,9 @@ const SignUpSchema = yup.object().shape({
   mobileNo: yup
     .string()
     .trim()
-    .max(10, "Enter valid phone number")
-    .required("Phone number is required")
-    .test("len", "Enter valid phone number", (val) => val?.length === 10),
+    .max(10, "Enter valid mobile number")
+    .required("Mobile number is required")
+    .test("len", "Enter valid mobile number", (val) => val?.length === 10),
 });
 
 const createPasswordSchema = yup.object().shape({

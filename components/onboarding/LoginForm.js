@@ -68,7 +68,11 @@ const LoginForm = (props) => {
         sx={{ mt: 2, mb: 3 }}
         onClick={props.onSignup}
       >
-        Signup
+        Sign up with User
+      </Button>
+
+      <Button variant="block" color="primary" onClick={props.onSignupCompany}>
+        Sign up with Company
       </Button>
     </Paper>
   );
