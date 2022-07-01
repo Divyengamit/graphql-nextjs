@@ -1,26 +1,27 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { getLocal, removeLocal, setLocal } from "../utils/storage";
-import { Decryption, Encryption } from "../utils/EncryptDecrypt";
+import { getLocal, removeLocal, setLocal } from "../../utils/storage";
+import { Decryption, Encryption } from "../../utils/EncryptDecrypt";
 
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
+import theme from "../../styles/theme";
 
-import BreadCrumb from "../components/ui/BreadCrumb";
-import OTPForm from "../components/onboarding/OTPForm";
-import InfoAlert from "../components/ui/InfoAlert";
-import HeroGrid from "../components/onboarding/HeroGrid";
-import ProgressIndicator from "../components/ui/ProgressIndicator";
+import BreadCrumb from "../../components/ui/BreadCrumb";
+import OTPForm from "../../components/onboarding/company/OTPForm";
+import InfoAlert from "../../components/ui/InfoAlert";
+import HeroGrid from "../../components/onboarding/HeroGrid";
+import ProgressIndicator from "../../components/ui/ProgressIndicator";
 import { useDispatch, useSelector } from "react-redux";
 import {
   forgetPassword,
   resendOTP,
   verifyEmailOtp,
   verifyOTP,
-} from "../store/Slice/registerSlice";
+} from "../../store/Slice/registerSlice";
 import { CREATE_PASSWORD } from "@/utils/paths";
+import { verifyCompanySignupOtp } from "@/store/Slice/companySignupSlice";
 
-const img = require("../assets/backgrounds/background_onbording.png");
+const img = require("@/assets/backgrounds/background_onbording.png");
 
 const OTPScreen = () => {
   const router = useRouter();
@@ -47,51 +48,53 @@ const OTPScreen = () => {
     router.push({
       pathname: CREATE_PASSWORD,
     });
-    setLocal(
-      "tempData",
-      Encryption(
-        JSON.stringify({
-          state: {
-            // requestId: urlParamsData?.state?.requestId,
-            // sessionId: sessionId,
-            // mobile: mobile,
-            email: urlParamsData?.state?.email,
-            requestType: "RESET",
-          },
-        }),
-        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
-      )
-    );
+    nextHandler();
+    // setLocal(
+    //   "tempData",
+    //   Encryption(
+    //     JSON.stringify({
+    //       state: {
+    //         // requestId: urlParamsData?.state?.requestId,
+    //         // sessionId: sessionId,
+    //         // mobile: mobile,
+    //         email: urlParamsData?.state?.email,
+    //         requestType: "RESET",
+    //       },
+    //     }),
+    //     process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+    //   )
+    // );
   };
 
   const onVerifyOTP = () => {
     let temp = {
       requestId: urlParamsData?.state?.requestId,
-      sessionId: urlParamsData?.state?.sessionId,
-      mobileNo: urlParamsData?.state?.mobile,
       otp,
     };
-    dispatch(verifyOTP(temp)).then((res) => {
-      if (res?.payload?.message === "Min KYC could not be completed.") {
-        setShowProgress(true);
-        setProgressMessage("Please wait the minimum KYC is under progress.");
-      } else {
-        setError(true);
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-      }
-      // if (res.error) {
-
+    // nextHandler();
+    dispatch(verifyCompanySignupOtp(temp)).then((res) => {
+      setError(true);
+      setErrorMessage(res?.payload?.message || "Something went wrong!");
+      // if (res?.payload?.message === "Min KYC could not be completed.") {
+      //   setShowProgress(true);
+      //   setProgressMessage("Please wait the minimum KYC is under progress.");
+      // } else {
+      //   setError(true);
+      //   setErrorMessage(res?.payload?.message || "Something went wrong!");
       // }
-      if (!res.error) {
-        const userData = res.payload;
+      // // if (res.error) {
 
-        setShowSuccess(true);
-        setSuccessMessage(userData?.message);
-        setTimeout(() => {
-          removeLocal("tempData");
-          nextHandler();
-        }, [3000]);
-      }
+      // // }
+      // if (!res.error) {
+      //   const userData = res.payload;
+
+      //   setShowSuccess(true);
+      //   setSuccessMessage(userData?.message);
+      //   setTimeout(() => {
+      //     removeLocal("tempData");
+      //     nextHandler();
+      //   }, [3000]);
+      // }
     });
   };
 
@@ -102,16 +105,16 @@ const OTPScreen = () => {
   };
 
   const onResend = () => {
-    dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
-      if (res.error) {
-        setError(true);
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-      }
-      if (!res.error) {
-        setShowSuccess(true);
-        setSuccessMessage(res?.payload?.message);
-      }
-    });
+    // dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
+    //   if (res.error) {
+    //     setError(true);
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
+    //   }
+    //   if (!res.error) {
+    //     setShowSuccess(true);
+    //     setSuccessMessage(res?.payload?.message);
+    //   }
+    // });
   };
 
   // email
@@ -120,30 +123,30 @@ const OTPScreen = () => {
       emailAddress: urlParamsData?.state.email,
       otp,
     };
-    dispatch(verifyEmailOtp(temp)).then((res) => {
-      if (res.error) {
-        setError(true);
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-      }
-      if (!res.error) {
-        setShowSuccess(true);
-        setSuccessMessage("Email verified successfully");
-        nextHandlerReset();
-      }
-    });
+    // dispatch(verifyEmailOtp(temp)).then((res) => {
+    //   if (res.error) {
+    //     setError(true);
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
+    //   }
+    //   if (!res.error) {
+    //     setShowSuccess(true);
+    //     setSuccessMessage("Email verified successfully");
+    //     nextHandlerReset();
+    //   }
+    // });
   };
 
   const onResendEmailOtp = (data) => {
-    dispatch(forgetPassword(data)).then((res) => {
-      if (res.error) {
-        setError(true);
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-      }
-      if (!res.error) {
-        setShowSuccess(true);
-        setSuccessMessage(res?.payload?.message);
-      }
-    });
+    // dispatch(forgetPassword(data)).then((res) => {
+    //   if (res.error) {
+    //     setError(true);
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
+    //   }
+    //   if (!res.error) {
+    //     setShowSuccess(true);
+    //     setSuccessMessage(res?.payload?.message);
+    //   }
+    // });
   };
 
   const onChangeOtpHandler = (value) => {

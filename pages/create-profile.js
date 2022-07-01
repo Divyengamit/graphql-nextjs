@@ -41,9 +41,9 @@ const CreateProfileScreen = () => {
       gender: "male",
       addressType: "PERMANENT",
       state: "Maharashtra",
-      cardName: urlParamsData?.state?.nameOnCard
-        ? urlParamsData?.state?.nameOnCard
-        : "",
+      // cardName: urlParamsData?.state?.nameOnCard
+      //   ? urlParamsData?.state?.nameOnCard
+      //   : "",
     },
   });
 

@@ -1,22 +1,26 @@
 import React, { useCallback, useState } from "react";
 import { useRouter } from "next/router";
-import { Decryption } from "../utils/EncryptDecrypt";
-import { getLocal } from "../utils/storage";
+import { Decryption, Encryption } from "../../utils/EncryptDecrypt";
+import { getLocal, setLocal } from "../../utils/storage";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import BreadCrumb from "../components/ui/BreadCrumb";
-import PasswordForm from "../components/onboarding/PasswordForm";
-import HeroGrid from "../components/onboarding/HeroGrid";
-import ProgressIndicator from "../components/ui/ProgressIndicator";
-import InfoAlert from "../components/ui/InfoAlert";
-import { createPasswordSchema, resetPasswordSchema } from "../utils/validation";
+import BreadCrumb from "../../components/ui/BreadCrumb";
+import PasswordForm from "../../components/onboarding/company/PasswordForm";
+import HeroGrid from "../../components/onboarding/HeroGrid";
+import ProgressIndicator from "../../components/ui/ProgressIndicator";
+import InfoAlert from "../../components/ui/InfoAlert";
+import {
+  createPasswordSchema,
+  resetPasswordSchema,
+} from "../../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createUserPassword,
   resetPassword,
-} from "../store/Slice/registerSlice";
-import { CREATE_PROFILE } from "@/utils/paths";
-const img = require("../assets/backgrounds/background_onbording.png");
+} from "../../store/Slice/registerSlice";
+import { CREATE_COMPANY_PROFILE } from "@/utils/paths";
+import { registerCompanyCredentials } from "@/store/Slice/companySignupSlice";
+const img = require("@/assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
   const routerParams = getLocal("tempData");
@@ -39,8 +43,17 @@ const PasswordScreen = () => {
 
   const nextHandler = () => {
     router.push({
-      pathname: CREATE_PROFILE,
+      pathname: CREATE_COMPANY_PROFILE,
     });
+    // setLocal(
+    //   "tempData",
+    //   Encryption(
+    //     JSON.stringify({
+    //       state: { ...payload },
+    //     }),
+    //     process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+    //   )
+    // );
   };
   const onCloseInfo = () => {
     setError(false);
@@ -61,8 +74,7 @@ const PasswordScreen = () => {
       password: data?.password,
       passwordConfirm: data?.confirmPassword,
     };
-
-    dispatch(createUserPassword(tempForm)).then((res) => {
+    dispatch(registerCompanyCredentials(tempForm)).then((res) => {
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.message || "Something went wrong!");
@@ -73,25 +85,24 @@ const PasswordScreen = () => {
     });
   };
   const onResetPassword = (data) => {
-    dispatch(resetPassword(data)).then((res) => {
-      if (res.error) {
-        setError(true);
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-      }
-      if (!res.error) {
-        setShowSuccess(true);
-        setSuccessMessage("Password Reset Success , Please Login ");
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
-      }
-    });
+    // dispatch(resetPassword(data)).then((res) => {
+    //   if (res.error) {
+    //     setError(true);
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
+    //   }
+    //   if (!res.error) {
+    //     setShowSuccess(true);
+    //     setSuccessMessage("Password Reset Success , Please Login ");
+    //     setTimeout(() => {
+    //       router.push("/");
+    //     }, 2000);
+    //   }
+    // });
   };
 
   const onSubmit = async (data) => {
     if (urlParamsData?.state?.requestType === "RESET") {
       await methods.trigger("confirmPassword");
-
       const password = methods.getValues("password");
       const passwordConfirm = methods.getValues("confirmPassword");
       const fieldState = methods.getFieldState("confirmPassword");

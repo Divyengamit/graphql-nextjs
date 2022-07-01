@@ -263,3 +263,33 @@ export const readNotificationStatusService = (body) => {
     body
   );
 };
+
+// Company Register
+
+export const registerCompanyBasicInfo = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/basic-info",
+    body
+  );
+};
+
+export const createCompanyPassword = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/credentials",
+    body
+  );
+};
+
+export const createCompanyAddress = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/address",
+    body
+  );
+};
+
+export const companySignupOtp = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/verify-mobileNo",
+    body
+  );
+};

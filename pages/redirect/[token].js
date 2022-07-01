@@ -38,6 +38,7 @@ export default function Redirect() {
               dob: tokenVerification.userData.dob,
             })
           );
+
           return router.push("/signup");
         }
         //   get access token

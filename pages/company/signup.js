@@ -9,24 +9,26 @@ import SignupForm from "../../components/onboarding/company/SignupForm";
 import HeroGrid from "../../components/onboarding/HeroGrid";
 import ProgressIndicator from "../../components/ui/ProgressIndicator";
 import InfoAlert from "../../components/ui/InfoAlert";
-import { SignUpSchema } from "../../utils/validation";
+import { CompanySignUpSchema, SignUpSchema } from "../../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../store/Slice/registerSlice";
 const img = require("../../assets/backgrounds/background_onbording.png");
-import { CREATE_PASSWORD } from "@/utils/paths.js";
+import { CREATE_COMPANY_PASSWORD } from "@/utils/paths.js";
 import PrivacyDialog from "@/components/ui/Privacy";
+import { registerCompanyInfo } from "@/store/Slice/companySignupSlice";
 
 const SignupScreen = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const registerState = useSelector(({ register }) => register);
-  const userInfo = useSelector(({ register }) => register.userInfo);
+  const registerState = useSelector(({ companyRegister }) => companyRegister);
+  const companyInfo = useSelector(
+    ({ companyRegister }) => companyRegister.companyInfo
+  );
 
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [isChecked, setIsChecked] = useState({
     agreement: false,
-    privacy: false,
+    // privacy: false,
   });
   const [checkedError, setCheckError] = useState(false);
   const [isOpenPrivacy, setIsOpenPrivacy] = useState(false);
@@ -38,7 +40,7 @@ const SignupScreen = () => {
   };
 
   const nextHandler = (payload) => {
-    router.push({ pathname: CREATE_PASSWORD });
+    router.push({ pathname: CREATE_COMPANY_PASSWORD });
     setLocal(
       "tempData",
       Encryption(
@@ -56,7 +58,7 @@ const SignupScreen = () => {
       [name]: value,
     };
     setIsChecked(tempIsChecked);
-    if (!tempIsChecked.agreement || !tempIsChecked.privacy) {
+    if (!tempIsChecked.companyAgreement) {
       setCheckError(true);
     } else {
       setCheckError(false);
@@ -64,23 +66,26 @@ const SignupScreen = () => {
   };
 
   const methods = useForm({
-    resolver: yupResolver(SignUpSchema),
+    resolver: yupResolver(CompanySignUpSchema),
     mode: "onSubmit",
     defaultValues: {
-      ...userInfo,
+      ...companyInfo,
     },
   });
 
   const onSubmitHandler = (data) => {
-    if (!isChecked.agreement || !isChecked.privacy) {
+    if (!isChecked.companyAgreement) {
       setCheckError(true);
       return;
     }
     dispatch(
-      registerUser({ ...data, termConditionConsent: isChecked.agreement })
+      registerCompanyInfo({
+        ...data,
+        termConditionConsent: isChecked.companyAgreement,
+      })
     ).then((res) => {
       if (!res.error) {
-        nextHandler(res?.payload?.data);
+        nextHandler(res?.payload);
       }
       if (res?.error) {
         setErrorMessage(res?.payload?.message || "Something went wrong!");

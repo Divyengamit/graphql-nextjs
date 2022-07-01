@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
-import { getLocal } from "../utils/storage";
-import { Decryption } from "../utils/EncryptDecrypt";
+import theme from "../../styles/theme";
+import { getLocal } from "../../utils/storage";
+import { Decryption } from "../../utils/EncryptDecrypt";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import BreadCrumb from "../components/ui/BreadCrumb";
-import ProfileForm from "../components/onboarding/ProfileForm";
-import ProgressIndicator from "../components/ui/ProgressIndicator";
-import InfoAlert from "../components/ui/InfoAlert";
-import HeroGrid from "../components/onboarding/HeroGrid";
+import BreadCrumb from "../../components/ui/BreadCrumb";
+import ProfileForm from "../../components/onboarding/company/ProfileForm";
+import ProgressIndicator from "../../components/ui/ProgressIndicator";
+import InfoAlert from "../../components/ui/InfoAlert";
+import HeroGrid from "../../components/onboarding/HeroGrid";
 
-import { ProfileSchema } from "../utils/validation";
+import { CompanyProfileSchema } from "../../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUserInfo } from "../store/Slice/registerSlice";
-import { DOCUMENT } from "@/utils/paths";
-const img = require("../assets/backgrounds/background_onbording.png");
+import { registerUserInfo } from "../../store/Slice/registerSlice";
+import { CREATE_COMPANY_OTP } from "@/utils/paths";
+import { addCompanyAddress } from "@/store/Slice/companySignupSlice";
+const img = require("@/assets/backgrounds/background_onbording.png");
 
 const CreateProfileScreen = () => {
   const router = useRouter();
@@ -31,52 +32,44 @@ const CreateProfileScreen = () => {
   const [errorMessage, setErrorMessage] = useState();
 
   const nextHandler = () => {
-    router.push({ pathname: DOCUMENT });
+    router.push({ pathname: CREATE_COMPANY_OTP });
   };
 
   const methods = useForm({
-    resolver: yupResolver(ProfileSchema),
+    resolver: yupResolver(CompanyProfileSchema),
     mode: "onSubmit",
     defaultValues: {
-      gender: "male",
-      addressType: "PERMANENT",
       state: "Maharashtra",
-      cardName: urlParamsData?.state?.nameOnCard
-        ? urlParamsData?.state?.nameOnCard
-        : "",
     },
   });
 
-  const getAddressType = (type) => {
-    switch (type) {
-      case "PERMANENT":
-        return "PERMANENT_ADDRESS";
-      case "BUSINESS":
-        return "BUSINESS_ADDRESS";
-      default:
-        return "DELIVERY_ADDRESS";
-    }
-  };
+  // const getAddressType = (type) => {
+  //   switch (type) {
+  //     case "PERMANENT":
+  //       return "PERMANENT_ADDRESS";
+  //     case "BUSINESS":
+  //       return "BUSINESS_ADDRESS";
+  //     default:
+  //       return "DELIVERY_ADDRESS";
+  //   }
+  // };
 
   const onSubmit = (data) => {
     let tempForm = {
       requestId: urlParamsData?.state?.requestId,
-      nameOnCard: data?.cardName,
       address1: data?.addressLine,
       address2: data?.addressLine2,
       city: data?.city,
       pincode: data?.pincode,
-      // dob: data?.dob,
-      gender: data?.gender == "male" ? "M" : "F",
-      addressType: getAddressType(data?.addressType),
       state: data?.state,
     };
-    dispatch(registerUserInfo(tempForm)).then((res) => {
+    dispatch(addCompanyAddress(tempForm)).then((res) => {
       if (res.error) {
         setError(true);
         setErrorMessage(res?.payload?.message || "Something went wrong!");
       }
       if (!res.error) {
+        // console.log("addCompanyAddress res", res);
         nextHandler();
       }
     });

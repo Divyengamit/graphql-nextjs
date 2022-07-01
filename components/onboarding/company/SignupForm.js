@@ -40,7 +40,7 @@ const SignupForm = (props) => {
           <InputField
             type="text"
             name="companyName"
-            placeholder="eg; Prabal"
+            placeholder="eg; canopi"
             settings={{
               variant: "outlined",
               sx: { mt: 1.2 },
@@ -49,6 +49,43 @@ const SignupForm = (props) => {
           />
         </FlexBox>
       </FlexBox>
+
+      <Typography
+        variant="h5SemiBold"
+        color="secondary"
+        sx={{ mt: 2, alignItems: "flex-start" }}
+      >
+        Authorized Person Details
+      </Typography>
+      <FlexBox row sx={{ mt: 2, alignItems: "flex-start" }}>
+        <FlexBox sx={{ mr: 1, flex: 1, alignItems: "flex-start" }}>
+          <Typography variant="h5SemiBold">First Name *</Typography>
+          <InputField
+            type="text"
+            name="firstName"
+            placeholder="eg; Prabal"
+            settings={{
+              variant: "outlined",
+              sx: { mt: 1.2 },
+              fullWidth: true,
+            }}
+          />
+        </FlexBox>
+        <FlexBox sx={{ ml: 1, flex: 1, alignItems: "flex-start" }}>
+          <Typography variant="h5SemiBold">Last Name *</Typography>
+          <InputField
+            type="text"
+            name="lastName"
+            placeholder="eg; kumar"
+            settings={{
+              variant: "outlined",
+              sx: { mt: 1.2 },
+              fullWidth: true,
+            }}
+          />
+        </FlexBox>
+      </FlexBox>
+
       <FlexBox row sx={{ mt: 1, alignItems: "flex-start" }}>
         <FlexBox sx={{ mr: 1, flex: 1, alignItems: "flex-start" }}>
           <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
@@ -77,42 +114,15 @@ const SignupForm = (props) => {
         phone number. Message and data rates may apply.
       </Typography>
 
-      <Typography display="flex" alignItems="center" sx={{ mt: 1 }}>
-        <Checkbox
-          name="privacy"
-          checked={props?.isChecked.privacy}
-          onChange={(e) => props?.onAgreeHandler("privacy", e.target.checked)}
-          sx={{ p: 0, m: 0, mr: 1 }}
-        />
-        <Typography
-          color="primary"
-          variant="body2Regular"
-          sx={{
-            alignSelf: "center",
-            lineHeight: "21.43px",
-          }}
-        >
-          I agree to provide my consent to receive my CIR on my behalf.{" "}
-          <span
-            onClick={onClickPrivacy}
-            style={{ color: "#0028ff", cursor: "pointer" }}
-          >
-            Click here
-          </span>{" "}
-          to view the Consent Agreement
-        </Typography>
-      </Typography>
-      {/* I agree to receive marketing communications from Canopi. I can change
-      my notification preferences at any time. */}
-
       <Typography display="flex" alignItems="flex-start" sx={{ mt: 1 }}>
         <Checkbox
-          name="agreement"
-          checked={props?.isChecked.agreement}
-          onChange={(e) => props?.onAgreeHandler("agreement", e.target.checked)}
+          name="companyAgreement"
+          checked={props?.isChecked.companyAgreement}
+          onChange={(e) =>
+            props?.onAgreeHandler("companyAgreement", e.target.checked)
+          }
           sx={{ p: 0, m: 0, mr: 1, "& .MuiSvgIcon-root": { fontSize: 24 } }}
         />
-
         <Typography
           color="primary"
           name="Privacy"
@@ -139,7 +149,7 @@ const SignupForm = (props) => {
           variant="body2Regular"
           sx={{ color: "red", ml: 5, mt: 0.5 }}
         >
-          *please check the box{" "}
+          *You must accept the agreement policy terms and conditions
         </Typography>
       )}
 
