@@ -1,5 +1,4 @@
-// const dayjs = require("dayjs");
-import dayjs from "dayjs";
+const dayjs = require("dayjs");
 
 const isPastDate = () => {
   const year = dayjs();
@@ -8,4 +7,8 @@ const isPastDate = () => {
   return year;
 };
 
-export { isPastDate };
+const formatDate = (date) => {
+  return dayjs(date).format("DD/MM/YYYY");
+};
+
+export { isPastDate, formatDate };

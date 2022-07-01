@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Typography, Box } from "@mui/material";
 import InputField from "../ui/InputField";
-import OptionsTypes from "../onboarding/OptionsTypes";
 import FlexBox from "../ui/FlexBox";
 import AddIcon from "@mui/icons-material/Add";
 import stateList from "@/data/states";
+import OptionsTypesText from "../onboarding/OptionsTypeText";
 
 const TenantForm = (props) => {
   return (
@@ -102,7 +102,11 @@ const TenantForm = (props) => {
               },
             }}
           >
-            {OptionsTypes(stateList)}
+            {OptionsTypesText(
+              stateList.map((item) => {
+                return { text: item.value, value: item.key, key: item.key };
+              })
+            )}
           </InputField>
         </FlexBox>
         <FlexBox sx={{ flex: 1, alignItems: "flex-start", ml: 1 }}>

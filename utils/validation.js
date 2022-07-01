@@ -258,6 +258,54 @@ const securityQuestionsSchema = yup.object().shape({
   question2_answer: yup.string().trim().required("Type your the answer"),
 });
 
+const addTenantSchema = yup.object().shape({
+  companyName: yup.string().required("Business name is Required"),
+  gstNumber: yup.string().required("GST number is Required"),
+  address1: yup.string().required("Address is Required"),
+  address2: yup.string().required("Address 2 is Required"),
+  city: yup.string().required("Town / City is Required"),
+  emailAddress: yup
+    .string()
+    .trim()
+    .email("Invalid Email")
+    .required("Email is required"),
+  mobileNo: yup
+    .string()
+    .trim()
+    .matches(/^[6-9]/, {
+      message: "Invalid Mobile number",
+      excludeEmptyString: false,
+    })
+    .max(10, "Enter Valid Number")
+    .required("Phone number is required")
+    .test("len", "Enter Valid Phone number", (val) => val?.length === 10),
+  adminName: yup.string().trim().required("Admin name is required"),
+  pincode: yup
+    .string()
+    .trim()
+    .required("Pincode is required")
+    .test("len", "Enter Valid Pincode", (val) => val?.length === 6),
+});
+
+const addTenantAdminSchema = yup.object().shape({
+  adminName: yup.string().trim().required("Admin name is required"),
+  emailAddress: yup
+    .string()
+    .trim()
+    .email("Invalid Email")
+    .required("Email is required"),
+  mobileNo: yup
+    .string()
+    .trim()
+    .matches(/^[6-9]/, {
+      message: "Invalid Mobile number",
+      excludeEmptyString: false,
+    })
+    .max(10, "Enter Valid Number")
+    .required("Phone number is required")
+    .test("len", "Enter Valid Phone number", (val) => val?.length === 10),
+});
+
 export {
   loginSchema,
   SignUpSchema,
@@ -274,4 +322,6 @@ export {
   addPhoneNumberSchema,
   changePasswordSchema,
   securityQuestionsSchema,
+  addTenantSchema,
+  addTenantAdminSchema,
 };

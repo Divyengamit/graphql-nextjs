@@ -263,3 +263,39 @@ export const readNotificationStatusService = (body) => {
     body
   );
 };
+
+// -------------------------↓  ADMIN API  ↓-------------------------
+
+export const fetchAdminDashboardDetailsService = (entityId) => {
+  return axiosInstance.get(`canopi-payments/tenant/dashboard/${entityId}`);
+};
+
+export const fetchAdminTenantService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/tenant/dashboard/tenant-admins",
+    body
+  );
+};
+
+export const addTenantService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/tenant/dashboard/save-tenant",
+    body
+  );
+};
+
+export const addTenantAdminService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/tenant/dashboard/save-tenant-admin",
+    body
+  );
+};
+
+export const deleteTenantService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/tenant/dashboard/delete-tenant-admin",
+    body
+  );
+};
+
+// -------------------------↑  ADMIN API  ↑-------------------------

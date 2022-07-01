@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  fetchAdminDashboardDetailsService,
   fetchDashboardDetailService,
   getCardDetails,
   getCardPinChangeUrl,
@@ -12,6 +13,19 @@ export const fetchDashboardDetail = createAsyncThunk(
     try {
       const response = await fetchDashboardDetailService(formData);
       const data = await response;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.data);
+    }
+  }
+);
+
+export const fetchAdminDashboardDetails = createAsyncThunk(
+  "dashboard/fetchAdminDashboardDetails",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await fetchAdminDashboardDetailsService(formData);
+      const data = await response?.data;
       return data;
     } catch (error) {
       return rejectWithValue(error?.data);
@@ -87,16 +101,28 @@ export const dashboardSlice = createSlice({
       state.data = null;
       state.loading = false;
     },
+    // fetchAdminDashboardDetails
+    [fetchAdminDashboardDetails.pending]: (state) => {
+      state.loading = true;
+    },
+    [fetchAdminDashboardDetails.fulfilled]: (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+    },
+    [fetchAdminDashboardDetails.rejected]: (state) => {
+      state.data = null;
+      state.loading = false;
+    },
     // fetchCardDetails
-    // [fetchCardDetails.pending]: (state) => {
-    //   state.loading = true;
-    // },
-    // [fetchCardDetails.fulfilled]: (state) => {
-    //   state.loading = false;
-    // },
-    // [fetchCardDetails.rejected]: (state) => {
-    //   state.loading = false;
-    // },
+    [fetchCardDetails.pending]: (state) => {
+      state.loading = true;
+    },
+    [fetchCardDetails.fulfilled]: (state) => {
+      state.loading = false;
+    },
+    [fetchCardDetails.rejected]: (state) => {
+      state.loading = false;
+    },
     // changeCardPin
     [changeCardPin.pending]: (state) => {
       state.loading = true;

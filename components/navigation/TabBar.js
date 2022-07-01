@@ -10,6 +10,7 @@ import {
   MYPROFILE,
   SECURITY,
   TRANSACTIONS,
+  USERS,
 } from "@/utils/paths";
 
 const cardImage = require("../../assets/CardLogo.png");
@@ -43,23 +44,6 @@ const TabBar = (props) => {
     }
   };
 
-  const onDashboardClick = () => {
-    if (pathname !== HOME) {
-      router.push(HOME);
-    }
-  };
-
-  const onTransactionClick = () => {
-    if (pathname !== TRANSACTIONS) {
-      router.push(TRANSACTIONS);
-    }
-  };
-  const onActivityClick = () => {
-    if (pathname !== ACTIVITY) {
-      router.push(ACTIVITY);
-    }
-  };
-
   return (
     <Grid sx={{ justifyContent: "center" }} className={"dashboard-tabbar"}>
       <Grid item xs={12} sm={12} md={7}>
@@ -70,27 +54,26 @@ const TabBar = (props) => {
               ...menuButtonStyle,
               color: isDashboard ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={onDashboardClick}
+            onClick={() => {
+              if (pathname !== HOME) {
+                router.push(HOME);
+              }
+            }}
           >
             Dashboard
           </Button>
+
           <Button
             variant={pathname === TRANSACTIONS ? "contained" : "text"}
             sx={{
               ...menuButtonStyle,
               color: pathname === TRANSACTIONS ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={onTransactionClick}
-          >
-            Users
-          </Button>
-          <Button
-            variant={props?.showDashboard ? "text" : "contained"}
-            sx={{
-              ...menuButtonStyle,
-              color: props?.showDashboard ? "#2C3E50" : "#FFFFFF",
+            onClick={() => {
+              if (pathname !== TRANSACTIONS) {
+                router.push(TRANSACTIONS);
+              }
             }}
-            onClick={props?.onTransactionClick}
           >
             Transactions
           </Button>
@@ -100,7 +83,11 @@ const TabBar = (props) => {
               ...menuButtonStyle,
               color: pathname === ACTIVITY ? "#FFFFFF" : "#2C3E50",
             }}
-            onClick={onActivityClick}
+            onClick={() => {
+              if (pathname !== ACTIVITY) {
+                router.push(ACTIVITY);
+              }
+            }}
           >
             Activity
           </Button>

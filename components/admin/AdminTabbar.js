@@ -50,9 +50,11 @@ const AdminTabBar = () => {
               ...menuButtonStyle,
               color: pathname === USERS ? "#FFFFFF" : "#2C3E50",
             }}
-            // onClick={() => {
-            //   router.push(USERS);
-            // }}
+            onClick={() => {
+              // if (pathname !== USERS) {
+              //   router.push(USERS);
+              // }
+            }}
           >
             Users
           </Button>
@@ -70,7 +72,6 @@ const AdminTabBar = () => {
           justifyContent="flex-end"
           alignItems="center"
           sx={{ mt: 2.75, mb: 3 }}
-          
         >
           <Button
             variant="contained"
