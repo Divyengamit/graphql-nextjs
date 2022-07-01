@@ -51,7 +51,7 @@ const Dashboard = (props) => {
     color: theme.palette.text.secondary,
   }));
   useEffect(() => {
-    const activeCardList = props.userData?.cards.find(
+    const activeCardList = props.userData?.cards?.find(
       (item) => item?.status === "ACTIVE"
     );
     setActiveCard(activeCardList);
