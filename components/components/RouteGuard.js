@@ -18,7 +18,6 @@ function RouteGuard({ children }) {
     const token = getLocal("access_token");
     try {
       const { exp } = decode(token);
-      console.log("exp", exp);
       if (Date.now() >= exp * 1000) {
         return false;
       }

@@ -114,7 +114,6 @@ const AdminForm = ({
       }
     }
     updatedFields["parentId"] = drawerData?.id;
-    console.log("updatedFields", updatedFields);
 
     dispatch(addTenantAdmin(updatedFields)).then((res) => {
       if (!res?.error) {
@@ -129,7 +128,6 @@ const AdminForm = ({
         setEditForm(false);
         setAdminForm(false);
       }
-      console.log("res", res);
       if (res.error) {
         setShowConfirm(false);
         setError(true);
