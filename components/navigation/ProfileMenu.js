@@ -16,10 +16,12 @@ import { useRouter } from "next/router";
 import { setLocal } from "@/utils/storage";
 import { Encryption } from "@/utils/EncryptDecrypt";
 import { MYPROFILE } from "@/utils/paths";
+import { useSelector } from "react-redux";
 const logoutIcon = require("../../assets/icons/logout.png");
 
 const ProfileMenu = (props) => {
   const router = useRouter();
+  const { role } = useSelector(({ auth }) => auth);
 
   const handleProfileClick = () => {
     setLocal(
@@ -158,7 +160,7 @@ const ProfileMenu = (props) => {
           </MenuItem>
         </Box>
 
-        {props?.userType === "CUSTOMER" && (
+        {role?.toLowerCase() === "customer" && (
           <MenuItem
             sx={{
               border: "0.5px solid #EAF0F6",
