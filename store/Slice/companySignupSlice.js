@@ -90,10 +90,11 @@ export const companySignupSlice = createSlice({
   name: "companyRegister",
   initialState: initialState,
   reducers: {
-    setRegisterData: (state, action) => {
+    setCompanyRegisterData: (state, action) => {
       state.companyInfo.firstName = action.payload.firstName;
+      state.companyInfo.lastName = action.payload.lastName;
       state.companyInfo.mobileNo = action.payload.mobileNo;
-      state.companyInfo.companyName = action.payload.mobileNo;
+      state.companyInfo.companyName = action.payload.companyName;
     },
   },
   extraReducers: {
@@ -152,5 +153,5 @@ export const companySignupSlice = createSlice({
     },
   },
 });
-export const { setRegisterData } = companySignupSlice.actions;
+export const { setCompanyRegisterData } = companySignupSlice.actions;
 export default companySignupSlice.reducer;
