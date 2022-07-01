@@ -141,7 +141,7 @@ const Dashboard = (props) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12} md={7}>
-        {props?.userData?.cards[0]?.status === "INACTIVE" && (
+        {props?.userData?.cards?.[0]?.status === "INACTIVE" && (
           <Item>
             <Box className="information-box-div">
               <div className={"icon-div"}>

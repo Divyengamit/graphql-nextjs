@@ -158,27 +158,29 @@ const ProfileMenu = (props) => {
           </MenuItem>
         </Box>
 
-        <MenuItem
-          sx={{
-            border: "0.5px solid #EAF0F6",
-            borderLeft: 0,
-            borderRight: 0,
+        {props?.userType === "CUSTOMER" && (
+          <MenuItem
+            sx={{
+              border: "0.5px solid #EAF0F6",
+              borderLeft: 0,
+              borderRight: 0,
 
-            pt: 1.75,
-            pb: 1.75,
-          }}
-          onClick={handleProfileClick}
-        >
-          <ListItemIcon>
-            <AccountCircleOutlinedIcon
-              fontSize="large"
-              sx={{ color: "#2C3E50", mr: 1.2 }}
-            />
-          </ListItemIcon>
-          <Typography variant="subtitle1Regular" sx={{ color: "#2C3E50" }}>
-            Manage Account
-          </Typography>
-        </MenuItem>
+              pt: 1.75,
+              pb: 1.75,
+            }}
+            onClick={handleProfileClick}
+          >
+            <ListItemIcon>
+              <AccountCircleOutlinedIcon
+                fontSize="large"
+                sx={{ color: "#2C3E50", mr: 1.2 }}
+              />
+            </ListItemIcon>
+            <Typography variant="subtitle1Regular" sx={{ color: "#2C3E50" }}>
+              Manage Account
+            </Typography>
+          </MenuItem>
+        )}
         <MenuItem
           sx={{
             borderLeft: 0,

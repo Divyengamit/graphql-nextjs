@@ -4,6 +4,7 @@ import dashboard from "./dashboardSlice";
 import register from "./Slice/registerSlice";
 import equipment from "./Slice/equipmentSlice";
 import profile from "./Slice/profileSlice";
+import admin from "./Slice/adminSlice";
 
 const reducer = combineReducers({
   auth: authReducer,
@@ -11,5 +12,6 @@ const reducer = combineReducers({
   register,
   equipment,
   profile,
+  admin,
 });
 export default reducer;

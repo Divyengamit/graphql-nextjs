@@ -50,9 +50,11 @@ const AdminTabBar = () => {
               ...menuButtonStyle,
               color: pathname === USERS ? "#FFFFFF" : "#2C3E50",
             }}
-            // onClick={() => {
-            //   router.push(USERS);
-            // }}
+            onClick={() => {
+              // if (pathname !== USERS) {
+              //   router.push(USERS);
+              // }
+            }}
           >
             Users
           </Button>
@@ -64,7 +66,7 @@ const AdminTabBar = () => {
           </Button>
         </Box>
       </Grid>
-      <Grid item xs={12} sm={12} md={5}>
+      <Grid item xs={12} sm={12} md={5} className="add-tenant-btn">
         <Box
           display="flex"
           justifyContent="flex-end"

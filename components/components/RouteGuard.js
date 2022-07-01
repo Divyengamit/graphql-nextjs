@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getLocal, removeLocal } from "../../utils/storage";
 import { decode } from "jsonwebtoken";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/store/auth/loginSlice";
+import { HOME, MYPROFILE } from "@/utils/paths";
 
 export { RouteGuard };
 
 function RouteGuard({ children }) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { role } = useSelector(({ auth }) => auth);
   const [authorized, setAuthorized] = useState(false);
 
   function isAuthenticated() {
@@ -59,6 +61,11 @@ function RouteGuard({ children }) {
       "/otp",
     ];
     const path = url.split("?")[0];
+    if (role?.toLowerCase() !== "customer" && path === MYPROFILE) {
+      return router.push({
+        pathname: HOME,
+      });
+    }
 
     if (path.includes("redirect") && !publicPaths.includes(path)) {
       setAuthorized(true);

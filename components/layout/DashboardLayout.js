@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 // import { useRouter } from "next/router";
-import { fetchDashboardDetail } from "@/store/dashboardSlice";
+import {
+  fetchAdminDashboardDetails,
+  fetchDashboardDetail,
+} from "@/store/dashboardSlice";
 import { getUserID } from "@/utils/EncryptDecrypt";
 // import { HOME } from "@/utils/paths";
 import { Container } from "@mui/system";
@@ -19,7 +22,12 @@ const DashboardLayout = ({ children }) => {
 
   useEffect(() => {
     if (UserID) {
-      dispatch(fetchDashboardDetail(UserID));
+      if (role.toLowerCase() === "customer") {
+        dispatch(fetchDashboardDetail(UserID)); // user/CUSTOMER
+      }
+      if (role.toLowerCase() === "superadmin") {
+        dispatch(fetchAdminDashboardDetails(UserID)); // ADMIN
+      }
     }
   }, [UserID]);
 
