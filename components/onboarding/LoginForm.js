@@ -15,7 +15,6 @@ const LoginForm = (props) => {
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Username/email *
       </Typography>
-
       <InputField
         type="email"
         name="email"
@@ -39,7 +38,6 @@ const LoginForm = (props) => {
           fullWidth: true,
         }}
       />
-
       <Button
         sx={{ mt: 1.25, p: 0 }}
         variant="text"
@@ -47,7 +45,6 @@ const LoginForm = (props) => {
       >
         Forgot password?
       </Button>
-
       <Button
         type="submit"
         variant="block"
@@ -56,20 +53,30 @@ const LoginForm = (props) => {
       >
         Login
       </Button>
-
       <Divider>
         <Typography variant="body2Regular" sx={{ color: "#5F7388" }}>
           New Here?
         </Typography>
       </Divider>
-      <Button
-        variant="block"
-        color="primary"
-        sx={{ mt: 2, mb: 3 }}
-        onClick={props.onSignup}
-      >
-        Signup
-      </Button>
+      <FlexBox row sx={{ mt: 2, mb: 2 }}>
+        <Button
+          variant="block"
+          color="primary"
+          sx={{ mt: 2, width: 500 }}
+          onClick={props.onSignup}
+        >
+          Sign up as User
+        </Button>
+        &nbsp;&nbsp;
+        <Button
+          variant="block"
+          color="primary"
+          sx={{ mt: 2, width: 500 }}
+          onClick={props.onSignupCompany}
+        >
+          Sign up as Company
+        </Button>
+      </FlexBox>
     </Paper>
   );
 };

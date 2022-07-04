@@ -7,6 +7,7 @@ import style from "../../styles/Redirect.module.css";
 import { setRegisterData } from "../../store/Slice/registerSlice";
 import { setLocal } from "../../utils/storage";
 import { Encryption } from "@/utils/EncryptDecrypt";
+import { setCompanyRegisterData } from "@/store/Slice/companySignupSlice";
 
 export default function Redirect() {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export default function Redirect() {
   useEffect(() => {
     if (router.isReady) {
       const { token } = router.query;
-      if (!token) return router.push("/signup");
+      if (!token) return router.push("/login");
       const fetchData = async () => {
         let { data: tokenVerification } = await axios({
           method: "POST",
@@ -28,17 +29,36 @@ export default function Redirect() {
           },
         });
 
-        if (!tokenVerification) return router.push("/signup");
+        if (!tokenVerification) return router.push("/login");
         if (tokenVerification.isValid == false) {
           // add the data to the signup page
           dispatch(
             setRegisterData({
-              firstName: tokenVerification.userData.fullName,
+              firstName: tokenVerification.userData.firstName,
+              lastName: tokenVerification.userData.lastName,
               mobileNo: tokenVerification.userData.mobileNo,
+              middleName: tokenVerification.userData.middleName,
+              companyName: tokenVerification.userData.companyName,
+              emailAddress: tokenVerification.userData.emailAddress,
               dob: tokenVerification.userData.dob,
             })
           );
-          return router.push("/signup");
+          dispatch(
+            setCompanyRegisterData({
+              firstName: tokenVerification.userData.firstName,
+              lastName: tokenVerification.userData.lastName,
+              mobileNo: tokenVerification.userData.mobileNo,
+              companyName: tokenVerification.userData.companyName,
+              emailAddress: tokenVerification.userData.emailAddress,
+              address1: tokenVerification.userData.address1,
+              address2: tokenVerification.userData.address2,
+              city: tokenVerification.userData.city,
+              state: tokenVerification.userData.state,
+              pincode: tokenVerification.userData.pincode,
+            })
+          );
+
+          return router.push("/login");
         }
         //   get access token
         let { data } = await axios({
@@ -77,7 +97,7 @@ export default function Redirect() {
         }
       };
       fetchData().catch(() => {
-        return router.push("/signup");
+        return router.push("/login");
       });
     }
   }, [router.isReady]);

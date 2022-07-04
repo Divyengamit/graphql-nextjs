@@ -265,7 +265,6 @@ export const readNotificationStatusService = (body) => {
 };
 
 // -------------------------↓  ADMIN API  ↓-------------------------
-
 export const fetchAdminDashboardDetailsService = (entityId) => {
   return axiosInstance.get(`canopi-payments/tenant/dashboard/${entityId}`);
 };
@@ -311,5 +310,41 @@ export const fetchCustomerServicesAPI = (body) => {
     body
   );
 };
-
 // -------------------------↑  ADMIN API  ↑-------------------------
+
+// Company Register
+
+export const registerCompanyBasicInfo = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/basic-info",
+    body
+  );
+};
+
+export const createCompanyPassword = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/credentials",
+    body
+  );
+};
+
+export const createCompanyAddress = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/address",
+    body
+  );
+};
+
+export const companySignupOtp = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/verify-mobileNo",
+    body
+  );
+};
+
+export const resendOtpCompanySignup = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/resend-otp",
+    body
+  );
+};
