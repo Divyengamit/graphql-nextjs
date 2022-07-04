@@ -8,13 +8,13 @@ import {
   Radio,
   Typography,
 } from "@mui/material";
-import FlexBox from "../ui/FlexBox";
-import InputField from "../ui/InputField";
-import GenderTypes from "./GenderTypes";
-import OptionsTypes from "./OptionsTypes";
-import stateData from "../../data/states";
-import { Decryption } from "../../utils/EncryptDecrypt";
-import { getLocal } from "../../utils/storage";
+import FlexBox from "../../ui/FlexBox";
+import InputField from "../../ui/InputField";
+import GenderTypes from "../GenderTypes";
+import OptionsTypes from "../OptionsTypes";
+import stateData from "../../../data/states";
+import { Decryption } from "../../../utils/EncryptDecrypt";
+import { getLocal } from "../../../utils/storage";
 import { useStyles } from "@/utils/removeEncrCss";
 
 const ProfileForm = (props) => {
@@ -80,64 +80,12 @@ const ProfileForm = (props) => {
             Step:
           </Typography>
           <Typography variant="large" color="secondary">
-            03/05
+            03/04
           </Typography>
         </FlexBox>
       </FlexBox>
 
       {/* <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Name on Card *
-      </Typography>
-
-      <InputField
-        type="text"
-        name="cardName"
-        placeholder="Enter the Card Name"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-        }}
-      /> */}
-
-      {/* <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Date of Birth *
-      </Typography>
-
-      <InputField
-        type="date"
-        name="dob"
-        settings={{
-          variant: "outlined",
-          sx: { mt: 1.2 },
-          fullWidth: true,
-          InputProps: { inputProps: { min: "100", max: today } },
-        }}
-      /> */}
-
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
-        Gender *
-      </Typography>
-
-      <InputField
-        name="gender"
-        settings={{
-          fullWidth: true,
-          select: true,
-          sx: {
-            mt: 1.2,
-            ".MuiInputBase-input": {
-              paddingLeft: 1,
-              paddingTop: 0,
-              paddingBottom: 0,
-            },
-          },
-        }}
-      >
-        {GenderTypes()}
-      </InputField>
-
-      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Address Type
       </Typography>
       <InputField
@@ -160,7 +108,7 @@ const ProfileForm = (props) => {
           { key: "BUSINESS", value: "BUSINESS" },
           { key: "DELIVERY", value: "DELIVERY" },
         ])}
-      </InputField>
+      </InputField> */}
 
       {urlParamsData?.state?.AddressInfo &&
         urlParamsData?.state?.AddressInfo?.length && (
@@ -175,7 +123,7 @@ const ProfileForm = (props) => {
 
       <InputField
         type="text"
-        name="addressLine"
+        name="address1"
         placeholder="House Name/Number"
         settings={{
           variant: "outlined",
@@ -190,7 +138,7 @@ const ProfileForm = (props) => {
 
       <InputField
         type="text"
-        name="addressLine2"
+        name="address2"
         placeholder="Area/Locality"
         settings={{
           variant: "outlined",

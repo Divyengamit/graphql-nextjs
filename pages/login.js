@@ -38,6 +38,9 @@ const LoginScreen = () => {
   const signupHandler = () => {
     router.push({ pathname: "/signup" });
   };
+  const signupCompanyHandler = () => {
+    router.push({ pathname: "company/signup" });
+  };
 
   const methods = useForm({
     resolver: yupResolver(loginSchema),
@@ -129,6 +132,7 @@ const LoginScreen = () => {
           <LoginForm
             sx={{ mt: 2, mb: 2 }}
             onSignup={signupHandler}
+            onSignupCompany={signupCompanyHandler}
             onforgetPassword={forgetPasswordHandler}
           />
         </form>

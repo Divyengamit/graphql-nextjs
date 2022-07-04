@@ -154,8 +154,10 @@ export const registerSlice = createSlice({
   reducers: {
     setRegisterData: (state, action) => {
       state.userInfo.firstName = action.payload.firstName;
+      state.userInfo.lastName = action.payload.lastName;
+      state.userInfo.middleName = action.payload.middleName;
       state.userInfo.mobileNo = action.payload.mobileNo;
-      state.dob = action.payload.dob;
+      state.userInfo.dob = action.payload.dob;
     },
   },
   extraReducers: {

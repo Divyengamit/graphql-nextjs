@@ -30,16 +30,78 @@ const SignUpSchema = yup.object().shape({
     .matches(/^(([a-zA-Z ])|(.{0}))+$/, "Invalid middle name"),
   dob: yup.string().required("Select Date of Birth"),
   agreement: yup.bool(),
+
   mobileNo: yup
     .string()
     .trim()
-    .max(10, "Enter valid phone number")
-    .required("Phone number is required")
-    .test("len", "Enter valid phone number", (val) => val?.length === 10),
+    .max(10, "Enter valid mobile number")
+    .required("Mobile number is required")
+    .test("len", "Enter valid mobile number", (val) => val?.length === 10),
+});
+
+const CompanySignUpSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid first name")
+    .trim()
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid last name")
+    .trim()
+    .required("Last name is required"),
+  companyName: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid company name")
+    .trim()
+    .required("Company name is required"),
+  companyAgreement: yup.bool(),
+  mobileNo: yup
+    .string()
+    .trim()
+    .max(10, "Enter valid mobile number")
+    .required("Mobile number is required")
+    .test("len", "Enter valid mobile number", (val) => val?.length === 10),
+});
+
+const CompanyProfileSchema = yup.object().shape({
+  address1: yup.string().required("Address is required"),
+  address2: yup.string().required("Address 2 is required"),
+  city: yup
+    .string()
+    .matches(/^[a-zA-Z ]+$/, "Invalid Town / City")
+    .required("Town / City is Required"),
+  pincode: yup
+    .string()
+    .trim()
+    .required("Pincode is required")
+    .test("len", "Enter Valid Pincode", (val) => val?.length === 6)
+    .matches(/^[0-9]+$/, "Enter Valid Pincode"),
 });
 
 const createPasswordSchema = yup.object().shape({
   email: yup
+    .string()
+    .trim()
+    .email("Invalid Email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .trim()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
+  confirmPassword: yup
+    .string()
+    .trim()
+    .oneOf([yup.ref("password"), null], "Both password should match")
+    .required("Please type password again"),
+});
+
+const createCompanyPasswordSchema = yup.object().shape({
+  emailAddress: yup
     .string()
     .trim()
     .email("Invalid Email")
@@ -76,11 +138,11 @@ const resetPasswordSchema = yup.object().shape({
 });
 
 const ProfileSchema = yup.object().shape({
-  cardName: yup
-    .string()
-    .matches(/^[a-zA-Z ]+$/, "Invalid card name")
-    .trim()
-    .required("Card name is required"),
+  // cardName: yup
+  //   .string()
+  //   .matches(/^[a-zA-Z ]+$/, "Invalid card name")
+  //   .trim()
+  //   .required("Card name is required"),
   // dob: yup.string().required("Select sate of birth"),
   addressLine: yup.string().required("Address is required"),
   addressLine2: yup.string().required("Address 2 is required"),
@@ -322,6 +384,9 @@ export {
   addPhoneNumberSchema,
   changePasswordSchema,
   securityQuestionsSchema,
+  CompanySignUpSchema,
+  CompanyProfileSchema,
+  createCompanyPasswordSchema,
   addTenantSchema,
   addTenantAdminSchema,
 };

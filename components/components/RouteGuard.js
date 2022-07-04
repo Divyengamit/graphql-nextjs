@@ -60,6 +60,10 @@ function RouteGuard({ children }) {
       "/create-profile",
       "/document",
       "/otp",
+      "/company/signup",
+      "/company/password",
+      "/company/create-profile",
+      "/company/otp",
     ];
     const path = url.split("?")[0];
     if (
