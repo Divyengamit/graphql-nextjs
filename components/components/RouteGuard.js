@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getLocal, removeLocal } from "../../utils/storage";
 import { decode } from "jsonwebtoken";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout } from "@/store/auth/loginSlice";
-import { HOME, MYPROFILE } from "@/utils/paths";
+import { HOME, MYPROFILE, SECURITY } from "@/utils/paths";
+import { store } from "@/store/store";
 
 export { RouteGuard };
 
 function RouteGuard({ children }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { role } = useSelector(({ auth }) => auth);
+  // const role = useSelector(({ auth }) => auth.role);
+  const role = store.getState()?.auth?.role;
   const [authorized, setAuthorized] = useState(false);
 
   function isAuthenticated() {
@@ -47,7 +49,7 @@ function RouteGuard({ children }) {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  }, [router.isReady, store.getState()?.auth]);
 
   function authCheck(url) {
     // redirect to login page if accessing a private page and not logged in
@@ -60,7 +62,10 @@ function RouteGuard({ children }) {
       "/otp",
     ];
     const path = url.split("?")[0];
-    if (role?.toLowerCase() !== "customer" && path === MYPROFILE) {
+    if (
+      role?.toLowerCase() !== "customer" &&
+      (path === MYPROFILE || path === SECURITY)
+    ) {
       return router.push({
         pathname: HOME,
       });
