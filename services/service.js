@@ -298,4 +298,18 @@ export const deleteTenantService = (body) => {
   );
 };
 
+export const fetchTenantCustomersService = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/tenant/dashboard/tenant-customers",
+    body
+  );
+};
+
+export const fetchCustomerServicesAPI = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/tenant/dashboard/get-customer-services",
+    body
+  );
+};
+
 // -------------------------↑  ADMIN API  ↑-------------------------

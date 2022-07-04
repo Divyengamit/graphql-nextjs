@@ -4,7 +4,7 @@ import { getLocal, removeLocal } from "../../utils/storage";
 import { decode } from "jsonwebtoken";
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/auth/loginSlice";
-import { HOME, MYPROFILE, SECURITY } from "@/utils/paths";
+import { HOME, MYPROFILE, SECURITY, TRANSACTIONS, USERS } from "@/utils/paths";
 import { store } from "@/store/store";
 
 export { RouteGuard };
@@ -64,8 +64,14 @@ function RouteGuard({ children }) {
     const path = url.split("?")[0];
     if (
       role?.toLowerCase() !== "customer" &&
-      (path === MYPROFILE || path === SECURITY)
+      (path === MYPROFILE || path === SECURITY || path === TRANSACTIONS)
     ) {
+      return router.push({
+        pathname: HOME,
+      });
+    }
+
+    if (role?.toLowerCase() !== "superadmin" && path === USERS) {
       return router.push({
         pathname: HOME,
       });
