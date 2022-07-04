@@ -51,9 +51,9 @@ const AdminTabBar = () => {
               color: pathname === USERS ? "#FFFFFF" : "#2C3E50",
             }}
             onClick={() => {
-              // if (pathname !== USERS) {
-              //   router.push(USERS);
-              // }
+              if (pathname !== USERS) {
+                router.push(USERS);
+              }
             }}
           >
             Users

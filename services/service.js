@@ -268,36 +268,42 @@ export const readNotificationStatusService = (body) => {
 export const fetchAdminDashboardDetailsService = (entityId) => {
   return axiosInstance.get(`canopi-payments/tenant/dashboard/${entityId}`);
 };
+
 export const fetchAdminTenantService = (body) => {
   return axiosInstance.post(
     "canopi-payments/tenant/dashboard/tenant-admins",
     body
   );
 };
+
 export const addTenantService = (body) => {
   return axiosInstance.post(
     "canopi-payments/tenant/dashboard/save-tenant",
     body
   );
 };
+
 export const addTenantAdminService = (body) => {
   return axiosInstance.post(
     "canopi-payments/tenant/dashboard/save-tenant-admin",
     body
   );
 };
+
 export const deleteTenantService = (body) => {
   return axiosInstance.post(
     "canopi-payments/tenant/dashboard/delete-tenant-admin",
     body
   );
 };
+
 export const fetchTenantCustomersService = (body) => {
   return axiosInstance.post(
     "canopi-payments/tenant/dashboard/tenant-customers",
     body
   );
 };
+
 export const fetchCustomerServicesAPI = (body) => {
   return axiosInstance.post(
     "canopi-payments/tenant/dashboard/get-customer-services",

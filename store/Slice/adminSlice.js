@@ -4,6 +4,8 @@ import {
   addTenantService,
   deleteTenantService,
   fetchAdminTenantService,
+  fetchCustomerServicesAPI,
+  fetchTenantCustomersService,
 } from "../../services/service";
 
 export const addTenant = createAsyncThunk(
@@ -57,9 +59,35 @@ export const deleteTenant = createAsyncThunk(
   }
 );
 
+export const fetchTenantCustomers = createAsyncThunk(
+  "admin/fetchTenantCustomers",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await fetchTenantCustomersService(formData);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.data);
+    }
+  }
+);
+
+export const fetchCustomerServices = createAsyncThunk(
+  "admin/fetchCustomerServices",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await fetchCustomerServicesAPI(formData);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.data);
+    }
+  }
+);
 const initialState = {
   loading: false,
   tenantAdminList: [],
+  tenantCustomers: [],
 };
 
 export const equipmentSlice = createSlice({
@@ -112,6 +140,18 @@ export const equipmentSlice = createSlice({
     },
     [deleteTenant.rejected]: (state) => {
       state.loading = false;
+    },
+    // fetchTenantCustomers
+    [fetchTenantCustomers.pending]: (state) => {
+      state.loading = true;
+    },
+    [fetchTenantCustomers.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.tenantCustomers = action.payload;
+    },
+    [fetchTenantCustomers.rejected]: (state) => {
+      state.loading = false;
+      state.tenantCustomers = [];
     },
   },
 });
