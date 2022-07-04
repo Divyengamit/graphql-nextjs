@@ -293,3 +293,10 @@ export const companySignupOtp = (body) => {
     body
   );
 };
+
+export const resendOtpCompanySignup = (body) => {
+  return axiosInstance.post(
+    "canopi-payments/portal/register/company/resend-otp",
+    body
+  );
+};

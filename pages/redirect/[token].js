@@ -50,6 +50,11 @@ export default function Redirect() {
               mobileNo: tokenVerification.userData.mobileNo,
               companyName: tokenVerification.userData.companyName,
               emailAddress: tokenVerification.userData.emailAddress,
+              address1: tokenVerification.userData.address1,
+              address2: tokenVerification.userData.address2,
+              city: tokenVerification.userData.city,
+              state: tokenVerification.userData.state,
+              pincode: tokenVerification.userData.pincode,
             })
           );
 

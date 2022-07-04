@@ -6,6 +6,7 @@ import OtpInput from "react-otp-input";
 import FlexBox from "../../ui/FlexBox";
 
 const OTPForm = (props) => {
+  console.log("props data", props);
   const [otp, setOtp] = useState("");
 
   const OTPLength = props?.userData?.requestType == "RESET" ? 4 : 4;
@@ -87,7 +88,7 @@ const OTPForm = (props) => {
           color="secondary"
           onClick={props?.onSubmit}
         >
-          Next
+          Submit
         </Button>
       )}
     </Paper>

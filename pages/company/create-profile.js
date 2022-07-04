@@ -27,6 +27,7 @@ const CreateProfileScreen = () => {
   const urlParamsData = JSON.parse(
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+  const companyInfo = useSelector(({ companyRegister }) => companyRegister);
 
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -39,7 +40,11 @@ const CreateProfileScreen = () => {
     resolver: yupResolver(CompanyProfileSchema),
     mode: "onSubmit",
     defaultValues: {
-      state: "Maharashtra",
+      address1: companyInfo?.address1 || "",
+      address2: companyInfo?.address2 || "",
+      city: companyInfo?.city || "",
+      state: companyInfo?.state || "Maharashtra",
+      pincode: companyInfo?.pincode || "",
     },
   });
 
@@ -57,8 +62,8 @@ const CreateProfileScreen = () => {
   const onSubmit = (data) => {
     let tempForm = {
       requestId: urlParamsData?.state?.requestId,
-      address1: data?.addressLine,
-      address2: data?.addressLine2,
+      address1: data?.address1,
+      address2: data?.address2,
       city: data?.city,
       pincode: data?.pincode,
       state: data?.state,

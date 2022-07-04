@@ -5,6 +5,7 @@ import {
   createCompanyPassword,
   createCompanyAddress,
   companySignupOtp,
+  resendOtpCompanySignup,
 } from "../../services/service";
 
 export const registerCompanyInfo = createAsyncThunk(
@@ -45,11 +46,25 @@ export const addCompanyAddress = createAsyncThunk(
     }
   }
 );
+
 export const verifyCompanySignupOtp = createAsyncThunk(
   "companyRegister/verifyCompanySignupOtp",
   async (formData, { rejectWithValue }) => {
     try {
       const response = await companySignupOtp(formData);
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.data);
+    }
+  }
+);
+
+export const companyResendSignupOtp = createAsyncThunk(
+  "companyRegister/companyResendSignupOtp",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await resendOtpCompanySignup(formData);
       const data = await response.data;
       return data;
     } catch (error) {
@@ -79,11 +94,12 @@ const initialState = {
   resendOTP: null,
   forgetPassword: null,
   resetPassword: null,
-  address1: null,
-  address2: null,
-  city: null,
-  state: null,
-  pincode: null,
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+  pincode: "",
+  emailAddress: "",
 };
 
 export const companySignupSlice = createSlice({
@@ -95,6 +111,12 @@ export const companySignupSlice = createSlice({
       state.companyInfo.lastName = action.payload.lastName;
       state.companyInfo.mobileNo = action.payload.mobileNo;
       state.companyInfo.companyName = action.payload.companyName;
+      state.address1 = action.payload.address1;
+      state.address2 = action.payload.address2;
+      state.city = action.payload.city;
+      state.state = action.payload.state;
+      state.pincode = action.payload.pincode;
+      state.emailAddress = action.payload.emailAddress;
     },
   },
   extraReducers: {
@@ -149,6 +171,19 @@ export const companySignupSlice = createSlice({
       state.city = null;
       state.state = null;
       state.pincode = null;
+      state.loading = false;
+    },
+
+    [companyResendSignupOtp.pending]: (state) => {
+      state.companyResendSignupOtp = null;
+      state.loading = true;
+    },
+    [companyResendSignupOtp.fulfilled]: (state, action) => {
+      state.companyResendSignupOtp = action.payload;
+      state.loading = false;
+    },
+    [companyResendSignupOtp.rejected]: (state) => {
+      state.resetPassword = null;
       state.loading = false;
     },
   },

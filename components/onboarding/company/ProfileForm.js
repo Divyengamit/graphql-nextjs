@@ -123,7 +123,7 @@ const ProfileForm = (props) => {
 
       <InputField
         type="text"
-        name="addressLine"
+        name="address1"
         placeholder="House Name/Number"
         settings={{
           variant: "outlined",
@@ -138,7 +138,7 @@ const ProfileForm = (props) => {
 
       <InputField
         type="text"
-        name="addressLine2"
+        name="address2"
         placeholder="Area/Locality"
         settings={{
           variant: "outlined",

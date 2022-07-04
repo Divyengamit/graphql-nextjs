@@ -10,7 +10,7 @@ import HeroGrid from "../../components/onboarding/HeroGrid";
 import ProgressIndicator from "../../components/ui/ProgressIndicator";
 import InfoAlert from "../../components/ui/InfoAlert";
 import {
-  createPasswordSchema,
+  createCompanyPasswordSchema,
   resetPasswordSchema,
 } from "../../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +27,7 @@ const PasswordScreen = () => {
   const urlParamsData = JSON.parse(
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+  const companyInfo = useSelector(({ companyRegister }) => companyRegister);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -63,14 +64,17 @@ const PasswordScreen = () => {
   const methods = useForm({
     resolver: urlParamsData?.state?.requestType
       ? yupResolver(resetPasswordSchema)
-      : yupResolver(createPasswordSchema),
+      : yupResolver(createCompanyPasswordSchema),
     mode: "onSubmit",
+    defaultValues: {
+      emailAddress: companyInfo?.emailAddress || "",
+    },
   });
 
   const handleCreatePassword = (data) => {
     let tempForm = {
       requestId: urlParamsData?.state?.requestId,
-      emailAddress: data?.email,
+      emailAddress: data?.emailAddress,
       password: data?.password,
       passwordConfirm: data?.confirmPassword,
     };

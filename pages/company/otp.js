@@ -19,7 +19,10 @@ import {
   verifyOTP,
 } from "../../store/Slice/registerSlice";
 import { CREATE_PASSWORD } from "@/utils/paths";
-import { verifyCompanySignupOtp } from "@/store/Slice/companySignupSlice";
+import {
+  companyResendSignupOtp,
+  verifyCompanySignupOtp,
+} from "@/store/Slice/companySignupSlice";
 
 const img = require("@/assets/backgrounds/background_onbording.png");
 
@@ -31,7 +34,6 @@ const OTPScreen = () => {
   const urlParamsData = JSON.parse(
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
-
   const [otp, setOtp] = useState();
   const [showError, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
@@ -49,21 +51,21 @@ const OTPScreen = () => {
       pathname: CREATE_PASSWORD,
     });
     nextHandler();
-    // setLocal(
-    //   "tempData",
-    //   Encryption(
-    //     JSON.stringify({
-    //       state: {
-    //         // requestId: urlParamsData?.state?.requestId,
-    //         // sessionId: sessionId,
-    //         // mobile: mobile,
-    //         email: urlParamsData?.state?.email,
-    //         requestType: "RESET",
-    //       },
-    //     }),
-    //     process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
-    //   )
-    // );
+    setLocal(
+      "tempData",
+      Encryption(
+        JSON.stringify({
+          state: {
+            // requestId: urlParamsData?.state?.requestId,
+            // sessionId: sessionId,
+            // mobile: mobile,
+            email: urlParamsData?.state?.email,
+            requestType: "RESET",
+          },
+        }),
+        process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY
+      )
+    );
   };
 
   const onVerifyOTP = () => {
@@ -71,10 +73,7 @@ const OTPScreen = () => {
       requestId: urlParamsData?.state?.requestId,
       otp,
     };
-    // nextHandler();
     dispatch(verifyCompanySignupOtp(temp)).then((res) => {
-      setError(true);
-      setErrorMessage(res?.payload?.message || "Something went wrong!");
       // if (res?.payload?.message === "Min KYC could not be completed.") {
       //   setShowProgress(true);
       //   setProgressMessage("Please wait the minimum KYC is under progress.");
@@ -82,19 +81,19 @@ const OTPScreen = () => {
       //   setError(true);
       //   setErrorMessage(res?.payload?.message || "Something went wrong!");
       // }
-      // // if (res.error) {
-
-      // // }
-      // if (!res.error) {
-      //   const userData = res.payload;
-
-      //   setShowSuccess(true);
-      //   setSuccessMessage(userData?.message);
-      //   setTimeout(() => {
-      //     removeLocal("tempData");
-      //     nextHandler();
-      //   }, [3000]);
-      // }
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
+      }
+      if (!res.error) {
+        const userData = res.payload;
+        setShowSuccess(true);
+        setSuccessMessage(userData?.message);
+        setTimeout(() => {
+          removeLocal("tempData");
+          nextHandler();
+        }, [3000]);
+      }
     });
   };
 
@@ -105,16 +104,19 @@ const OTPScreen = () => {
   };
 
   const onResend = () => {
-    // dispatch(resendOTP(urlParamsData?.state?.mobile)).then((res) => {
-    //   if (res.error) {
-    //     setError(true);
-    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
-    //   }
-    //   if (!res.error) {
-    //     setShowSuccess(true);
-    //     setSuccessMessage(res?.payload?.message);
-    //   }
-    // });
+    const tempData = {
+      requestId: urlParamsData?.state?.requestId,
+    };
+    dispatch(companyResendSignupOtp(tempData)).then((res) => {
+      if (res.error) {
+        setError(true);
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
+      }
+      if (!res.error) {
+        setShowSuccess(true);
+        setSuccessMessage(res?.payload?.message);
+      }
+    });
   };
 
   // email

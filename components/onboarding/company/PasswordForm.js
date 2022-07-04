@@ -33,7 +33,7 @@ const PasswordForm = (props) => {
 
           <InputField
             type="email"
-            name="email"
+            name="emailAddress"
             placeholder="Enter Email"
             settings={{
               variant: "outlined",
