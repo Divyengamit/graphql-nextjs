@@ -16,10 +16,12 @@ import { useRouter } from "next/router";
 import { setLocal } from "@/utils/storage";
 import { Encryption } from "@/utils/EncryptDecrypt";
 import { MYPROFILE } from "@/utils/paths";
+import { useSelector } from "react-redux";
 const logoutIcon = require("../../assets/icons/logout.png");
 
 const ProfileMenu = (props) => {
   const router = useRouter();
+  const { role } = useSelector(({ auth }) => auth);
 
   const handleProfileClick = () => {
     setLocal(
@@ -158,27 +160,29 @@ const ProfileMenu = (props) => {
           </MenuItem>
         </Box>
 
-        <MenuItem
-          sx={{
-            border: "0.5px solid #EAF0F6",
-            borderLeft: 0,
-            borderRight: 0,
+        {role?.toLowerCase() === "customer" && (
+          <MenuItem
+            sx={{
+              border: "0.5px solid #EAF0F6",
+              borderLeft: 0,
+              borderRight: 0,
 
-            pt: 1.75,
-            pb: 1.75,
-          }}
-          onClick={handleProfileClick}
-        >
-          <ListItemIcon>
-            <AccountCircleOutlinedIcon
-              fontSize="large"
-              sx={{ color: "#2C3E50", mr: 1.2 }}
-            />
-          </ListItemIcon>
-          <Typography variant="subtitle1Regular" sx={{ color: "#2C3E50" }}>
-            Manage Account
-          </Typography>
-        </MenuItem>
+              pt: 1.75,
+              pb: 1.75,
+            }}
+            onClick={handleProfileClick}
+          >
+            <ListItemIcon>
+              <AccountCircleOutlinedIcon
+                fontSize="large"
+                sx={{ color: "#2C3E50", mr: 1.2 }}
+              />
+            </ListItemIcon>
+            <Typography variant="subtitle1Regular" sx={{ color: "#2C3E50" }}>
+              Manage Account
+            </Typography>
+          </MenuItem>
+        )}
         <MenuItem
           sx={{
             borderLeft: 0,

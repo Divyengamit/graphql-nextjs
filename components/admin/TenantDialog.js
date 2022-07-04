@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,8 +6,6 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-// import { useMutation, useQueryClient } from "react-query";
-import { APIContext } from "../../services/api-provider";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ProgressIndicator from "../ui/ProgressIndicator";
@@ -17,14 +15,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { addTenantSchema } from "@/utils/validation";
 import TenantForm from "./TenantForm";
+import { useDispatch, useSelector } from "react-redux";
+import { addTenant } from "@/store/Slice/adminSlice";
+import { fetchAdminDashboardDetails } from "@/store/dashboardSlice";
+import { getUserID } from "@/utils/EncryptDecrypt";
 
 const TenantDialog = (props) => {
+  const dispatch = useDispatch();
+  const adminState = useSelector(({ admin }) => admin);
   const [showError, setError] = useState(false);
   const [errorTitle, setErrorTitle] = useState();
   const [errorMessage, setErrorMessage] = useState();
-
-  // const { addTenant } = useContext(APIContext);
-  // const queryClient = useQueryClient();
 
   const methods = useForm({
     resolver: yupResolver(addTenantSchema),
@@ -55,32 +56,31 @@ const TenantDialog = (props) => {
     );
   }, [methods, props]);
 
-  // const addTenantMutation = useMutation((data) => addTenant(data), {
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries("dashboard");
-  //     setError(true);
-  //     setErrorTitle("Success");
-  //     setErrorMessage(
-  //       props?.requestType === "UPDATE"
-  //         ? "Tenant updated Successfully "
-  //         : "Tenant Added Successfully "
-  //     );
-  //     setTimeout(() => {
-  //       props?.onClose();
-  //     }, 1000);
-  //     methods.reset({
-  //       state: "AP",
-  //     });
-  //   },
-  //   onError: (error) => {
-  //     setError(true);
-  //     setErrorTitle("Error");
-  //     setErrorMessage(error?.response?.data?.message || error?.message);
-  //     methods.reset({
-  //       state: "AP",
-  //     });
-  //   },
-  // });
+  const onAddTenant = (data) => {
+    dispatch(addTenant(data)).then((res) => {
+      if (!res.error) {
+        dispatch(fetchAdminDashboardDetails(getUserID()));
+        setError(true);
+        setErrorTitle("Success");
+        setErrorMessage(
+          props?.requestType === "UPDATE"
+            ? "Tenant updated Successfully "
+            : "Tenant Added Successfully "
+        );
+        setTimeout(() => {
+          props?.onClose();
+        }, 1000);
+        methods.reset({
+          state: "AP",
+        });
+      }
+      if (res?.error) {
+        setError(true);
+        setErrorTitle("Error");
+        setErrorMessage(res?.payload?.message || "Something went wrong!");
+      }
+    });
+  };
 
   const onSubmitHandler = (values) => {
     const data = {
@@ -90,8 +90,7 @@ const TenantDialog = (props) => {
     if (props?.requestType === "UPDATE") {
       data["id"] = props?.formData?.id;
     }
-
-    // addTenantMutation.mutate(data);
+    onAddTenant(data);
   };
 
   return (
@@ -138,7 +137,7 @@ const TenantDialog = (props) => {
           color="secondary"
           sx={{ pb: 1.1, px: 5, pt: 3.25, textAlign: "center" }}
         >
-          Add Tenant
+          {props?.requestType === "UPDATE" ? "Update" : "Add"} Tenant
         </DialogTitle>
         <DialogContent sx={{ px: 5, py: 3.75 }}>
           <FormProvider {...methods}>
@@ -154,7 +153,7 @@ const TenantDialog = (props) => {
         body={errorMessage}
         onClose={() => setError(false)}
       />
-      {/* {addTenantMutation.isLoading && <ProgressIndicator />} */}
+      {adminState?.loading && <ProgressIndicator />}
     </>
   );
 };

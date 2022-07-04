@@ -150,7 +150,6 @@ const LoginScreen = () => {
         requestType="2FA"
         userMobileNo={mobileNo}
       />
-      ;
     </HeroGrid>
   );
 };
