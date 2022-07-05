@@ -17,6 +17,15 @@ const PasswordForm = () => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
+          onPaste: () => {
+            return null;
+          },
+          onCopy: () => {
+            return null;
+          },
+          onCut: () => {
+            return null;
+          },
         }}
       />
       <DialogContentText
