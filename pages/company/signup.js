@@ -85,7 +85,9 @@ const SignupScreen = () => {
       })
     ).then((res) => {
       if (!res.error) {
-        nextHandler(res?.payload);
+        nextHandler({
+          payload: { response: res?.payload, mobileNo: data.mobileNo },
+        });
       }
       if (res?.error) {
         setErrorMessage(res?.payload?.message || "Something went wrong!");

@@ -60,8 +60,9 @@ const CreateProfileScreen = () => {
   // };
 
   const onSubmit = (data) => {
+    const id = urlParamsData?.state?.payload?.response?.requestId;
     let tempForm = {
-      requestId: urlParamsData?.state?.requestId,
+      requestId: id,
       address1: data?.address1,
       address2: data?.address2,
       city: data?.city,

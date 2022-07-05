@@ -69,8 +69,9 @@ const OTPScreen = () => {
   };
 
   const onVerifyOTP = () => {
+    const id = urlParamsData?.state?.payload?.response?.requestId;
     let temp = {
-      requestId: urlParamsData?.state?.requestId,
+      requestId: id,
       otp,
     };
     dispatch(verifyCompanySignupOtp(temp)).then((res) => {
@@ -104,8 +105,9 @@ const OTPScreen = () => {
   };
 
   const onResend = () => {
+    const id = urlParamsData?.state?.payload?.response?.requestId;
     const tempData = {
-      requestId: urlParamsData?.state?.requestId,
+      requestId: id,
     };
     dispatch(companyResendSignupOtp(tempData)).then((res) => {
       if (res.error) {
@@ -178,7 +180,7 @@ const OTPScreen = () => {
       <HeroGrid img={img}>
         <BreadCrumb items={["Account", "Phone Verification"]} />
         <OTPForm
-          userData={urlParamsData?.state}
+          userData={urlParamsData?.state?.payload}
           sx={{ mt: 2, mb: 2 }}
           onNext={nextHandler}
           onChangeOtp={onChangeOtpHandler}

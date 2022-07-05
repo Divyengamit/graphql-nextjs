@@ -6,7 +6,6 @@ import OtpInput from "react-otp-input";
 import FlexBox from "../../ui/FlexBox";
 
 const OTPForm = (props) => {
-  console.log("props data", props);
   const [otp, setOtp] = useState("");
 
   const OTPLength = props?.userData?.requestType == "RESET" ? 4 : 4;
@@ -40,12 +39,12 @@ const OTPForm = (props) => {
           </>
         )}
       </FlexBox>
-      {/* <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
+      <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
         Code sent to {""}
-        {props?.userData?.mobile
-          ? "+" + props?.userData?.mobile
+        {props?.userData?.mobileNo
+          ? "+" + props?.userData?.mobileNo
           : props?.userData?.email}
-      </Typography> */}
+      </Typography>
       <FlexBox
         row
         sx={{ mt: 2, mb: 2, display: "flex", justifyContent: "center" }}

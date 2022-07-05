@@ -28,7 +28,6 @@ const PasswordScreen = () => {
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
   const companyInfo = useSelector(({ companyRegister }) => companyRegister);
-
   const router = useRouter();
   const dispatch = useDispatch();
   const registerState = useSelector(({ register }) => register);
@@ -72,8 +71,9 @@ const PasswordScreen = () => {
   });
 
   const handleCreatePassword = (data) => {
+    const id = urlParamsData?.state?.payload?.response?.requestId;
     let tempForm = {
-      requestId: urlParamsData?.state?.requestId,
+      requestId: id,
       emailAddress: data?.emailAddress,
       password: data?.password,
       passwordConfirm: data?.confirmPassword,
