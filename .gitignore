@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# vs code setings
+.vscode
+
 # dependencies
 /node_modules
 /.pnp
@@ -14,11 +17,12 @@
 
 # production
 /build
+.env
 
 # misc
 .DS_Store
 *.pem
-
+package-lock.json
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -27,8 +31,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
+.env
+.env*
 # vercel
 .vercel
-
-package-lock.json
