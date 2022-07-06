@@ -4,6 +4,11 @@ import { Button, DialogContentText, Typography, Box } from "@mui/material";
 import InputField from "../ui/InputField";
 
 const PasswordForm = () => {
+  const handleChangeCopy = (e) => {
+    e.preventDefault();
+    return "";
+  };
+
   return (
     <Box>
       <Typography variant="h5SemiBold" sx={{ mt: 3 }}>
@@ -17,15 +22,9 @@ const PasswordForm = () => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
-          onPaste: () => {
-            return null;
-          },
-          onCopy: () => {
-            return null;
-          },
-          onCut: () => {
-            return null;
-          },
+          onCut: handleChangeCopy,
+          onCopy: handleChangeCopy,
+          onPaste: handleChangeCopy,
         }}
       />
       <DialogContentText
@@ -45,6 +44,9 @@ const PasswordForm = () => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
+          onCut: handleChangeCopy,
+          onCopy: handleChangeCopy,
+          onPaste: handleChangeCopy,
         }}
       />
       <Typography variant="h5SemiBold" sx={{ mt: 2 }}>
@@ -58,6 +60,9 @@ const PasswordForm = () => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
+          onCut: handleChangeCopy,
+          onCopy: handleChangeCopy,
+          onPaste: handleChangeCopy,
         }}
       />
       <Button

@@ -7,6 +7,11 @@ import FlexBox from "../ui/FlexBox";
 import InputField from "../ui/InputField";
 
 const LoginForm = (props) => {
+  const handleChangeCopy = (e) => {
+    e.preventDefault();
+    return "";
+  };
+
   return (
     <Paper variant="card" sx={props.sx}>
       <Typography variant="h2Bold" color="secondary">
@@ -36,6 +41,9 @@ const LoginForm = (props) => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
+          onCut: handleChangeCopy,
+          onCopy: handleChangeCopy,
+          onPaste: handleChangeCopy,
         }}
       />
       <Button
