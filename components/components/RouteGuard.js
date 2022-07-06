@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "@/store/auth/loginSlice";
 import { HOME, MYPROFILE, SECURITY, TRANSACTIONS, USERS } from "@/utils/paths";
 import { store } from "@/store/store";
+import InfoAlert from "../ui/InfoAlert";
 
 export { RouteGuard };
 
@@ -15,6 +16,7 @@ function RouteGuard({ children }) {
   // const role = useSelector(({ auth }) => auth.role);
   const role = store.getState()?.auth?.role;
   const [authorized, setAuthorized] = useState(false);
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
 
   function isAuthenticated() {
     const token = getLocal("access_token");
@@ -51,6 +53,20 @@ function RouteGuard({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady, store.getState()?.auth]);
 
+  const onClickOk = () => {
+    setAuthorized(false);
+    removeLocal("access_token");
+    removeLocal("userId");
+    removeLocal("tempData");
+    dispatch(logout());
+    setIsOpenAlert(false);
+
+    return router.push({
+      pathname: "/login",
+      query: { returnUrl: router.asPath },
+    });
+  };
+
   function authCheck(url) {
     // redirect to login page if accessing a private page and not logged in
     const publicPaths = [
@@ -86,7 +102,22 @@ function RouteGuard({ children }) {
       return;
     }
 
-    if (!isAuthenticated() && !publicPaths.includes(path)) {
+    // if token and token is invalid
+    if (
+      getLocal("access_token") &&
+      !isAuthenticated() &&
+      !publicPaths.includes(path)
+    ) {
+      setIsOpenAlert(true);
+      return;
+    }
+
+    // if no token
+    if (
+      !getLocal("access_token") &&
+      !isAuthenticated() &&
+      !publicPaths.includes(path)
+    ) {
       setAuthorized(false);
       removeLocal("access_token");
       removeLocal("userId");
@@ -101,6 +132,17 @@ function RouteGuard({ children }) {
       setAuthorized(true);
       return;
     }
+  }
+
+  if (isOpenAlert) {
+    return (
+      <InfoAlert
+        show={isOpenAlert}
+        title="Error"
+        body="Your session is expired. Please Login to continue"
+        onClose={onClickOk}
+      />
+    );
   }
 
   return authorized && children;

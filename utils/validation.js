@@ -193,11 +193,11 @@ const EquipmentFinanceSchema = yup.object().shape({
   //   .string()
   //   .trim()
   //   .required(" State medical council required"),
-  experience: yup
-    .string()
-    .trim()
-    .required(" Years of experience required")
-    .min(0, "Min value 0."),
+  // experience: yup
+  //   .string()
+  //   .trim()
+  //   .required(" Years of experience required")
+  //   .min(0, "Min value 0."),
   annualIncome: yup.string().trim().required(" Annual income required"),
   // hospitalName: yup
   //   .string()
@@ -279,7 +279,7 @@ const ProfessionalSchema = yup.object().shape({
   //   .string()
   //   .trim()
   //   .required("Business ownership status  is required"),
-  degreeCertificateFile: yup.mixed().required("Degree Certificate required"),
+  // degreeCertificateFile: yup.mixed().required("Degree Certificate required"),
 });
 
 const LoanDetailsSchema = yup.object().shape({
@@ -288,7 +288,7 @@ const LoanDetailsSchema = yup.object().shape({
     .trim()
     .max(9, "Enter valid amount")
     .required("Loan amount is required"),
-  performaInvoiceFile: yup.mixed().required("Performa Invoice required"),
+  // performaInvoiceFile: yup.mixed().required("Performa Invoice required"),
 });
 
 const FinancialDocumentSchema = yup.object().shape({

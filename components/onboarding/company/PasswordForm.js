@@ -7,6 +7,11 @@ import InputField from "../../ui/InputField";
 import PasswordTooltip from "../PasswordTooltip";
 
 const PasswordForm = (props) => {
+  const handleChangeCopy = (e) => {
+    e.preventDefault();
+    return "";
+  };
+
   return (
     <Paper variant="card" sx={props.sx}>
       <FlexBox row sx={{ justifyContent: "space-between" }}>
@@ -55,6 +60,9 @@ const PasswordForm = (props) => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
+          onCut: handleChangeCopy,
+          onCopy: handleChangeCopy,
+          onPaste: handleChangeCopy,
         }}
       />
 
@@ -69,6 +77,9 @@ const PasswordForm = (props) => {
           variant: "outlined",
           sx: { mt: 1.2 },
           fullWidth: true,
+          onCut: handleChangeCopy,
+          onCopy: handleChangeCopy,
+          onPaste: handleChangeCopy,
         }}
       />
 

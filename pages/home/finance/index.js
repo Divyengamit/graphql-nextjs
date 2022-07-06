@@ -65,7 +65,7 @@ const EquipmentFinance = () => {
     },
   });
   const methodsFinancialDocuments = useForm({
-    resolver: yupResolver(FinancialDocumentSchema),
+    // resolver: yupResolver(FinancialDocumentSchema),
     mode: "onSubmit",
     defaultValues: {
       ...equipmentData,

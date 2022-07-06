@@ -36,8 +36,13 @@ const Activity = () => {
     {
       field: "createdOn",
       headerName: "Date",
-      flex: 1,
-      sortable: true,
+      // flex: 1,
+      width: 200,
+      sortable: false,
+      valueGetter: (params) => {
+        let date = params.row.createdOn.split("T");
+        return `${date?.[0]} ${date?.[1]}`;
+      },
     },
     {
       field: "description",

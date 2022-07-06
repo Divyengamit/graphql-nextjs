@@ -63,7 +63,7 @@ const PasswordDialog = (props) => {
     <>
       <Dialog
         open={props?.state}
-        onClose={props?.onClose}
+        onClose={() => {}}
         maxWidth={"xs"}
         PaperProps={{
           style: { borderRadius: "15px" },
