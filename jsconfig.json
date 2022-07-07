@@ -8,7 +8,8 @@
       "@/services/*": ["services/*"],
       "@/data/*": ["data/*"],
       "@/store/*": ["store/*"],
-      "@/styles/*": ["styles/*"]
+      "@/styles/*": ["styles/*"],
+      "@/graphql/*": ["graphql/*"]
     }
   }
 }

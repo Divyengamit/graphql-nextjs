@@ -1,4 +1,5 @@
-import { gql, useMutation } from "@apollo/client";
+import { CUSTOMER_REGISTRATION_STEP1 } from "@/graphql/register";
+import { useMutation } from "@apollo/client";
 import { Button } from "@mui/material";
 // import client from "../apollo-client";
 
@@ -24,30 +25,6 @@ import { Button } from "@mui/material";
 // }
 
 //  Increments a back-end counter and gets its resulting value
-const CUSTOMER_REGISTRATION_STEP1 = gql`
-  mutation CustomerRegistrationStep1(
-    $firstName: String!
-    $middleName: String
-    $lastName: String!
-    $mobileNo: String!
-    $dob: String!
-    $termConditionConsent: Boolean!
-  ) {
-    createUserStepBasicInfo(
-      createUserStepInput: {
-        firstName: $firstName
-        middleName: $middleName
-        lastName: $lastName
-        mobileNo: $mobileNo
-        dob: $dob
-        termConditionConsent: $termConditionConsent
-      }
-    ) {
-      status
-      requestId
-    }
-  }
-`;
 
 export default function Home() {
   const [myFunctionAPICall, { data, loading, error }] = useMutation(

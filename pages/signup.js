@@ -11,10 +11,11 @@ import ProgressIndicator from "../components/ui/ProgressIndicator";
 import InfoAlert from "../components/ui/InfoAlert";
 import { SignUpSchema } from "../utils/validation";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../store/Slice/registerSlice";
 const img = require("../assets/backgrounds/background_onbording.png");
 import { CREATE_PASSWORD } from "@/utils/paths.js";
 import PrivacyDialog from "@/components/ui/Privacy";
+import { CUSTOMER_REGISTRATION_STEP1 } from "@/graphql/register";
+import { useMutation } from "@apollo/client";
 
 const SignupScreen = () => {
   const router = useRouter();
@@ -71,22 +72,43 @@ const SignupScreen = () => {
     },
   });
 
+  const [registerUserQL] = useMutation(CUSTOMER_REGISTRATION_STEP1);
+
   const onSubmitHandler = (data) => {
     if (!isChecked.agreement || !isChecked.privacy) {
       setCheckError(true);
       return;
     }
-    dispatch(
-      registerUser({ ...data, termConditionConsent: isChecked.agreement })
-    ).then((res) => {
-      if (!res.error) {
-        nextHandler(res?.payload?.data);
-      }
-      if (res?.error) {
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-        setError(true);
-      }
-    });
+    registerUserQL({
+      variables: {
+        ...data,
+        termConditionConsent: isChecked.agreement,
+      },
+    })
+      .then((res) => {
+        const resData = res?.data?.createUserStepBasicInfo || null;
+        if (resData && resData?.status === 200) {
+          nextHandler(resData);
+        }
+        if (res?.error) {
+          setErrorMessage(res?.payload?.message || "Something went wrong!");
+          setError(true);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+    // dispatch(
+    //   registerUser({ ...data, termConditionConsent: isChecked.agreement })
+    // ).then((res) => {
+    //   if (!res.error) {
+    //     nextHandler(res?.payload?.data);
+    //   }
+    //   if (res?.error) {
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
+    //     setError(true);
+    //   }
+    // });
   };
 
   return (
