@@ -2,8 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Work Sans", sans-serif;
 }
 
 a {
@@ -13,4 +12,403 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/* Left Side image */
+/* .image-container {
+ 
+  height: 50vh;
+  position: relative;
+}
+.image-container .image {
+  width: 100%;
+  height: 100%;
+  position: relative !important;
+  object-fit: cover;
+} */
+
+.image-containerss {
+  background-color: #f5f7fb;
+  height: 100vh;
+  position: relative;
+}
+.image-containerss span {
+  position: unset !important;
+  height: 100% !important;
+}
+.image-containerss img {
+  max-width: 900px !important;
+}
+.right-side-div {
+  background-color: #f5f7fb;
+}
+.signup-main-div {
+  overflow: hidden;
+}
+.form-header-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* dashboard css */
+.dashboard-canopi-logo {
+  width: 100%;
+}
+.dashboard-canopi-logo img {
+  max-width: 134px !important;
+  min-width: auto !important;
+  width: auto !important;
+}
+.dashboard-docmode-img img {
+  max-width: 174px !important;
+  min-width: auto !important;
+  width: auto !important;
+  margin-right: 65px !important;
+}
+.dashboard-tabbar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+.dashboard-wallet-img {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+}
+.dashboard-equipment-finance-img {
+  background-image: url("../assets/backgrounds/EquipmentFinance.jpg");
+}
+.MuiStepLabel-label {
+  font-weight: 600 !important;
+}
+.MuiStepLabel-label {
+  font-size: 14px !important;
+}
+
+.overlay-modal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* min-height: calc(100vh - 83px); */
+  background-color: #0000009e;
+  z-index: 9;
+  top: 0px;
+}
+.highlight-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #393939;
+  line-height: 25px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+.popup-btn {
+  background-color: #1ab393;
+  color: #ffffff;
+  border: 1px solid #1ab393;
+  border-radius: 5px;
+  min-width: 100px;
+  padding: 8px 10px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+.modal-contains {
+  background-color: #ffffff;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 5px;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-top: 35px;
+  padding-bottom: 35px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.not-allow-icon span {
+  max-width: 80px !important;
+}
+.align-item-div {
+  display: grid;
+  align-items: center;
+}
+.loader-main-div .MuiPaper-elevation {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.loader-main-div .MuiPaper-elevation span {
+  color: #ffffff !important;
+}
+.information-box-div {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.icon-div {
+  min-width: 45px;
+}
+.texts-div {
+  font-size: 18px !important;
+  color: #2c3e50;
+  font-weight: 400 !important;
+  line-height: 28px;
+  padding-right: 20%;
+  margin-left: 10px !important;
+}
+.color-text {
+  color: #1ab393;
+}
+.close-icon-div {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+}
+.custom-container {
+  max-width: 1200px !important;
+}
+
+/* Info Alert CSS */
+.info-alert-box {
+  max-width: 500px !important;
+  margin: 0 auto !important;
+}
+
+.info-alert-title-img {
+  text-align: center !important;
+  padding: 15px 15px 0 15px !important;
+}
+.info-alert-title-img span img {
+  width: 80px !important;
+  height: 80px !important;
+}
+.info-alert-body-text {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: black !important;
+  text-align: center !important;
+}
+.info-alert-ok-btn {
+  justify-content: center !important;
+  padding-bottom: 15px !important;
+}
+.info-alert-ok-btn button {
+  background-color: #19bc9c !important;
+  color: #ffffff !important;
+}
+.info-alert-ok-btn button:hover {
+  background-color: #19bc9c !important;
+  color: #ffffff !important;
+}
+
+/* create-tenant-password */
+.tenant-create-password-form {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.tenant-create-password-form .MuiPaper-card {
+  max-width: 700px;
+  margin: 0 auto;
+} 
+.tenant-create-password-img {
+  height: 100vh;
+    position: relative;
+    max-width: 550px !important;
+    margin: 0 auto;
+}
+.tenant-create-password-img span {
+  position: unset !important;
+    height: 100% !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center;
+}
+.tenant-create-password-img img {
+  /* max-width: 80px !important; */
+}
+/* tenant status modal */
+.user-details-div {
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.user-details-div .user-details-box {
+  width: 100%;
+}
+.user-details-box p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.user-sub-details .title-text {
+  font-size: 17px;
+    font-weight: 600;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: #19bc9c;
+}
+.user-sub-details-flex-div {
+  display: flex;
+}
+.user-sub-details-flex-div p {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.user-sub-details {
+  margin-bottom: 25px;
+}
+.contains-div p {
+  color: #6d6d6d;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  margin-top: 0px;
+}
+.modal-title-text {
+  font-weight: 600;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 21px;
+  color: #333333;
+}
+.user-sub-details-flex-div .bold-text {
+  font-weight: 600;
+  padding-right: 10px;
+}
+/* tenant Logo Branding */
+.file-name-main-div {
+  display: flex;
+  align-items: center;
+}
+.file-name-text {
+  font-size: 16px;
+  font-weight: 400;
+}
+.logo-branding-sec-main-div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.logo-branding-sec-main-div:last-child {
+  margin-bottom: 0px;
+}
+.logo-branding-sec-main-div .left-side-div {
+  width: 100%;
+  padding-right: 25px;
+}
+.logo-branding-sec-main-div .left-side-div .text-box-div {
+  margin: 0px;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+.logo-branding-sec-main-div .right-side-div {
+  width: 100%;
+  max-width: 120px;
+  background-color: transparent;
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+  .dashboard-canopi-logo img {
+    max-width: 85px !important;
+  }
+  .dashboard-docmode-img img {
+    max-width: 100px !important;
+    min-width: auto !important;
+    width: auto !important;
+    margin-right: 0px !important;
+    padding-left: 10px !important;
+  }
+  .notification-icon svg {
+    position: relative;
+    left: 10px;
+    width: 22px;
+  }
+  .avtar-name-hide-mob {
+    display: none;
+  }
+  .avtar-down-icon-mob {
+    margin-left: 2px !important;
+  }
+  .avatar-circle-div {
+    height: 35px !important;
+    width: 35px !important;
+  }
+  .MuiDivider-vertical {
+    margin-right: 12px !important;
+    margin-left: 15px !important;
+    height: 26px !important;
+  }
+  .mob-user-details-div .MuiBox-root {
+    flex-wrap: wrap;
+  }
+  .footer-top-menu-div {
+    flex-wrap: wrap;
+  }
+  .item-center-div {
+    justify-content: center !important;
+  }
+  .mt-div {
+    margin-top: 10px;
+  }
+  .admin-panel-record-details-div {
+    width: 100% !important;
+    padding: 20px !important;
+    min-height: auto;
+  }
+  .admin-panel-table-data-div table th {
+    white-space: nowrap;
+  }
+  .admin-panel-record-details-main-div .MuiPaper-elevation {
+    width: 100%;
+  }
+  .user-admin-panel-record-details-main-div .MuiPaper-elevation {
+    width: 100%;
+  }
+  .user-admin-panel-record-details-main-div .MuiBox-root {
+    width: 100%;
+  }
+  .add-tenant-btn {
+    display: flex;
+    padding-top: 0px !important;
+  }
+  .add-tenant-btn .MuiBox-root {
+    margin-top: 0px !important;
+  }
+  .user-details-div {
+    flex-wrap: wrap;
+  }
+  .mob-width-100 {
+    width: 100% !important;
+  }
+  .dashboard-tabbar {
+    flex-wrap: wrap;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .add-tenant-btn {
+    position: absolute;
+    right: 20px;
+  }
+  .mob-width-100 {
+    width: 100% !important;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1440px) {
+}
+@media only screen and (min-width: 1441px) and (max-width: 1660px) {
 }
