@@ -1,11 +1,16 @@
+import theme from "@/styles/theme";
 import { ApolloProvider } from "@apollo/client";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import client from "apollo-client";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </ThemeProvider>
   );
 }
 

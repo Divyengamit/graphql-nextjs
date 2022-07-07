@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import { Button } from "@mui/material";
 // import client from "../apollo-client";
 
 // export async function getStaticProps() {
@@ -79,7 +80,9 @@ export default function Home() {
   };
   return (
     <>
-      <button onClick={onclickMutation}>Call</button>
+      <Button variant="contained" onClick={onclickMutation}>
+        Call
+      </Button>
       <div>{JSON.stringify(data)}</div>
     </>
   );
