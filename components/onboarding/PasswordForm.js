@@ -88,7 +88,6 @@ const PasswordForm = (props) => {
         color="secondary"
         type="submit"
         sx={{ mt: 2, mb: 2 }}
-        // onClick={props.onNext}
       >
         Next
       </Button>

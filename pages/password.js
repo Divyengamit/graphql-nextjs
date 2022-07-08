@@ -16,6 +16,7 @@ import {
   resetPassword,
 } from "../store/Slice/registerSlice";
 import { CREATE_PROFILE } from "@/utils/paths";
+import { useMutation } from "@apollo/client";
 const img = require("../assets/backgrounds/background_onbording.png");
 
 const PasswordScreen = () => {
@@ -23,6 +24,7 @@ const PasswordScreen = () => {
   const urlParamsData = JSON.parse(
     Decryption(routerParams, process.env.NEXT_PUBLIC_ENCRYPT_DECRYPT_KEY)
   );
+  console.log("urlParamsData", urlParamsData);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,7 +54,14 @@ const PasswordScreen = () => {
       ? yupResolver(resetPasswordSchema)
       : yupResolver(createPasswordSchema),
     mode: "onSubmit",
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
+
+  const [createUserPasswordQL] = useMutation(CUSTOMER_REGISTRATION_STEP1);
 
   const handleCreatePassword = (data) => {
     let tempForm = {
@@ -62,15 +71,15 @@ const PasswordScreen = () => {
       passwordConfirm: data?.confirmPassword,
     };
 
-    dispatch(createUserPassword(tempForm)).then((res) => {
-      if (res.error) {
-        setError(true);
-        setErrorMessage(res?.payload?.message || "Something went wrong!");
-      }
-      if (!res.error) {
-        nextHandler();
-      }
-    });
+    // dispatch(createUserPassword(tempForm)).then((res) => {
+    //   if (res.error) {
+    //     setError(true);
+    //     setErrorMessage(res?.payload?.message || "Something went wrong!");
+    //   }
+    //   if (!res.error) {
+    //     nextHandler();
+    //   }
+    // });
   };
   const onResetPassword = (data) => {
     dispatch(resetPassword(data)).then((res) => {

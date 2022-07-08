@@ -24,3 +24,28 @@ export const CUSTOMER_REGISTRATION_STEP1 = gql`
     }
   }
 `;
+
+export const CUSTOMER_CREATE_PASSWORD = gql`
+  mutation CustomerCreatePassword(
+    $firstName: String!
+    $middleName: String
+    $lastName: String!
+    $mobileNo: String!
+    $dob: String!
+    $termConditionConsent: Boolean!
+  ) {
+    createUserStepBasicInfo(
+      createUserStepInput: {
+        firstName: $firstName
+        middleName: $middleName
+        lastName: $lastName
+        mobileNo: $mobileNo
+        dob: $dob
+        termConditionConsent: $termConditionConsent
+      }
+    ) {
+      status
+      requestId
+    }
+  }
+`;
